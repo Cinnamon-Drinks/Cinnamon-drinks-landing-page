@@ -1,0 +1,110 @@
+---
+// src/components/Navbar.astro
+// Estrutura preservada do template Webflow (data-w-id, classes, layout
+// para CSS+IX2 funcionarem) com adaptações para nosso single-page anchor.
+import { getCollection } from 'astro:content';
+import logoMain from '../assets/logo/sublogo-secundaria.svg';
+
+interface Props {
+  hideBottomCta?: boolean;
+}
+
+const { hideBottomCta = false } = Astro.props;
+
+const menuPackages = (await getCollection('menuPackages')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<nav class="nav-container">
+  <div class="navbar-left">
+    <div class="logo-container">
+      <a href="/#inicio" class="w-inline-block" aria-label="Cinnamon Drinks — voltar ao topo">
+        <img src={logoMain.src} loading="lazy" alt="Cinnamon Drinks" class="logo" />
+      </a>
+    </div>
+    <a href="/#inicio" class="nav-link-container w-inline-block">
+      <div class="nav-link">Inicio</div>
+    </a>
+    <a href="/#sobre" class="nav-link-container w-inline-block">
+      <div class="nav-link">Sobre</div>
+    </a>
+    <a href="/#estrutura" class="nav-link-container w-inline-block">
+      <div class="nav-link">Estrutura</div>
+    </a>
+    <div class="tablet-button-container">
+      <a
+        href="/#reserva"
+        class="bordered-button nav nav-link-contain w-inline-block"
+      >
+        <p class="bordered-button-text">Reserva</p>
+      </a>
+    </div>
+    <a href="/#contato" class="nav-link-container w-inline-block">
+      <div class="nav-link">Contato</div>
+    </a>
+  </div>
+  <div class="navbar-right">
+    <div class="menus-container-lg">
+      <a href={menuPackages.length > 0 ? '/menu' : '#menu'} class="btn btn--menu w-inline-block">
+        <span class="fill-bg"></span>
+        <span class="btn__label">Menu</span>
+      </a>
+      {
+        menuPackages.length > 0 && (
+          <>
+            <div class="drop-down-space"></div>
+            <div class="drop-down-container">
+              {menuPackages.map((pkg) => (
+                <a href={`/menu/${pkg.id}`} class="nav-link gray">
+                  {pkg.data.name}
+                </a>
+              ))}
+            </div>
+          </>
+        )
+      }
+    </div>
+  </div>
+  <div
+    data-w-id="465944d2-65c2-fdeb-161b-2cbb6e01cf1c"
+    class="burger-menu tablet"
+  >
+    <div class="menu-line up"></div>
+    <div class="menu-line down"></div>
+  </div>
+  <div class="drawer-menu">
+    <div class="menu-links-container">
+      <a href="/#inicio" class="link w-inline-block">Inicio</a>
+      <a href="/#sobre" class="link w-inline-block">Sobre</a>
+      <a href="/#estrutura" class="link w-inline-block">Estrutura</a>
+      <a href={menuPackages.length > 0 ? '/menu' : '#menu'} class="link w-inline-block">
+        Menu
+      </a>
+      <a href="/#reserva" class="link w-inline-block">Reserva</a>
+      <a href="/#contato" class="link w-inline-block">Contato</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Botão MENU sticky no rodapé do mobile, replicando o padrão do
+     template original (.menu-bottom-sticky existe em global.css —
+     display:none na base, position:fixed/bottom:0 em @media max-width:
+     991px com gradient escuro de fundo). Usa .btn .btn--menu pra
+     herdar o estilo do design system (border branca + fill gradient
+     rosa→laranja no hover) — substitui o btn-fill-yellow do template
+     que não pertence à paleta da Cinnamon. -->
+{
+  !hideBottomCta && (
+    <div class="menu-bottom-sticky">
+      <a href={menuPackages.length > 0 ? '/menu' : '#menu'} class="btn btn--menu w-button">
+        <span class="fill-bg" />
+        <span class="btn__label">Menu</span>
+      </a>
+    </div>
+  )
+}
+
+<script>
+  import '../scripts/nav-drawer-menu.ts';
+</script>

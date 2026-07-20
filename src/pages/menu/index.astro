@@ -1,0 +1,77 @@
+---
+// src/pages/menu/index.astro
+import { getCollection } from 'astro:content';
+import Navbar from '../../components/Navbar.astro';
+import Base from '../../layouts/Base.astro';
+
+const menuPackages = (await getCollection('menuPackages')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<Base title="Escolha um menu — Cardápio" description="Escolha um dos menus da Cinnamon Drinks.">
+  <Navbar />
+  <main class="menu-index-page">
+    <h1 class="menu-index-title">Escolha um menu</h1>
+    <ul class="menu-index-list">
+      {
+        menuPackages.map((pkg) => (
+          <li>
+            <a href={`/menu/${pkg.id}`} class="menu-index-link">
+              {pkg.data.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Base>
+
+<style>
+  .menu-index-page {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 9rem 1.5rem 4rem;
+    color: var(--brand-white);
+    text-align: center;
+  }
+  @media (min-width: 992px) {
+    .menu-index-page {
+      padding-top: 11rem;
+    }
+  }
+  .menu-index-title {
+    font-family: var(--font-primary);
+    font-weight: var(--fw-bold);
+    font-size: 2rem;
+    text-transform: uppercase;
+    margin: 0 0 2rem;
+  }
+  .menu-index-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .menu-index-link {
+    display: block;
+    font-family: var(--font-primary);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    padding: 1em 1.5em;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--brand-white);
+    color: var(--brand-white);
+    text-decoration: none;
+    transition:
+      background var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
+  }
+  .menu-index-link:hover {
+    background: var(--brand-white);
+    color: var(--brand-black);
+  }
+</style>

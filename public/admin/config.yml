@@ -1,0 +1,284 @@
+# Sveltia CMS — painel de conteúdo do Cinnamon Drinks
+# Editável pelo Roger em /admin/. Cada collection casa 1:1 com src/content.config.ts.
+# NUNCA commitar tokens aqui — auth via Cloudflare Worker OAuth (cms-oauth/).
+
+backend:
+  name: github
+  repo: Cinnamon-Drinks/Cinnamon-drinks-landing-page
+  branch: main
+  # TODO Phase 7: trocar pela URL real do Worker após `wrangler deploy`.
+  base_url: https://cms-oauth.PLACEHOLDER.workers.dev
+  auth_endpoint: auth
+  commit_messages:
+    create: 'CMS: cria {{collection}} "{{slug}}"'
+    update: 'CMS: atualiza {{collection}} "{{slug}}"'
+    delete: 'CMS: remove {{collection}} "{{slug}}"'
+    uploadMedia: 'CMS: upload de mídia "{{path}}"'
+    deleteMedia: 'CMS: remove mídia "{{path}}"'
+
+# Dev local: abrir /admin/ no Chrome/Edge e usar "Work with Local Repository"
+# (File System Access API — o Sveltia não usa proxy server).
+publish_mode: simple
+site_url: https://cinnamondrinks.com.br
+display_url: https://cinnamondrinks.com.br
+
+# Toda mídia enviada pelo CMS vai para public/uploads/ e é servida em /uploads/.
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  # ── Arquivo único (object widget = chave-wrapper do .yml) ─────────────
+  - name: site
+    label: Configurações gerais
+    icon: settings
+    files:
+      - name: site
+        label: Site
+        file: src/content/site.yml
+        fields:
+          - name: site
+            label: Configurações
+            widget: object
+            fields:
+              - { name: brandName, label: Nome da marca, widget: string }
+              - { name: tagline, label: Slogan, widget: string }
+              - { name: address, label: Endereço (uso interno), widget: text }
+              - { name: businessHours, label: Horário comercial, widget: string }
+              - name: whatsappNumber
+                label: WhatsApp comercial
+                widget: string
+                hint: 'Somente números, formato 5535999999999'
+                pattern: ['^\d{12,13}$', 'Use o formato 5535999999999 (12 ou 13 dígitos)']
+              - name: email
+                label: E-mail
+                widget: string
+                pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', 'E-mail inválido']
+              - { name: instagram, label: 'Instagram (handle sem @)', widget: string }
+
+  - name: hero
+    label: Início (Hero)
+    icon: home
+    files:
+      - name: hero
+        label: Hero
+        file: src/content/hero.yml
+        fields:
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: heading, label: Título, widget: string }
+              - { name: subheading, label: Subtítulo, widget: text }
+              - { name: ctaText, label: Texto do botão, widget: string }
+              - name: gallery
+                label: Galeria
+                widget: list
+                min: 1
+                fields:
+                  - name: type
+                    label: Tipo
+                    widget: select
+                    options: [image, video]
+                  - { name: src, label: Arquivo, widget: file }
+                  - { name: alt, label: Texto alternativo, widget: string }
+
+  - name: about
+    label: Sobre
+    icon: info
+    files:
+      - name: about
+        label: Sobre
+        file: src/content/about.yml
+        fields:
+          - name: about
+            label: Sobre
+            widget: object
+            fields:
+              - { name: heading, label: Título, widget: string }
+              - { name: body, label: Texto, widget: markdown }
+              - name: foundedYear
+                label: Ano de fundação
+                widget: number
+                value_type: int
+                min: 2000
+                max: 2030
+              - { name: mainPhoto, label: Foto principal, widget: image }
+
+  - name: team
+    label: Equipe
+    icon: group
+    files:
+      - name: team
+        label: Equipe
+        file: src/content/team.yml
+        fields:
+          - name: team
+            label: Equipe
+            widget: object
+            fields:
+              - { name: heading, label: Título, widget: string }
+              - { name: intro, label: Introdução, widget: text }
+              - name: members
+                label: Membros
+                widget: list
+                fields:
+                  - { name: name, label: Nome, widget: string }
+                  - { name: role, label: Cargo, widget: string }
+                  - { name: photo, label: Foto, widget: image }
+                  - { name: certifications, label: Certificações, widget: list, required: false }
+
+  # ── Pasta (uma entrada por arquivo) ───────────────────────────────────
+  - name: drinks
+    label: Drinks (Menu)
+    label_singular: Drink
+    icon: local_bar
+    folder: src/content/drinks
+    extension: yml
+    format: yml
+    identifier_field: name
+    slug: '{{slug}}'
+    create: true
+    fields:
+      - { name: name, label: Nome, widget: string }
+      - name: category
+        label: Categoria
+        widget: select
+        options: ["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']
+      - { name: ingredients, label: Ingredientes, widget: list, min: 1 }
+      - { name: image, label: Foto, widget: image, required: false }
+      - name: order
+        label: Ordem na categoria
+        widget: number
+        value_type: int
+        min: 1
+
+  - name: bars
+    label: Estrutura — Bares
+    label_singular: Bar
+    icon: storefront
+    folder: src/content/bars
+    extension: yml
+    format: yml
+    identifier_field: name
+    slug: '{{slug}}'
+    create: true
+    fields:
+      - { name: name, label: Nome do bar, widget: string }
+      - { name: description, label: Descrição, widget: text }
+      - name: gallery
+        label: Galeria de fotos
+        widget: list
+        min: 1
+        fields:
+          - { name: src, label: Foto, widget: image }
+          - { name: alt, label: Texto alternativo, widget: string }
+      - name: tallPhoto
+        label: 'Foto vertical (painel alto do Menu 1)'
+        hint: 'Enquadramento retrato/vertical — a galeria acima é horizontal e corta mal nesse painel. Deixe em branco até ter uma foto no formato certo.'
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: Foto, widget: image }
+          - { name: alt, label: Texto alternativo, widget: string }
+      - name: order
+        label: Ordem
+        widget: number
+        value_type: int
+
+  - name: menuPackages
+    label: Pacotes de Menu
+    label_singular: Pacote
+    icon: restaurant_menu
+    folder: src/content/menu-packages
+    extension: yml
+    format: yml
+    identifier_field: name
+    slug: '{{slug}}'
+    create: true
+    fields:
+      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Menu 1"' }
+      - name: layout
+        label: Estilo visual da página
+        widget: select
+        options:
+          - { label: 'Menu 1 — sidebar + lista + foto grande', value: menu-1 }
+          - { label: 'Menu 2 — abas + grid de texto', value: menu-2 }
+          - { label: 'Menu 3 — grade de categorias + cards com foto', value: menu-3 }
+          - { label: 'Menu 4 — abas em pill + foto redonda', value: menu-4 }
+      - name: combinations
+        label: Combinações (bar + categoria)
+        widget: list
+        min: 1
+        fields:
+          - name: bar
+            label: Bar
+            widget: relation
+            collection: bars
+            search_fields: [name]
+            value_field: slug
+            display_fields: [name]
+          - name: category
+            label: Categoria de drink
+            widget: select
+            options: ["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']
+      - name: order
+        label: Ordem
+        widget: number
+        value_type: int
+
+  - name: testimonials
+    label: Depoimentos
+    label_singular: Depoimento
+    icon: format_quote
+    folder: src/content/testimonials
+    extension: yml
+    format: yml
+    identifier_field: author
+    slug: '{{slug}}'
+    create: true
+    fields:
+      - { name: author, label: Autor, widget: string }
+      - { name: eventType, label: Tipo de evento, widget: string, required: false }
+      - { name: quote, label: Depoimento, widget: text }
+      - { name: photo, label: Foto, widget: image, required: false }
+
+  - name: form
+    label: Formulário de reserva
+    icon: mail
+    files:
+      - name: form
+        label: Textos do formulário
+        file: src/content/form.yml
+        fields:
+          - name: form
+            label: Formulário
+            widget: object
+            fields:
+              - { name: heading, label: Título, widget: string }
+              - { name: ctaButton, label: Texto do botão, widget: string }
+              - { name: successMessage, label: Mensagem de sucesso, widget: text }
+              - { name: errorMessage, label: Mensagem de erro, widget: text }
+              - { name: lgpdLabel, label: Texto do checkbox LGPD, widget: string }
+
+  - name: pricing
+    label: Tabela de preços
+    icon: payments
+    files:
+      - name: pricing
+        label: Preços
+        file: src/content/pricing.yml
+        fields:
+          - name: pricing
+            label: Preços
+            widget: object
+            fields:
+              - { name: pricePerGuest, label: Preço por convidado, widget: string, hint: 'Ex: R$ 43,95' }
+              - { name: insurancePerGuest, label: Seguro por convidado, widget: string, hint: 'Ex: R$ 2,25' }
+              - name: vodkaUpgrades
+                label: Upgrades de vodka
+                widget: list
+                fields:
+                  - { name: name, label: Nome, widget: string }
+                  - { name: extraPrice, label: Preço adicional, widget: string }
+              - { name: bartenderRatio, label: Proporção de bartenders, widget: string }
+              - { name: disclaimer, label: Aviso, widget: text }

@@ -1,0 +1,10 @@
+form:
+  heading: Fazer reserva
+  ctaButton: Reservar minha data
+  successMessage: |
+    Recebemos seu pedido! Em instantes você será redirecionado para o
+    WhatsApp para conversarmos sobre seu evento.
+  errorMessage: |
+    Ops, algo deu errado. Tente novamente ou nos chame direto pelo
+    WhatsApp.
+  lgpdLabel: "Concordo com a [Política de Privacidade](/privacidade) e em ser contatado(a) via WhatsApp/email."

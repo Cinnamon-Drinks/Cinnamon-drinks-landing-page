@@ -1,0 +1,9 @@
+<svg width="163" height="88" viewBox="0 0 163 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="brandGradient" x1="0" y1="44" x2="163" y2="44" gradientUnits="userSpaceOnUse">
+<stop offset="0%" stop-color="#F26294"/>
+<stop offset="100%" stop-color="#F2662B"/>
+</linearGradient>
+</defs>
+<path d="M148.999 9C109.332 -2.16667 34.5816 -1.89972 10.4983 27C-9.50191 51 9.86353 67.3341 18.9982 73.5C38.9983 87 111.069 94.8096 148.999 67.5C173.999 49.5 158.998 17.5 125.498 14.5" stroke="url(#brandGradient)" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,39 @@
+---
+import { getEntry } from 'astro:content';
+
+const about = await getEntry('about', 'about');
+const data = about!.data;
+
+// Newlines do YAML (`|`) são para legibilidade do arquivo, não quebras
+// visuais. Soft-wraps (\n único) viram espaço; parágrafos (\n\n) viram
+// <p> separados.
+const paragraphs = data.body
+  .trim()
+  .split(/\n\s*\n/)
+  .map((p) => p.replace(/\s*\n\s*/g, ' ').trim());
+---
+
+<section
+  id="sobre"
+  data-sticky="no"
+  data-w-id="7645e8f3-dd9b-ba99-02dd-0ba09fcec313"
+  class="sticky section full-height"
+>
+  <div class="container-full-width border">
+    <div class="flex-frame">
+      <div class="long-image white-border left">
+        <img
+          loading="lazy"
+          width="100"
+          src={data.mainPhoto}
+          alt={`${data.heading} — Cinnamon Drinks`}
+          class="cover-image"
+        />
+      </div>
+      <div class="short-text-container">
+        <h2 class="heading-2">{data.heading}</h2>
+        {paragraphs.map((p) => <p class="about-text">{p}</p>)}
+      </div>
+    </div>
+  </div>
+</section>

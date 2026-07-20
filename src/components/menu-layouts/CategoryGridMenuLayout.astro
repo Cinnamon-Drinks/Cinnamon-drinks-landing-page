@@ -1,0 +1,80 @@
+---
+// src/components/menu-layouts/CategoryGridMenuLayout.astro
+// Estilo "Menu 3" do template Webflow: grade de categorias no topo (foto
+// redonda + nome do bar, clique rola até a seção) e, abaixo, uma seção
+// completa por bar com grid de cards — cada card com a foto do próprio
+// drink como fundo. Navegação por âncora nativa, sem JS.
+import type { CollectionEntry } from 'astro:content';
+
+interface Combination {
+  bar: CollectionEntry<'bars'>;
+  category: string;
+  drinks: CollectionEntry<'drinks'>[];
+}
+
+interface Props {
+  combinations: Combination[];
+}
+
+const { combinations } = Astro.props;
+---
+
+<div class="section full-height">
+  <div class="menu-wrap category">
+    <div class="categories-wrapper">
+      <div class="categories-list">
+        {
+          combinations.map((combo) => {
+            const photo = combo.bar.data.gallery[0];
+            return (
+              <div class="category-item">
+                <h4 class="heading-4 menu-name">{combo.bar.data.name}</h4>
+                <a href={`#${combo.bar.id}`} class="category-cover w-inline-block">
+                  <div class="cover-gradient" />
+                  <div
+                    class="category-image"
+                    style={photo ? `background-image: url(${photo.src})` : undefined}
+                  />
+                </a>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+{
+  combinations.map((combo) => (
+    <div id={combo.bar.id} class="section flex-with-padding">
+      <div class="container">
+        <div class="sub-menu-title-wrapper">
+          <h3 class="heading-3">{combo.bar.data.name}</h3>
+        </div>
+        <div class="sub-menu-list">
+          {combo.drinks.length > 0 ? (
+            combo.drinks.map((drink) => (
+              <div
+                class="sub-menu-item"
+                style={drink.data.image ? `background-image: url(${drink.data.image})` : undefined}
+              >
+                <div class="menu-3-item">
+                  <div class="item-info-holder">
+                    <div class="item-name-holder">
+                      <div class="item-name">{drink.data.name}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cover-gradient bottom" />
+                <div class="hover-gradient" />
+              </div>
+            ))
+          ) : (
+            <p class="menu-1-descript">Em breve</p>
+          )}
+        </div>
+      </div>
+    </div>
+  ))
+}

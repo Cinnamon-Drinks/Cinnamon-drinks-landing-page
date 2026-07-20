@@ -1,0 +1,6 @@
+name: Menu 2
+layout: menu-1
+combinations:
+  - bar: glamouroso
+    category: Gin & Whisky
+order: 2

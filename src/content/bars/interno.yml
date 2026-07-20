@@ -1,0 +1,8 @@
+name: Interno
+description: Bar verde veludo, aconchegante para ambientes fechados.
+gallery:
+  - { src: /uploads/interno-1.jpg, alt: Bar Interno — bar verde veludo }
+  - { src: /uploads/interno-2.jpg, alt: Bar Interno — ângulo lateral }
+  - { src: /uploads/interno-3.jpg, alt: Bar Interno — detalhe do balcão }
+tallPhoto: { src: /uploads/interno-vertical.jpg, alt: Bar Interno — frutas e taça de cobre no balcão, enquadramento vertical }
+order: 3

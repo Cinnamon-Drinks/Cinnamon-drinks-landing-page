@@ -1,0 +1,8 @@
+name = "cinnamon-cms-oauth"
+main = "src/index.ts"
+compatibility_date = "2026-05-20"
+
+# Vars públicas só — texto cleartext no bundle. NUNCA tokens/secrets aqui.
+# GITHUB_CLIENT_ID e GITHUB_CLIENT_SECRET vão via `wrangler secret put`.
+[vars]
+GITHUB_OAUTH_SCOPES = "repo,user"

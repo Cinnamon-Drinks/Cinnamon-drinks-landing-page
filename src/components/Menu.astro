@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+
+const drinks = await getCollection('drinks');
+
+const categories = ["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais'] as const;
+
+const grouped = Object.fromEntries(
+  categories.map((cat) => [
+    cat,
+    drinks.filter((d) => d.data.category === cat).sort((a, b) => a.data.order - b.data.order)
+  ])
+);
+---
+
+<section id="menu" class="section sticky full-height category one-section">
+ <div class="container-full-width border">
+  <h2 class="heading-2 menu-section-title">Drinks</h2>
+  <div
+    data-current="Tab 1"
+    data-easing="ease"
+    data-duration-in="300"
+    data-duration-out="100"
+    class="flex-container w-tabs"
+  >
+    <div class="menu-tabs w-tab-menu">
+      {
+        categories.map((cat, i) => (
+          <a
+            data-w-tab={`Tab ${i + 1}`}
+            class={`menu-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
+            href={`#tab-${i + 1}`}
+          >
+            <div class="menu-text">{cat}</div>
+            <div class="tab-bg menu-1" />
+          </a>
+        ))
+      }
+    </div>
+    <div class="tabs-content w-tab-content">
+      {
+        categories.map((cat, i) => (
+          <div
+            data-w-tab={`Tab ${i + 1}`}
+            class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}
+          >
+            <div class="menu-wrap">
+              <div class="categories-wrapper">
+                <div class="categories-list drinks-grid">
+                  {Array.from({ length: 5 }).map((_, idx) => {
+                    const d = grouped[cat][idx];
+                    return (
+                      <div class="category-item drink-card">
+                        <h3 class="heading-4 menu-name">{d ? d.data.name : ' '}</h3>
+                        <div class="category-cover">
+                          {d ? (
+                            <>
+                              <div class="cover-gradient bottom" />
+                              {d.data.image && (
+                                <div
+                                  class="category-image"
+                                  style={`background-image: url(${d.data.image});`}
+                                />
+                              )}
+                            </>
+                          ) : (
+                            <div class="slot-empty">Em breve</div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+ </div>
+</section>

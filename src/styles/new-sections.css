@@ -1,0 +1,785 @@
+/* src/styles/new-sections.css
+ * Estilos das seções NÃO herdadas do template Webflow.
+ * Atualmente: #estrutura (Bloco A — Bares, Bloco B — Inclusos).
+ * Princípio: usa as mesmas variáveis CSS / tokens do global.css quando possível.
+ */
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Overrides do template multi-page → single-page
+ * O template Webflow original era um site multi-página onde alguns
+ * elementos (tabs do menu) eram sticky/fixed na viewport. No nosso
+ * single-page anchor, isso vira sobreposição. Aqui ajustamos.
+ * ────────────────────────────────────────────────────────────────────*/
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Section #menu: o template Webflow original era multi-página onde a
+ * sidebar de tabs era position:fixed e a content tinha margin-left:24%.
+ * No nosso single-page convertemos para:
+ *   - Tabs HORIZONTAIS no topo (em vez de sidebar fixa)
+ *   - Drinks grid FULL-WIDTH abaixo (em vez de coluna estreita)
+ *   - Layout dentro do .container-full-width.border (outline igual às
+ *     outras sections — SOBRE, EQUIPE, RESERVA, CONTATO)
+ * Sem esses overrides, o grid fica em 1 coluna estreita e os drinks
+ * estouram 100vh, ficando atrás da próxima section.
+ * ────────────────────────────────────────────────────────────────────*/
+.menu-tabs.w-tab-menu {
+  position: static;
+  top: auto;
+  left: auto;
+  width: 100%;
+  height: auto;
+  z-index: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 0;
+  justify-content: center;
+  /* O CSS Webflow original define background-color: var(--brand-white)
+   * na regra .menu-tabs dentro de @media (max-width: 991px) — aparece
+   * como um "campo branco" atrás das tabs no mobile. Aqui anulamos
+   * sem media query: a classe dupla .menu-tabs.w-tab-menu tem
+   * especificidade maior (0,2,0) que a regra mobile (0,1,0). */
+  background-color: transparent;
+}
+
+/* Tabs container: empilha tabs (topo) e content (abaixo), full width.
+ * padding-top empurra tabs abaixo da navbar sticky (~96px de altura).
+ * #estrutura é réplica do drinks — compartilha todos estes overrides. */
+#menu .flex-container.w-tabs,
+#estrutura .flex-container.w-tabs {
+  flex-direction: column;
+  min-height: 0;
+  padding-top: 6rem;
+}
+
+/* Título de cada section (Drinks / Estrutura) — heading-2 centralizado
+ * no topo do container. padding-top compensa a navbar sticky (~63px)
+ * + respiro; margin-bottom controla o gap até as tabs.
+ *
+ * Era 5rem: em viewports de altura comum de laptop (~800px), a soma
+ * título + tabs + grid (nome + imagem + ingredientes + preço) estourava
+ * a altura de .container-full-width.border (overflow:hidden), cortando
+ * o texto de ingredientes na borda inferior — mesmo tipo de bug já visto
+ * e corrigido em #reserva. Reduzido pra 3rem pra abrir espaço. */
+.menu-section-title {
+  text-align: center;
+  margin: 0 0 1rem;
+  padding-top: 3rem;
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+/* O .container-full-width.border do template Webflow é display:flex
+ * flex-direction:row por default — sem o override, o título e o
+ * .flex-container.w-tabs ficariam lado a lado. Forçamos column pra
+ * empilhar título no topo + tabs abaixo, em ambos viewports. */
+#menu .container-full-width.border,
+#estrutura .container-full-width.border {
+  flex-direction: column;
+}
+
+/* Com o título adicionado, o .flex-container deixa de precisar do
+ * padding-top original (6rem que compensava a navbar) — agora o título
+ * cuida disso. */
+#menu .flex-container.w-tabs,
+#estrutura .flex-container.w-tabs {
+  padding-top: 0;
+}
+
+/* Content pane: cancela margin-left:24% do template (que reservava
+ * espaço para sidebar fixa) e ocupa toda a largura disponível. */
+#menu .tabs-content,
+#estrutura .tabs-content {
+  width: 100%;
+  margin-left: 0;
+}
+
+/* Menu wrap: remove padding lateral de 8.33vw que estreitava o grid */
+#menu .menu-wrap,
+#estrutura .menu-wrap {
+  padding: 1rem 2rem 1rem;
+  height: auto;
+  display: block;
+}
+
+/* Categories wrapper: tira width:83.4vw fixo do template */
+#menu .categories-wrapper,
+#estrutura .categories-wrapper {
+  width: 100%;
+  padding-top: 0.5rem;
+}
+
+/* Menu tabs centralizadas (visual mais limpo no layout de cima).
+ * Tabs precisam ser display:inline-flex para não esticar 100% width
+ * dentro do flex parent — o gradient da .w--current era um bar enorme.
+ * #estrutura reusa as mesmas abas (replica da section de drinks). */
+#menu .menu-tab,
+#estrutura .menu-tab {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0.5em 1.5em;
+  font-size: 1.2em;
+  border-radius: 100px;
+  /* O CSS Webflow original tem .menu-tab { color: var(--brand-black) }
+   * dentro de @media (max-width: 991px) — preto que só ficava visível
+   * porque havia um fundo branco no .menu-tabs container. Removido o
+   * fundo (ver bloco acima), as tabs não-selecionadas sumiam. Aqui
+   * forçamos branco em todos os viewports — a tab .w--current mantém
+   * o gradient da marca via regra própria. */
+  color: var(--brand-white);
+}
+
+/* #estrutura tem 5 abas (vs 4 do drinks) — no tamanho do drinks elas
+ * estouram a largura. Reduz a fonte só aqui pra caberem numa linha e
+ * usa space-between pra espalharem de ponta a ponta, como no drinks. */
+#estrutura .menu-tabs {
+  gap: 0.6rem;
+  justify-content: space-between;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+#estrutura .menu-tab {
+  font-size: 0.9em;
+  padding-left: 1.05em;
+  padding-right: 1.05em;
+}
+
+/* Galeria centralizada verticalmente no box — sem isso as fotos ficam
+ * coladas no topo e sobra um vão vazio embaixo (o box tem a altura do
+ * drinks, mas o card de bar é mais baixo que o de drink). */
+#estrutura .tabs-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Descrição curta do bar — uma linha acima da galeria, em cada aba. */
+.bar-tab-description {
+  max-width: 56ch;
+  margin: 0 auto 1.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--gray-300);
+}
+
+/* Slot vazio — bares e categorias de drinks têm 5 espaços fixos; os
+ * ainda sem foto/drink mostram este placeholder "Em breve" até o
+ * conteúdo ser inserido. Compartilhado entre #menu e #estrutura. */
+.slot-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--gray-800) 0%, var(--gray-700) 100%);
+  color: var(--gray-400);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Hero: NÃO sobrescrever position/overflow do .hero — o CSS Webflow
+ * original em global.css define min-height:100vh sem position, deixando
+ * o .hero-content (position:fixed) corretamente contido pelo viewport.
+ * Adicionando position:relative aqui criava containing block que
+ * potencialmente afetava o cálculo de altura/largura dos filhos fixed.
+ *
+ * .hero-cta-wrapper precisa de position:absolute para overlay sobre as
+ * colunas; pointer-events: none deixa cliques passarem para os tubes
+ * exceto onde child elements (h1, p, a) têm pointer-events: auto. */
+.hero-cta-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5%;
+  text-align: center;
+  gap: 1rem;
+  pointer-events: none;
+}
+.hero-cta-wrapper > * {
+  pointer-events: auto;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Fallback gracioso para imagens pendentes (Roger ainda enviar)
+ * Quando uma <img> 404, o navegador mostra alt-text ou ícone broken.
+ * Aplicar gradient escuro de fundo nas .cover-image faz com que a
+ * área visual fique intencional, não quebrada.
+ * ────────────────────────────────────────────────────────────────────*/
+img.cover-image {
+  background: linear-gradient(135deg, var(--gray-800) 0%, var(--gray-700) 100%);
+}
+/* Esconder alt-text de placeholders explicitamente marcados —
+ * eles vão ser substituídos quando Roger entregar conteúdo. */
+img.cover-image[alt^='Placeholder'],
+img.cover-image[alt=''] {
+  color: transparent;
+  font-size: 0;
+}
+
+/* Hero wordmark: logo escrita "CINNAMON DRINKS" no centro do hero
+ * — substitui o headline gigante. Tamanho responsivo.
+ * O PNG tem ~25-30% de whitespace interno (acima e abaixo das letras);
+ * margin-top/bottom negativo agressivo (-3rem) compensa para que a
+ * tagline pareça visualmente próxima às letras "DRINKS" e o grupo
+ * inteiro suba na viewport. */
+.hero-wordmark {
+  width: 100%;
+  max-width: min(70vw, 480px);
+  height: auto;
+  display: block;
+  margin: -3rem auto -5rem;
+}
+
+/* Tagline — antes era headline (heading do hero.yml). Agora vira
+ * subtítulo elegante acima da descrição, com font menor e tracking
+ * aberto para complementar o wordmark sem competir com ele. */
+.hero-tagline {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  font-size: clamp(0.875rem, 1.4vw, 1.125rem);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--text-primary);
+  opacity: 0.95;
+}
+
+.hero-subheading {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  max-width: 56ch;
+  margin: 0;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Hero CTA: usa o gradient OFICIAL da marca (rosa #F26294 → laranja
+ * #F2662B) per IDV §2. Diferente do CTA bordered da navbar — aqui é
+ * primary call-to-action, mais prominente. */
+.hero-cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 1rem 3rem;
+  background: var(--btn-hero-bg);
+  color: var(--btn-hero-text);
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: var(--btn-hero-shadow);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(242, 102, 43, 0.45);
+}
+
+/* Cards em grid das sections de abas — #menu (drinks) e #estrutura
+ * (bares). Nome em cima · imagem · texto embaixo.
+ * Compartilhado pelas duas (antes vivia no <style> de Menu.astro).
+ *
+ * Formato da imagem: retângulo vertical (3:4) com cantos arredondados,
+ * substituindo o oval deitado original. As fotos-fonte são retrato
+ * (~2:3) — o oval deitado (mais largo que alto) espremia/cortava a
+ * taça de forma estranha; o 3:4 vertical respeita a orientação da
+ * foto e mostra a taça inteira. Decisão validada via demos externas
+ * em demos/ (fora do repo) — ver "1-retangulo-vertical.html". */
+.drinks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  width: 100%;
+}
+.drink-card {
+  width: 100%;
+  max-width: 195px;
+  text-align: center;
+}
+.drink-card .category-cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  margin-top: 0.5rem;
+  border-radius: 22px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+}
+.drink-card .category-image {
+  background-position: 50% 30%;
+}
+.drink-card .cover-image {
+  object-position: center 30%;
+}
+.drink-card .heading-4.menu-name {
+  position: static;
+  top: auto;
+  left: auto;
+  transform: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+@media (max-width: 768px) {
+  .drinks-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Section #reserva: o form do template original tinha 13 campos e
+ * estourava 100vh, deixando LGPD, botão e mensagem cortados. Solução:
+ * removemos o textarea opcional ("Detalhes") e compactamos o spacing
+ * dos inputs (.input margin-bottom de 2.1em → 1em), assim o form cabe
+ * em 100vh e o stacking sticky continua funcionando igual #equipe e
+ * footer (cada section sticky de altura 100vh, próxima vem por cima).
+ *
+ * Mantemos overflow:visible como salvaguarda caso o form ultrapasse um
+ * pouco em viewports baixos — sem overflow:hidden cortando.
+ * ────────────────────────────────────────────────────────────────────*/
+#reserva.section.sticky.full-height {
+  overflow: visible;
+}
+
+/* Spacing: usamos px porque .two-inputs herda font-size diferente dos
+ * .input (39px vs 27px), então `1em` daria valores divergentes. */
+#reserva .reserve-form .input {
+  margin-bottom: 27px;
+}
+
+#reserva .reserve-form .two-inputs {
+  margin-bottom: 27px;
+}
+
+/* Inputs dentro do .two-inputs não precisam de margin-bottom — o
+ * container já tem. Sem isso o gap até o próximo campo dobra. */
+#reserva .reserve-form .two-inputs > .input {
+  margin-bottom: 0;
+}
+
+/* Select usa o mesmo .input do template (font 27px, height 38px,
+ * padding-bottom 13px) — sem padding-top o texto fica cortado em cima.
+ * Adicionamos padding-top equivalente pra centrar verticalmente. */
+#reserva .reserve-form select.input {
+  padding-top: 0.5em;
+  height: auto;
+}
+
+/* Form mais largo: era 29vw (~417px em 1440), apertado demais com
+ * placeholders longos como "Duração estimada (ex: 6 horas)". */
+#reserva .form-container {
+  width: min(35vw, 480px);
+  min-width: 360px;
+}
+
+/* Em mobile o layout vira coluna e .reserve-content tem padding 2em.
+ * O min-width: 360px do desktop estoura o espaço útil (~325px em 390vw)
+ * e empurra o form para fora pela esquerda. Em ≤768px deixamos o form
+ * fluir 100% e o padding do pai cuida das margens laterais. */
+@media (max-width: 768px) {
+  #reserva .form-container {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* .flex-frame era align-items:center, deixava .reserve-image com height:0.
+ * Stretch força as colunas a altura do pai. */
+#reserva .flex-frame {
+  align-items: stretch;
+}
+
+/* .reserve-image (coluna esquerda com o título "RESERVAR") tinha
+ * height:100% mas sem altura no pai = 0px. Title position:absolute caía
+ * livre sobre o form da direita. Damos altura herdada e alinhamos texto
+ * ao topo (em vez de absolute centrado em altura indefinida). */
+#reserva .reserve-image {
+  display: flex;
+  align-items: flex-start;
+  padding: 4rem 2rem;
+}
+
+#reserva .reserve-text {
+  position: relative;
+  top: auto;
+  left: auto;
+  bottom: auto;
+  margin: 0;
+}
+
+/* Imagem de fundo da coluna esquerda: absolute pra preencher a coluna
+ * sem entrar no fluxo flex — o .reserve-gradient e o título ficam por cima. */
+#reserva .reserve-image .reserve-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Section #sobre: o conteúdo (heading + 2 parágrafos) era menor que o
+ * espaço disponível na coluna direita, deixando ~190px vazios em cima
+ * e embaixo. Aumentamos font-size do texto, adicionamos margin entre
+ * parágrafos e respiro entre heading e texto pra preencher melhor.
+ * ────────────────────────────────────────────────────────────────────*/
+#sobre .heading-2,
+#equipe .heading-2 {
+  margin-bottom: 2.5rem;
+}
+
+#sobre .about-text,
+#equipe .about-text {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.55;
+  margin: 0 0 2rem;
+}
+
+#sobre .about-text:last-child,
+#equipe .about-text:last-child {
+  margin-bottom: 0;
+}
+
+/* .menu-bottom-sticky: fill do botão precisa acompanhar o breakpoint de
+ * VISIBILIDADE do container (max-width: 991px, global.css:2581), não o
+ * breakpoint de layout mobile-only abaixo (768px) — senão no tablet
+ * (769-991px) o container aparece mas o botão cai no outline transparente
+ * padrão do .btn--menu (que só preenche em :hover, inexistente em touch)
+ * e fica quase invisível sobre o gradient escuro do rodapé. Centralizamos
+ * o botão verticalmente via flex, aumentamos o tamanho pra ficar com peso
+ * visual (igual ao template original que usa font 1.8em) e damos fundo
+ * gradient da marca pra ele se destacar — substitui o amarelo do template
+ * que não pertence à paleta da Cinnamon. */
+@media (max-width: 991px) {
+  .menu-bottom-sticky {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-bottom-sticky .btn--menu {
+    padding: 0.9em 2.5em;
+    font-size: 1.1rem;
+    background: var(--btn-hero-bg);
+    border-color: transparent;
+    color: var(--btn-hero-text);
+    box-shadow: var(--btn-hero-shadow);
+  }
+  .menu-bottom-sticky .btn--menu:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Mobile: no template original o flex-frame vira column (foto em cima,
+ * texto embaixo). Centralizamos heading + texto nas duas sections pra
+ * padronizar o tratamento. */
+@media (max-width: 768px) {
+  #sobre .short-text-container,
+  #equipe .short-text-container {
+    text-align: center;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* Foto do Roger é vertical 3:4 mas o container mobile é 1:1 (100vw x
+   * 100vw). object-fit:cover com object-position default corta topo e
+   * rodapé igualmente. Mudamos pra "center top" pra preservar a logo
+   * Cinnamon (canto superior esquerdo) e a cabeça do Roger. */
+  #sobre img.cover-image {
+    object-position: center top;
+  }
+
+  /* Hero mobile: novo layout em 3 âncoras visuais —
+   *   1. wordmark "CINNAMON DRINKS" no topo, logo abaixo da navbar
+   *   2. tagline "SOFISTICAÇÃO & EXPERIÊNCIA" colada ao wordmark,
+   *      ocupando o lugar vertical onde antes estava o próprio wordmark
+   *   3. CTA "Reservar minha data" empurrado pro rodapé
+   * subheading "Coquetelaria..." é cortada — economiza scroll e foca
+   * a atenção no CTA. Mantemos justify-content: flex-start e usamos
+   * margin-bottom: auto na tagline pra absorver o espaço sobrando. */
+  #inicio .hero-cta-wrapper {
+    justify-content: flex-start;
+    padding-top: calc(62px + 0.25rem);
+    /* padding-bottom: 13vh deixa o CTA visualmente centralizado no
+     * espaço entre o fim da segunda .hero-background-row (~67vh) e o
+     * rodapé do viewport. */
+    padding-bottom: 13vh;
+  }
+  /* Anula o margin negativo do desktop (compensava whitespace do PNG
+   * pra colar o wordmark na tagline). max-width reduzido pra ~44vw
+   * deixa o wordmark compacto o suficiente pra não invadir a primeira
+   * banda de imagens animadas (.hero-background-row), que começa por
+   * volta de 19vh — testado no Safari iOS real onde o viewport
+   * dinâmico do browser deixa menos folga no topo. */
+  #inicio .hero-wordmark {
+    margin: 0 auto;
+    max-width: min(44vw, 240px);
+  }
+  /* margin-top: 18vh empurra a tagline pro centro do gap entre as duas
+   * .hero-background-row (row 1 termina ~35vh, row 2 começa ~51vh,
+   * centro do gap ≈ 43vh). margin-bottom: auto consome o espaço
+   * sobrando e empurra o CTA pro rodapé do hero. */
+  #inicio .hero-tagline {
+    margin: 18vh 0 auto;
+  }
+  /* CTA do hero substituído pelo botão MENU sticky no rodapé do mobile
+   * (.menu-bottom-sticky). Voltamos a mostrar a subheading "Coquetelaria
+   * de alto padrão..." que estava escondida — agora ela ocupa o espaço
+   * inferior do hero, acima do MENU sticky. */
+  #inicio .hero-cta {
+    display: none;
+  }
+
+  /* Em mobile a section #menu tinha ~200px vazios no rodapé (conteúdo
+   * top-aligned + altura forçada de 100vh pela classe .full-height).
+   * Esticamos o container pra ocupar a section inteira (min-height
+   * + flex:1, porque height:100% não pega em flex child), centralizamos
+   * o conteúdo verticalmente e adicionamos paddings nas pontas pra
+   * respeitar a navbar (~63px) e o botão MENU sticky (17vh). */
+  #menu .container-full-width.border,
+  #estrutura .container-full-width.border {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding-top: calc(63px + 0.5rem);
+    padding-bottom: 17vh;
+  }
+  /* Em mobile centralizamos o container verticalmente; padding-top
+   * volta a 0 (não precisa compensar navbar — o container já cuida).
+   * font-size herda da regra base .heading-2 (= 65px), igual aos
+   * títulos das outras sections (Sobre, Equipe, Reserva, Contato)
+   * pra manter consistência visual. */
+  .menu-section-title {
+    padding-top: 0;
+    margin-bottom: 1.25rem;
+  }
+
+  /* #estrutura mobile: padroniza com #menu (drinks) —
+   * 1. Esconde a 2ª tab + 2º pane (bar "Moderno", order:2) pra ficarem
+   *    4 tabs como no Drinks. O conteúdo continua no repo
+   *    (src/content/bars/moderno.yml) e segue visível em desktop.
+   * 2. Sobrescreve os overrides do bloco base (#estrutura .menu-tab
+   *    com font 0.9em e padding 1.05em) que existiam justamente pra
+   *    caber 5 tabs em mobile. Com 4 tabs, voltamos ao font/padding
+   *    do #menu pra visual consistente entre as duas sections. */
+  #estrutura .menu-tabs > .menu-tab:nth-child(2),
+  #estrutura .tabs-content > .w-tab-pane:nth-child(2) {
+    display: none;
+  }
+  #estrutura .menu-tab {
+    font-size: 1.2em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+  }
+  #estrutura .menu-tabs {
+    gap: 1rem;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Limita a galeria de drinks/bares a 4 cards no mobile — o template
+   * original suporta até 5, mas em 390px o grid é 2 colunas (auto-fit
+   * minmax 180px), então 5 cards viram "2+2+1" com o último sozinho
+   * na 3ª linha. 4 cards viram 2x2 limpo. Em desktop os 5 continuam
+   * visíveis (grid expande pra mais colunas). */
+  #menu .drinks-grid > .drink-card:nth-child(n + 5),
+  #estrutura .drinks-grid > .category-item:nth-child(n + 5) {
+    display: none;
+  }
+
+  /* #menu mobile: o conteúdo (tabs + cards) ocupa só ~600px mas a
+   * section força 100vh (844px) por causa de .full-height — sobravam
+   * ~200px vazios entre o fim do Drinks e o início da Estrutura,
+   * criando um "gap enorme" percebido visualmente.
+   *
+   * Solução: tira min-height tanto do container quanto da própria
+   * section em mobile pra ela shrinkar à altura natural do conteúdo
+   * (~700px em vez de 844). A próxima section (#estrutura) começa
+   * imediatamente depois. Mantemos a section sticky pro effect de
+   * transição continuar funcionando (sticky não exige min-height
+   * fixo — basta a section ser sticky e ter altura definida pelo
+   * conteúdo). */
+  #menu.section {
+    min-height: 0;
+  }
+  #menu .container-full-width.border {
+    min-height: 0;
+    padding-bottom: 2rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Section #follow (Follow.astro) — réplica do template original.
+ * As classes .follow-content, .follow-socials-container.b-w,
+ * .follow-links-contain.black, .social-link-lg e .follow-showcase
+ * já estão em global.css (cobertas pelo CSS Webflow original).
+ * Aqui só sobrescrevemos o .decorative-button pra usar o gradient
+ * oficial da marca em vez do branco do template (que era da paleta
+ * RESTURANTO/amarela).
+ * ────────────────────────────────────────────────────────────────────*/
+#follow .decorative-button {
+  background: var(--btn-hero-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-white);
+}
+/* A regra base .submit-arrow do template é position:absolute + width:1.8em
+ * (e .sm vira 1.9em em mobile). Com font-size pequeno herdado do parent
+ * em mobile, isso renderiza ~11px — muito menor que a área do .decorative-
+ * button (61px) — fica desproporcional ao template original. Usamos
+ * width: 50% do parent (= ~30px em mobile, escala em desktop) e reset
+ * de position pra deixar o flex centralizar.
+ *
+ * IMPORTANT: o Webflow IX2 (public/webflow.js) injeta um style inline
+ * translate3d(-60%, -50%, 0px) no .submit-arrow em runtime (assumindo a
+ * estrutura original do template com position:absolute). Sem !important
+ * o inline style vence e a seta fica deslocada. Não dá pra editar o
+ * webflow.js (minificado, load-bearing). Mantemos !important em
+ * position/top/left, mas NÃO em transform — a animation abaixo precisa
+ * controlar transform (CSS animations sobrescrevem inline style por
+ * spec). */
+#follow .decorative-button .submit-arrow.sm {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  width: 50%;
+  height: auto;
+  color: inherit;
+  animation: followArrowBounce 1.6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Animação contínua de "pulse horizontal" na seta — sugere visualmente
+ * "click pra avançar" (vai pra Instagram). Réplica do effect que o IX2
+ * faz no template original via data-w-id, mas em CSS puro pra não
+ * depender do webflow.js. */
+@keyframes followArrowBounce {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(25%);
+  }
+}
+
+/* Section Depoimentos — marquee contínuo em CSS puro.
+ *
+ * Os data-w-id originais (que disparavam IX2 scroll-driven do webflow.js)
+ * foram removidos do Testimonials.astro. Aqui replicamos o comportamento
+ * desejado do template publicado: cabeçalho e duas linhas de cards
+ * deslizando em loop infinito, independente do scroll.
+ *
+ * Estrutura assumida: cada track tem o conteúdo DUPLICADO (set original +
+ * set com aria-hidden), e a animação translada -50% — assim o ponto final
+ * coincide visualmente com o inicial e o loop fica seamless.
+ *
+ * width: max-content sobrescreve os 140%/290%/401% que global.css define
+ * em vários breakpoints — não dá pra duplicar conteúdo dentro de larguras
+ * fixas sem espremer os cards. Mesma especificidade (.classe), mas
+ * new-sections.css é importado depois de global.css em Base.astro, então
+ * vence por ordem de cascade sem precisar de !important. */
+.reviews-loop {
+  width: max-content;
+  animation: reviewsLoopMarquee 30s linear infinite;
+  will-change: transform;
+}
+
+.reviews-row {
+  width: max-content;
+  /* Anula o translate(-33px) estático herdado de global.css — a animação
+   * controla transform por completo. */
+  transform: none;
+  animation: reviewsRowToLeft 60s linear infinite;
+  will-change: transform;
+}
+
+.reviews-row.to-right {
+  animation-name: reviewsRowToRight;
+}
+
+@keyframes reviewsLoopMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes reviewsRowToLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes reviewsRowToRight {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews-loop,
+  .reviews-row {
+    animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Navbar — dropdown desktop (hover) do botão "Menu"
+ * O template Webflow original resolve isso via IX2 (MOUSE_OVER/MOUSE_OUT)
+ * sobre um data-w-id específico; aqui usamos :hover puro em CSS — a
+ * caixa (.drop-down-container) já tem toda a base visual herdada do
+ * template em global.css, só falta o trigger de revelar. Clique no
+ * botão navega pra /menu (índice de menuPackages), igual ao /menus-2
+ * do template original.
+ *
+ * .drop-down-space preenche o vão entre o botão e a caixa do dropdown
+ * (.drop-down-container tem margin-top:0.7em em global.css). Com
+ * pointer-events:none esse vão vira um "buraco" sem hover — o mouse
+ * atravessa direto pro conteúdo atrás, perde o :hover de
+ * .menus-container-lg e o dropdown fecha antes do cursor chegar nas
+ * opções. Precisa receber o ponteiro pra manter o hover contínuo do
+ * botão até a caixa — mas só a partir do fim do botão (top:100%): o
+ * original tinha top:0, cobrindo a área do botão inteiro por cima dele
+ * (inofensivo com pointer-events:none, mas com o ponteiro habilitado
+ * isso bloqueava o :hover/clique do próprio botão "Menu" — quebrava o
+ * efeito de preenchimento em gradiente no hover).
+ * ────────────────────────────────────────────────────────────────────*/
+.drop-down-space {
+  top: 100%;
+  bottom: -1em;
+}
+
+.drop-down-container {
+  transition: opacity 0.2s ease;
+}
+
+.menus-container-lg:hover .drop-down-container {
+  display: flex;
+  opacity: 1;
+}

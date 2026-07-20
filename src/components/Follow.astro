@@ -1,0 +1,146 @@
+---
+// src/components/Follow.astro
+// Section "Follow" — réplica estrutural do template original
+// (_archive/reference/index.html linhas 330-396), adaptada à paleta
+// Cinnamon:
+// - decorative-button usa gradient rosa→laranja (var(--btn-hero-bg))
+//   em vez do branco do template
+// - só Instagram (handle vem de src/content/site.yml)
+// - tubes-block reusam classes existentes em global.css (animações
+//   .to-left / .to-right / .to-up / .to-down já presentes no template
+//   via webflow.js IX2 + CSS keyframes)
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import drinkAlecrim from '../assets/drinks/drink-alecrim.jpg';
+import drinkAzul from '../assets/drinks/drink-azul.jpg';
+import drinkCamadas from '../assets/drinks/drink-camadas.jpg';
+import drinkCitrico from '../assets/drinks/drink-citrico.jpg';
+import drinkCristalino from '../assets/drinks/drink-cristalino.jpg';
+import drinkMaracuja from '../assets/drinks/drink-maracuja.jpg';
+import drinkRosa from '../assets/drinks/drink-rosa.jpg';
+import drinkWhisky from '../assets/drinks/drink-whisky.jpg';
+import instagramIcon from '../assets/icons/instagram.svg';
+
+const site = await getEntry('site', 'site');
+const handle = site!.data.instagram;
+const url = `https://instagram.com/${handle}`;
+const tubeWidths = [400, 800];
+const tubeSizes = '(max-width: 800px) 100vw, 800px';
+---
+
+<section id="follow" class="section sticky full-height">
+  <div class="container-full-width border">
+    <div class="container-small">
+    <div class="hero-background-row">
+      <div class="tubes-block to-left">
+        <div class="tube-row">
+          <Image src={drinkRosa} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkAlecrim} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+      </div>
+      <div class="tubes-block to-left">
+        <div class="tube-row">
+          <Image src={drinkMaracuja} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkCamadas} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+      </div>
+    </div>
+
+    <div class="follow-content">
+      <h2 class="heading-2">FOLLOW</h2>
+      <a href={url} target="_blank" rel="noopener noreferrer" class="follow-socials-container b-w w-inline-block">
+        <div class="decorative-button white" aria-hidden="true">
+          <svg class="submit-arrow sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="follow-links-contain black">
+          <img src={instagramIcon.src} loading="lazy" width="20" height="20" alt={`Instagram @${handle}`} class="social-link-lg" />
+        </div>
+      </a>
+    </div>
+
+    <div class="hero-background-row">
+      <div class="tubes-block to-right">
+        <div class="tube-row">
+          <Image src={drinkCitrico} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkAzul} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+      </div>
+      <div class="tubes-block to-right">
+        <div class="tube-row">
+          <Image src={drinkCitrico} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkAzul} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="follow-showcase">
+    <div class="flex-row rotate-right">
+      <div class="hero-column rotate">
+        <div class="tubes-block to-up">
+          <div class="tube">
+            <Image src={drinkCristalino} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+          <div class="tube">
+            <Image src={drinkWhisky} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+        </div>
+        <div class="tubes-block to-up">
+          <div class="tube">
+            <Image src={drinkCristalino} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+          <div class="tube">
+            <Image src={drinkWhisky} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+        </div>
+      </div>
+      <div class="hero-column rotate top">
+        <div class="tubes-block to-down">
+          <div class="tube">
+            <Image src={drinkRosa} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+          <div class="tube">
+            <Image src={drinkMaracuja} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+        </div>
+        <div class="tubes-block to-down">
+          <div class="tube">
+            <Image src={drinkRosa} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+          <div class="tube">
+            <Image src={drinkMaracuja} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+        </div>
+      </div>
+      <div class="hero-column rotate">
+        <div class="tubes-block to-up">
+          <div class="tube">
+            <Image src={drinkAlecrim} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+          <div class="tube">
+            <Image src={drinkCamadas} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+        </div>
+        <div class="tubes-block to-up">
+          <div class="tube">
+            <Image src={drinkAlecrim} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+          <div class="tube">
+            <Image src={drinkCamadas} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>

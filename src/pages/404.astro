@@ -1,0 +1,58 @@
+---
+// src/pages/404.astro
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Página não encontrada">
+  <main class="notfound">
+    <p class="notfound__code">404</p>
+    <h1 class="notfound__title">Página não encontrada</h1>
+    <p class="notfound__text">O link pode estar quebrado ou a página foi movida.</p>
+    <a class="notfound__link" href="/">← Voltar para o início</a>
+  </main>
+</Base>
+
+<style>
+  .notfound {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-8) var(--space-5);
+    text-align: center;
+    background: var(--surface-bg);
+    color: var(--text-primary);
+  }
+  /* Gradiente oficial como destaque pontual no número — uso sancionado. */
+  .notfound__code {
+    font-size: var(--fs-display);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .notfound__title {
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-bold);
+  }
+  .notfound__text {
+    max-width: 34ch;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-thin);
+    color: var(--text-secondary);
+  }
+  .notfound__link {
+    margin-top: var(--space-4);
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--dur-base) var(--ease-out);
+  }
+  .notfound__link:hover {
+    color: var(--link-hover);
+  }
+</style>

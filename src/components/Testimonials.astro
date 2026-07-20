@@ -1,0 +1,89 @@
+---
+// src/components/Testimonials.astro
+// Estrutura herdada de _archive/reference/index.html (linhas 219-302):
+// .reviews-container.section + .reviews-loop (com 2 .reviews-loop-container
+// para o efeito de marquee infinito) + 2x .reviews-row com .reviews-block.
+//
+// Os data-w-id originais foram removidos pra desligar o IX2 scroll-driven do
+// webflow.js — o template original usa marquee contínuo (não amarrado ao
+// scroll). Réplica via @keyframes CSS em src/styles/new-sections.css (mesmo
+// padrão usado no Follow). Cada .reviews-row renderiza os items duas vezes
+// pra o loop ficar seamless; o set duplicado leva aria-hidden.
+import { getCollection } from 'astro:content';
+
+const items = await getCollection('testimonials');
+
+// Linha 2 usa a ordem rotacionada para nenhum card ficar alinhado
+// verticalmente com um depoimento idêntico da linha 1.
+const rotateBy = Math.floor(items.length / 2);
+const itemsRow2 = [...items.slice(rotateBy), ...items.slice(0, rotateBy)];
+---
+
+<section id="depoimentos" class="reviews-container section">
+  <div class="reviews-loop">
+    <div class="reviews-loop-container">
+      <h3 class="heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+      <h3 class="gray heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+      <h3 class="heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+      <h3 class="gray heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+    </div>
+    <div class="reviews-loop-container" aria-hidden="true">
+      <h3 class="heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+      <h3 class="gray heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+      <h3 class="heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+      <h3 class="gray heading-2">Depoimentos</h3>
+      <h3 class="gray heading-2"> • </h3>
+    </div>
+  </div>
+  <div class="reviews-row to-right">
+    {
+      [...items, ...items].map((t, i) => (
+        <div class="reviews-block" aria-hidden={i >= items.length ? 'true' : undefined}>
+          <div class="review-header">
+            <div class="customer">{t.data.author}</div>
+            <div class="ratings">
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+            </div>
+          </div>
+          <div class="review">
+            “{t.data.quote.trim()}”
+            {t.data.eventType && <span class="review-event"> — {t.data.eventType}</span>}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <div class="reviews-row">
+    {
+      [...itemsRow2, ...itemsRow2].map((t, i) => (
+        <div class="reviews-block" aria-hidden={i >= itemsRow2.length ? 'true' : undefined}>
+          <div class="review-header">
+            <div class="customer">{t.data.author}</div>
+            <div class="ratings">
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+              <img src="/images/Star-3.svg" loading="lazy" alt="estrela preenchida" class="star" />
+            </div>
+          </div>
+          <div class="review">
+            “{t.data.quote.trim()}”
+            {t.data.eventType && <span class="review-event"> — {t.data.eventType}</span>}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

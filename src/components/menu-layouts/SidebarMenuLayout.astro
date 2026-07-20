@@ -1,0 +1,155 @@
+---
+// src/components/menu-layouts/SidebarMenuLayout.astro
+// Estilo "Menu 1" do template Webflow: sidebar fixa de abas (uma por bar da
+// combinação) com preenchimento em gradiente ao ativar/hover, lista de
+// drinks em texto e foto do bar em painel fixo à direita (borda branca,
+// cantos arredondados — classe .border do global.css). Troca de aba usa o
+// widget nativo de Tabs do Webflow (w-tabs/w-tab-link/w-tab-pane), já
+// embutido em public/webflow.js — sem JS próprio.
+import type { CollectionEntry } from 'astro:content';
+
+interface Combination {
+  bar: CollectionEntry<'bars'>;
+  category: string;
+  drinks: CollectionEntry<'drinks'>[];
+}
+
+interface Props {
+  combinations: Combination[];
+}
+
+const { combinations } = Astro.props;
+---
+
+<div
+  data-current="Tab 1"
+  data-easing="ease"
+  data-duration-in="300"
+  data-duration-out="100"
+  class="flex-container w-tabs"
+>
+  <div class="sidebar-menu-tabs w-tab-menu">
+    {
+      combinations.map((combo, i) => (
+        <a
+          data-w-tab={`Tab ${i + 1}`}
+          class={`menu-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
+        >
+          <div class="menu-text">{combo.bar.data.name}</div>
+          <div class="tab-bg menu-1" />
+        </a>
+      ))
+    }
+  </div>
+  <div class="tabs-content w-tab-content">
+    {
+      combinations.map((combo, i) => {
+        const photo = combo.bar.data.tallPhoto;
+        return (
+          <div data-w-tab={`Tab ${i + 1}`} class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
+            <div class="tabs-content-wrapper">
+              <div class="menu-items-list">
+                {combo.drinks.length > 0 ? (
+                  combo.drinks.map((drink) => (
+                    <div class="collection-item-2">
+                      <p class="menu-1-name">{drink.data.name}</p>
+                      <p class="menu-1-descript">{drink.data.ingredients.join(', ')}</p>
+                    </div>
+                  ))
+                ) : (
+                  <div class="collection-item-2">
+                    <p class="menu-1-descript">Em breve</p>
+                  </div>
+                )}
+              </div>
+              <div class="menu-1-img border">
+                {photo && <img src={photo.src} alt={photo.alt} loading="lazy" class="cover-image" />}
+                <div class="text-holder tablet-gradient">
+                  <p class="menu-1-title heading-3">{combo.bar.data.name}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+  <div class="menu-border border" />
+</div>
+
+<style>
+  /* .menu-tabs original do global.css é usada (com ID diferente) pelas
+   * sections #menu/#estrutura da home, que sobrescrevem .menu-tabs.w-tab-menu
+   * (position:static, flex-direction:row) sem escopo — colidiria com esta
+   * página. Classe própria replicando os valores originais do template,
+   * mas com "top" ajustado pra não ficar embaixo da navbar fixa (que o
+   * template original, sendo multi-página sem navbar sticky do mesmo jeito,
+   * não precisava considerar). */
+  .sidebar-menu-tabs {
+    z-index: 5;
+    grid-row-gap: 0.2em;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 25vw;
+    padding-top: 2rem;
+    display: flex;
+    position: fixed;
+    top: 10rem;
+  }
+  @media screen and (max-width: 991px) {
+    .sidebar-menu-tabs {
+      background-color: var(--brand-white);
+      border-radius: 2.5em;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 95vw;
+      height: auto;
+      margin-bottom: 1em;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0.3em;
+      position: fixed;
+      top: auto;
+      inset: auto 0% 0%;
+    }
+  }
+
+  /* .menu-tab herda font-size:1.78em + padding-left:8.33vw do global.css,
+   * calibrados pra sidebar vertical desktop com palavras curtas em inglês
+   * ("main", "drink"...). Nomes de bar em português são mais longos e
+   * estouravam o overflow:hidden da aba (necessário pro preenchimento em
+   * gradiente não vazar) — reduzido só no desktop. */
+  @media screen and (min-width: 992px) {
+    .menu-tab {
+      font-size: 1.3em;
+      padding-left: 6.5vw;
+    }
+  }
+  /* Mobile: a aba vira um item dentro da barra pill horizontal — o
+   * padding-left do desktop (pensado pra sidebar vertical) não faz
+   * sentido aqui e desalinhava o texto dentro do espaço de cada aba.
+   * flex:1 + texto centralizado distribui as 5 abas igualmente na barra. */
+  @media screen and (max-width: 991px) {
+    .menu-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.55em 0.4em;
+      font-size: 0.92em;
+    }
+  }
+
+  /* .menu-1-title herda .heading-3 (font-size:6.2em a 991px, 9.5em a
+   * 479px — calibrado pra "MAIN"/"SIDES" curtos, especificidade (0,2,0)
+   * igual à combinação .menu-1-title.heading-3 do global.css). Precisa de
+   * um ancestral no seletor pra ganhar a cascata sem !important. Nomes de
+   * bar mais longos estouravam a largura da tela nesse tamanho. */
+  @media screen and (max-width: 991px) {
+    .text-holder .menu-1-title {
+      font-size: 2.6rem;
+    }
+  }
+</style>
+

@@ -1,0 +1,15 @@
+team:
+  heading: Equipe
+  intro: |
+    Bartenders certificados por Moisés Barros, referência nacional em
+    coquetelaria. Cada membro da equipe é selecionado pessoalmente e
+    passa por treinamento intensivo antes de atender o primeiro evento.
+
+    Da preparação dos drinks autorais ao atendimento atencioso aos
+    convidados, entregamos excelência em qualquer escala, de casamentos
+    íntimos a formaturas com centenas de pessoas.
+  members:
+    - name: Roger Apolinário
+      role: Fundador & Bartender Líder
+      photo: /uploads/foto-equipe.png
+      certifications: ["Moisés Barros — Certificação Avançada"]

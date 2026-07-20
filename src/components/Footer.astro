@@ -1,0 +1,100 @@
+---
+// src/components/Footer.astro
+// Estrutura herdada de _archive/reference/index.html (linhas 429-452):
+// <footer class="sticky section full-height"> + .container-full-width.border
+// + .flex-frame.reverse + .long-image.contact.border.right + .short-text-
+// container + .contact-contents + .heading-2.contact + .contact-info +
+// .socials-wrapper + .social-link.
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import contactImage from '../assets/contato.jpg';
+
+const site = (await getEntry('site', 'site'))!.data;
+const phoneDisplay = site.whatsappNumber.replace(/^55(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+---
+
+<footer
+  id="contato"
+  data-w-id="f6570d54-b182-b4dc-e1c8-2f208d4fb874"
+  class="sticky section full-height"
+>
+  <div class="container-full-width border">
+    <div class="flex-frame reverse">
+      <div class="long-image contact border right">
+        <Image
+          src={contactImage}
+          alt="Torre de taças com drinks da Cinnamon Drinks e letreiro neon ao fundo"
+          widths={[500, 800, 1200, 1600]}
+          sizes="(max-width: 991px) 100vw, (max-width: 1919px) 83vw, 43vw"
+          loading="lazy"
+          class="cover-image contact"
+        />
+      </div>
+      <div class="short-text-container">
+        <div class="contact-contents">
+          <h2 class="heading-2 contact">Contato</h2>
+          <h3 class="contact-info">
+            Endereço<br />{site.address}
+          </h3>
+          <p class="contact-info">{site.businessHours}</p>
+          <p class="contact-info">
+            <a href={`https://wa.me/${site.whatsappNumber}`} class="w-inline-block">
+              {phoneDisplay}
+            </a>
+          </p>
+          <div class="socials-wrapper">
+            <a
+              href={`https://instagram.com/${site.instagram}`}
+              rel="noopener noreferrer"
+              target="_blank"
+              class="social-link w-inline-block"
+              aria-label="Siga no Instagram"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a
+              href={`mailto:${site.email}`}
+              class="social-link w-inline-block"
+              aria-label={`Mandar e-mail para ${site.email}`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </a>
+          </div>
+          <p class="contact-info">
+            <a href="/privacidade" class="w-inline-block">Política de privacidade</a>
+          </p>
+          <p class="contact-info contact-legal">© 2026 {site.brandName}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

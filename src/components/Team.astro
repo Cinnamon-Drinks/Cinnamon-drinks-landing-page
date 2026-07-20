@@ -1,0 +1,35 @@
+---
+import { getEntry } from 'astro:content';
+
+const team = await getEntry('team', 'team');
+const data = team!.data;
+
+const paragraphs = data.intro
+  .trim()
+  .split(/\n\s*\n/)
+  .map((p) => p.replace(/\s*\n\s*/g, ' ').trim());
+
+const photo = data.members[0]?.photo;
+const photoAlt = data.members[0]
+  ? `${data.members[0].name} — Cinnamon Drinks`
+  : 'Equipe Cinnamon Drinks';
+---
+
+<section
+  id="equipe"
+  data-sticky="no"
+  data-w-id="5367059f-101e-4db1-6167-e18235eaa6fe"
+  class="section full-height"
+>
+  <div class="container-full-width border">
+    <div class="flex-frame reverse">
+      <div class="long-image white-border right">
+        <img src={photo} alt={photoAlt} loading="lazy" class="cover-image" />
+      </div>
+      <div class="short-text-container">
+        <h2 class="heading-2">{data.heading}</h2>
+        {paragraphs.map((p) => <p class="about-text">{p}</p>)}
+      </div>
+    </div>
+  </div>
+</section>

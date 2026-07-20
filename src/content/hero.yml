@@ -1,0 +1,10 @@
+hero:
+  heading: SOFISTICAÇÃO & EXPERIÊNCIA
+  subheading: |
+    Coquetelaria de alto padrão para casamentos,
+    formaturas e recepções desde 2018.
+  ctaText: Reservar minha data
+  gallery:
+    - type: video
+      src: /videos/Gif-Loop-transcode.mp4
+      alt: Vídeo de drinks Cinnamon

@@ -1,0 +1,8 @@
+name: PREMIUM
+description: Bar branco capitonê, acabamento sofisticado para eventos premium.
+gallery:
+  - { src: /uploads/glamouroso-1.jpg, alt: Bar PREMIUM — vista frontal }
+  - { src: /uploads/glamouroso-2.jpg, alt: Bar PREMIUM — ângulo lateral }
+  - { src: /uploads/glamouroso-3.jpg, alt: Bar PREMIUM — detalhe do balcão }
+tallPhoto: { src: /uploads/glamouroso-vertical.jpg, alt: Bar PREMIUM — balcão e taça de frutas, enquadramento vertical }
+order: 1

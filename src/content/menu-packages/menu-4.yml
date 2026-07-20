@@ -1,0 +1,8 @@
+name: Menu 4
+layout: menu-1
+combinations:
+  - bar: rustico
+    category: Especiais
+  - bar: tropical
+    category: Gin & Whisky
+order: 4

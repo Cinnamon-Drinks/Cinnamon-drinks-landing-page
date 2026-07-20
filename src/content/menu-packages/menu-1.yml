@@ -1,0 +1,14 @@
+name: Menu 1
+layout: menu-1
+combinations:
+  - bar: glamouroso
+    category: Clássicos
+  - bar: moderno
+    category: Especiais
+  - bar: interno
+    category: Gin & Whisky
+  - bar: rustico
+    category: "Caip's"
+  - bar: tropical
+    category: Clássicos
+order: 1

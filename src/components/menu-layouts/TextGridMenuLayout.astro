@@ -1,0 +1,73 @@
+---
+// src/components/menu-layouts/TextGridMenuLayout.astro
+// Estilo "Menu 2" do template Webflow: abas em pill branca no topo (fica
+// sticky no mobile) + grid de texto puro, sem fotos — visual de cardápio
+// impresso. Troca de aba usa o widget nativo de Tabs do Webflow, sem JS
+// próprio.
+import type { CollectionEntry } from 'astro:content';
+
+interface Combination {
+  bar: CollectionEntry<'bars'>;
+  category: string;
+  drinks: CollectionEntry<'drinks'>[];
+}
+
+interface Props {
+  combinations: Combination[];
+}
+
+const { combinations } = Astro.props;
+---
+
+<div class="section one-section">
+  <div class="tablet-menu-border border">
+    <p class="text-menu-heading">menu</p>
+  </div>
+  <div
+    data-current="Tab 1"
+    data-easing="ease"
+    data-duration-in="300"
+    data-duration-out="100"
+    class="tabs w-tabs"
+  >
+    <div class="tabs-menu w-tab-menu">
+      {
+        combinations.map((combo, i) => (
+          <a
+            data-w-tab={`Tab ${i + 1}`}
+            class={`tab-link w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
+          >
+            <div>{combo.bar.data.name}</div>
+          </a>
+        ))
+      }
+    </div>
+    <div class="w-tab-content">
+      {
+        combinations.map((combo, i) => (
+          <div data-w-tab={`Tab ${i + 1}`} class={`tab-plane w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
+            <div class="extra-border border" />
+            <div class="text-menu-list-wrapper w-dyn-list">
+              <div class="menu-list w-dyn-items">
+                {combo.drinks.length > 0 ? (
+                  combo.drinks.map((drink) => (
+                    <div class="w-dyn-item">
+                      <div class="name-and-price">
+                        <p class="menu-item-name">{drink.data.name}</p>
+                      </div>
+                      <p class="paragraph-inline">{drink.data.ingredients.join(', ')}</p>
+                    </div>
+                  ))
+                ) : (
+                  <div class="w-dyn-item">
+                    <p class="menu-item-name">Em breve</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+# Copie para `.dev.vars` (gitignored) para rodar `wrangler dev` localmente.
+# Em produção estes valores vão via `wrangler secret put`, nunca commitados.
+GITHUB_CLIENT_ID=seu_client_id_do_oauth_app
+GITHUB_CLIENT_SECRET=seu_client_secret_do_oauth_app

@@ -1,0 +1,230 @@
+---
+// src/components/ReserveForm.astro
+// Estrutura herdada de _archive/reference/reserve.html (linhas 87-110) +
+// _archive/reference/index.html (linhas 304-327): .section.sticky.full-height
+// + .flex-frame.border + .reserve-image (com .cover-image, .reserve-gradient,
+// .reserve-text.heading-2) + .reserve-content + .form-container + .reserve-form.
+// Inputs usam .input.w-input; labels usam .hidden-label para acessibilidade.
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import reserveImage from '../assets/reserva.jpg';
+
+const form = await getEntry('form', 'form');
+const site = await getEntry('site', 'site');
+const data = form!.data;
+const whatsappNumber = site!.data.whatsappNumber;
+
+// Min date = hoje + 30 dias (configurável). Calculado server-side.
+const minDate = new Date(Date.now() + 30 * 86400_000).toISOString().slice(0, 10);
+---
+
+<section id="reserva" class="section sticky full-height">
+  <div class="flex-frame border">
+    <div class="reserve-image">
+      <Image
+        src={reserveImage}
+        alt="Caneca de cobre com o logo da Cinnamon Drinks gravado"
+        widths={[500, 800, 1200, 1600]}
+        sizes="(max-width: 767px) 100vw, 50vw"
+        loading="lazy"
+        class="reserve-bg-image"
+      />
+      <div class="reserve-gradient"></div>
+      <h2 class="reserve-text heading-2">{data.heading}</h2>
+    </div>
+    <div class="reserve-content">
+      <div class="form-container">
+        <div class="w-form">
+          <form
+            id="cinnamon-reserve-form"
+            name="cinnamon-reserve-form"
+            method="POST"
+            action="https://formspree.io/f/FORM_ID"
+            class="reserve-form"
+            novalidate
+            data-cinnamon-form
+            data-whatsapp-number={whatsappNumber}
+          >
+            <!-- honeypot — bots preenchem; humano não vê -->
+            <input
+              type="text"
+              name="_gotcha"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+              style="position:absolute;left:-9999px"
+            />
+
+            <label for="reserve-nome" class="hidden-label">Nome</label>
+            <input
+              class="input w-input"
+              maxlength="256"
+              id="reserve-nome"
+              name="nome"
+              data-name="Nome"
+              placeholder="Nome*"
+              type="text"
+              required
+              minlength="2"
+            />
+
+            <label for="reserve-telefone" class="hidden-label">WhatsApp</label>
+            <input
+              class="input w-input"
+              maxlength="256"
+              id="reserve-telefone"
+              name="telefone"
+              data-name="Telefone"
+              placeholder="WhatsApp* — (35) 99999-9999"
+              type="tel"
+              required
+              pattern="[0-9() \-+]{10,16}"
+            />
+
+            <label for="reserve-email" class="hidden-label">Email</label>
+            <input
+              class="input w-input"
+              maxlength="256"
+              id="reserve-email"
+              name="email"
+              data-name="Email"
+              placeholder="Email"
+              type="email"
+            />
+
+            <label for="reserve-evento" class="hidden-label">Tipo de evento</label>
+            <select
+              class="input w-input"
+              id="reserve-evento"
+              name="evento"
+              data-name="Evento"
+              required
+            >
+              <option value="">Tipo de evento*</option>
+              <option>Formatura</option>
+              <option>Casamento</option>
+              <option>Aniversário</option>
+              <option>Corporativo</option>
+              <option>Outro</option>
+            </select>
+
+            <div class="two-inputs">
+              <label for="reserve-data" class="hidden-label">Data do evento</label>
+              <input
+                class="input short w-input"
+                maxlength="256"
+                id="reserve-data"
+                name="data"
+                data-name="Data"
+                placeholder="Data*"
+                type="date"
+                required
+                min={minDate}
+              />
+              <label for="reserve-convidados" class="hidden-label">Convidados</label>
+              <input
+                class="input short right-margin w-input"
+                maxlength="256"
+                id="reserve-convidados"
+                name="convidados"
+                data-name="Convidados"
+                placeholder="Convidados*"
+                type="number"
+                required
+                min="1"
+              />
+            </div>
+
+            <label for="reserve-local" class="hidden-label">Local / cidade</label>
+            <input
+              class="input w-input"
+              maxlength="256"
+              id="reserve-local"
+              name="local"
+              data-name="Local"
+              placeholder="Local / cidade*"
+              type="text"
+              required
+            />
+
+            <label for="reserve-duracao" class="hidden-label">Duração estimada</label>
+            <input
+              class="input w-input"
+              maxlength="256"
+              id="reserve-duracao"
+              name="duracao"
+              data-name="Duracao"
+              placeholder="Duração estimada (ex: 6 horas)"
+              type="text"
+            />
+
+            <label class="reserve-lgpd">
+              <input type="checkbox" name="lgpd" required />
+              <span set:html={data.lgpdLabel.replace(
+                /\[(.+?)\]\((.+?)\)/g,
+                '<a href="$2">$1</a>'
+              )} />
+            </label>
+
+            <!-- Turnstile widget — site key vem de PUBLIC_TURNSTILE_SITE_KEY (.env) -->
+            <div
+              class="cf-turnstile"
+              data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}
+              data-theme="dark"
+            >
+            </div>
+
+            <button
+              type="submit"
+              data-wait="aguarde..."
+              class="btn btn--menu submit-button-reserve w-button"
+            >
+              <span class="fill-bg"></span>
+              <span class="btn__label">{data.ctaButton}</span>
+            </button>
+            <p class="reserve-feedback" data-feedback hidden></p>
+          </form>
+          <div class="success-message w-form-done">
+            <div set:html={data.successMessage.replace(/\n/g, '<br/>')} />
+          </div>
+          <div class="error-message w-form-fail">
+            <div set:html={data.errorMessage.replace(/\n/g, '<br/>')} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/reserve-form.ts';
+</script>
+
+<style>
+  .reserve-lgpd {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--text-primary);
+  }
+  .reserve-lgpd input[type='checkbox'] {
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    /* checked = rosa da marca em vez do azul default do browser */
+    accent-color: var(--accent);
+  }
+  /* :global() é necessário porque o <a> é injetado via set:html
+   * e fica fora do escopo automático do Astro — sem :global() o
+   * seletor não aplica e o link cai no azul default do browser. */
+  .reserve-lgpd :global(a) {
+    color: var(--link);
+    text-decoration: underline;
+    transition: color var(--dur-base) var(--ease-out);
+  }
+  .reserve-lgpd :global(a:hover) {
+    color: var(--link-hover);
+  }
+</style>

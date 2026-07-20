@@ -1,0 +1,76 @@
+---
+// src/components/Bars.astro
+// Section Estrutura — réplica estrutural da section de drinks (Menu.astro):
+// mesma árvore DOM (.section.full-height.category.one-section >
+// .container-full-width.border > .flex-container.w-tabs) e o mesmo
+// componente Webflow de abas. Cada aba é um tipo de bar e abre a galeria
+// de fotos daquele bar. O bloco "Inclusos" vive em Included.astro.
+import { getCollection } from 'astro:content';
+
+const bars = (await getCollection('bars')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="estrutura" class="section sticky full-height category one-section">
+ <div class="container-full-width border">
+  <h2 class="heading-2 menu-section-title">Estrutura</h2>
+  <div
+    data-current="Tab 1"
+    data-easing="ease"
+    data-duration-in="300"
+    data-duration-out="100"
+    class="flex-container w-tabs"
+  >
+    <div class="menu-tabs w-tab-menu">
+      {
+        bars.map((bar, i) => (
+          <a
+            data-w-tab={`Tab ${i + 1}`}
+            class={`menu-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
+            href={`#estrutura-tab-${i + 1}`}
+          >
+            <div class="menu-text">{bar.data.name}</div>
+            <div class="tab-bg menu-1" />
+          </a>
+        ))
+      }
+    </div>
+    <div class="tabs-content w-tab-content">
+      {
+        bars.map((bar, i) => (
+          <div
+            data-w-tab={`Tab ${i + 1}`}
+            class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}
+          >
+            <div class="menu-wrap">
+              <div class="categories-wrapper">
+                <p class="bar-tab-description">{bar.data.description.trim()}</p>
+                <div class="categories-list drinks-grid">
+                  {Array.from({ length: 5 }).map((_, idx) => {
+                    const photo = bar.data.gallery[idx];
+                    return (
+                      <div class="category-item drink-card">
+                        <div class="category-cover">
+                          {photo && (
+                            <img
+                              src={photo.src}
+                              alt={photo.alt}
+                              loading="lazy"
+                              class="cover-image"
+                            />
+                          )}
+                          {photo && <div class="cover-gradient bottom" />}
+                          {!photo && <div class="slot-empty">Em breve</div>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+ </div>
+</section>

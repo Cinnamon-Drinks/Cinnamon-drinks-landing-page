@@ -1,0 +1,8 @@
+name: Menu 3
+layout: menu-1
+combinations:
+  - bar: tropical
+    category: Caip's
+  - bar: interno
+    category: Clássicos
+order: 3

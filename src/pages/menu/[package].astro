@@ -1,0 +1,57 @@
+---
+// src/pages/menu/[package].astro
+import { getCollection, getEntry } from 'astro:content';
+import CategoryGridMenuLayout from '../../components/menu-layouts/CategoryGridMenuLayout.astro';
+import CenteredPillMenuLayout from '../../components/menu-layouts/CenteredPillMenuLayout.astro';
+import SidebarMenuLayout from '../../components/menu-layouts/SidebarMenuLayout.astro';
+import TextGridMenuLayout from '../../components/menu-layouts/TextGridMenuLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const packages = await getCollection('menuPackages');
+  return packages.map((pkg) => ({
+    params: { package: pkg.id },
+    props: { pkg }
+  }));
+}
+
+const { pkg } = Astro.props;
+
+const drinks = await getCollection('drinks');
+const combinations = await Promise.all(
+  pkg.data.combinations.map(async (combination) => {
+    const bar = await getEntry(combination.bar);
+    return {
+      bar: bar!,
+      category: combination.category,
+      drinks: drinks
+        .filter((drink) => drink.data.category === combination.category)
+        .sort((a, b) => a.data.order - b.data.order)
+    };
+  })
+);
+---
+
+<Base title={`${pkg.data.name} — Cardápio`} description={`Combinações do ${pkg.data.name}.`}>
+  <Navbar hideBottomCta />
+  <h1 class="sr-only">{pkg.data.name}</h1>
+  {pkg.data.layout === 'menu-1' && <SidebarMenuLayout combinations={combinations} />}
+  {pkg.data.layout === 'menu-2' && <TextGridMenuLayout combinations={combinations} />}
+  {pkg.data.layout === 'menu-3' && <CategoryGridMenuLayout combinations={combinations} />}
+  {pkg.data.layout === 'menu-4' && <CenteredPillMenuLayout combinations={combinations} />}
+</Base>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

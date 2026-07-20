@@ -1,0 +1,93 @@
+---
+import { getEntry } from 'astro:content';
+// src/pages/privacidade.astro
+import Base from '../layouts/Base.astro';
+
+const site = await getEntry('site', 'site');
+---
+
+<Base title="Política de Privacidade" description="Como a Cinnamon Drinks trata seus dados ao solicitar orçamento.">
+  <main class="legal-page">
+    <h1>Política de Privacidade</h1>
+    <p><strong>Última atualização:</strong> 8 de maio de 2026</p>
+
+    <h2>1. Quais dados coletamos</h2>
+    <p>
+      Ao preencher o formulário de reserva, coletamos: nome, telefone (WhatsApp),
+      e-mail (opcional), tipo de evento, data desejada, número de convidados,
+      local, duração estimada e mensagem livre.
+    </p>
+
+    <h2>2. Para quê usamos</h2>
+    <p>
+      Apenas para retornar o contato e elaborar o orçamento solicitado. Não
+      vendemos, alugamos, nem compartilhamos seus dados com terceiros.
+    </p>
+
+    <h2>3. Onde ficam armazenados</h2>
+    <p>
+      Cópia de backup no Formspree (servidor nos EUA, política em
+      <a href="https://formspree.io/legal/privacy-policy/">formspree.io/legal/privacy-policy</a>)
+      e na conversa de WhatsApp com a equipe Cinnamon Drinks.
+    </p>
+
+    <h2>4. Por quanto tempo</h2>
+    <p>
+      Mantemos os dados pelo período necessário ao atendimento (até 12 meses
+      após o último contato). Você pode solicitar exclusão a qualquer momento
+      pelo e-mail abaixo.
+    </p>
+
+    <h2>5. Seus direitos (LGPD)</h2>
+    <p>
+      Conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018), você pode
+      solicitar a confirmação, acesso, correção ou eliminação dos seus dados.
+    </p>
+
+    <h2>6. Contato</h2>
+    <p>
+      <strong>Cinnamon Drinks</strong><br />
+      E-mail: <a href={`mailto:${site!.data.email}`}>{site!.data.email}</a><br />
+      WhatsApp: {site!.data.whatsappNumber}
+    </p>
+
+    <p><a href="/">← Voltar para o site</a></p>
+  </main>
+</Base>
+
+<style>
+  /* Documento legal quebra o tema escuro do site: fundo claro para leitura.
+     Sem isto, o texto preto cai sobre o body preto e fica invisível.
+     :global(body) só é emitido na /privacidade (estilo scoped da página). */
+  :global(body) {
+    background: var(--brand-white);
+  }
+  .legal-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem 4rem;
+    font-family: var(--font-primary);
+    color: var(--brand-black);
+    line-height: 1.6;
+  }
+  .legal-page h1 {
+    font-weight: var(--fw-bold);
+    margin-bottom: 0.5rem;
+  }
+  .legal-page h2 {
+    font-weight: var(--fw-bold);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  /* Página tem fundo claro (color: var(--brand-black)) — links em preto
+   * com underline em vez do rosa do --link, mantendo contraste alto
+   * em contexto legal. */
+  .legal-page a {
+    color: var(--brand-black);
+    text-decoration: underline;
+    transition: color var(--dur-base) var(--ease-out);
+  }
+  .legal-page a:hover {
+    color: var(--accent);
+  }
+</style>

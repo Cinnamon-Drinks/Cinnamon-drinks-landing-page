@@ -1,0 +1,8 @@
+name: Rústico
+description: Madeira de acabamento natural, ideal para celebrações no campo.
+gallery:
+  - { src: /uploads/rustico-1.jpg, alt: Bar Rústico — vista frontal }
+  - { src: /uploads/rustico-2.jpg, alt: Bar Rústico — ângulo lateral }
+  - { src: /uploads/rustico-3.jpg, alt: Bar Rústico — detalhe do balcão de madeira }
+tallPhoto: { src: /uploads/rustico-vertical.jpg, alt: Bar Rústico — cardápio e limões no balcão, enquadramento vertical }
+order: 5

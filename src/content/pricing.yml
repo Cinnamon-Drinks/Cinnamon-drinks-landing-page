@@ -1,0 +1,14 @@
+pricing:
+  pricePerGuest: "R$ 43,95"
+  insurancePerGuest: "R$ 2,25"
+  vodkaUpgrades:
+    - name: Smirnoff
+      extraPrice: incluso
+    - name: Absolut
+      extraPrice: "+ R$ 4,00 por convidado"
+    - name: Stolichnaya
+      extraPrice: "+ R$ 6,00 por convidado"
+  bartenderRatio: 1 bartender a cada 30 convidados
+  disclaimer: |
+    Valores de referência. Bares personalizados (Bar 360°, Tropical etc.)
+    são orçados sob consulta.

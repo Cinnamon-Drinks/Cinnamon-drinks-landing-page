@@ -1,0 +1,98 @@
+---
+// src/components/menu-layouts/CenteredPillMenuLayout.astro
+// Estilo "Menu 4" do template Webflow: abas em pills com borda (não uma
+// lista contínua como o Menu 1), verticalmente centralizadas, com foto do
+// bar pequena e arredondada. No mobile, as mesmas classes viram uma barra
+// de abas fixa embaixo + foto full-bleed no topo (igual ao Menu 1 — o
+// global.css já define esse comportamento nos breakpoints). Troca de aba
+// usa o widget nativo de Tabs do Webflow, sem JS próprio.
+import type { CollectionEntry } from 'astro:content';
+
+interface Combination {
+  bar: CollectionEntry<'bars'>;
+  category: string;
+  drinks: CollectionEntry<'drinks'>[];
+}
+
+interface Props {
+  combinations: Combination[];
+}
+
+const { combinations } = Astro.props;
+---
+
+<div
+  data-current="Tab 1"
+  data-easing="ease"
+  data-duration-in="300"
+  data-duration-out="100"
+  class="flex-container w-tabs"
+>
+  <div class="tabs-menu-2 w-tab-menu">
+    {
+      combinations.map((combo, i) => (
+        <a
+          data-w-tab={`Tab ${i + 1}`}
+          class={`menu-4-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
+        >
+          <div class="menu-4-link">{combo.bar.data.name}</div>
+          <div class="tab-bg m4" />
+        </a>
+      ))
+    }
+  </div>
+  <div class="tabs-content w-tab-content">
+    {
+      combinations.map((combo, i) => {
+        const photo = combo.bar.data.gallery[0];
+        return (
+          <div data-w-tab={`Tab ${i + 1}`} class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
+            <div class="tabs-content-wrapper">
+              <div class="menu-items-list menu4">
+                {combo.drinks.length > 0 ? (
+                  combo.drinks.map((drink) => (
+                    <div class="collection-item-2">
+                      <p class="menu-1-name">{drink.data.name}</p>
+                      <p class="menu-1-descript">{drink.data.ingredients.join(', ')}</p>
+                    </div>
+                  ))
+                ) : (
+                  <div class="collection-item-2">
+                    <p class="menu-1-descript">Em breve</p>
+                  </div>
+                )}
+              </div>
+              <div class="menu-4-img">
+                {photo && <img src={photo.src} alt={photo.alt} loading="lazy" class="cover-image" />}
+                <div class="text-holder tablet-gradient">
+                  <p class="menu-1-title heading-3">{combo.bar.data.name}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+  <div class="bottom-frame" />
+</div>
+
+<style>
+  /* Mobile: mesmo ajuste do SidebarMenuLayout — barra mais larga e abas
+   * com largura igual (em vez de auto), texto centralizado e maior, pra
+   * caber nomes de bar mais longos que as palavras curtas do template
+   * original ("main", "drink"). */
+  @media screen and (max-width: 991px) {
+    .tabs-menu-2 {
+      width: 95vw;
+    }
+    .menu-4-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.92em;
+    }
+  }
+</style>

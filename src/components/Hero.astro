@@ -1,0 +1,192 @@
+---
+// src/components/Hero.astro
+// Estrutura Webflow original (linhas 95-178 de _archive/reference/index.html)
+// preservada com data-w-id para IX2. As 12 imagens template (1.jpg-8.jpg
+// + variants) substituídas por 12 cocktails Cinnamon reais via
+// Astro Image API (otimização WebP/AVIF + responsive srcset no build).
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import drinkAlecrim from '../assets/drinks/drink-alecrim.jpg';
+import drinkAzul from '../assets/drinks/drink-azul.jpg';
+import drinkCamadas from '../assets/drinks/drink-camadas.jpg';
+import drinkCitrico from '../assets/drinks/drink-citrico.jpg';
+import drinkCoral from '../assets/drinks/drink-coral.jpg';
+import drinkCoupe from '../assets/drinks/drink-coupe.jpg';
+import drinkCristalino from '../assets/drinks/drink-cristalino.jpg';
+import drinkMaracuja from '../assets/drinks/drink-maracuja.jpg';
+import drinkRosa from '../assets/drinks/drink-rosa.jpg';
+import drinkRose from '../assets/drinks/drink-rose.jpg';
+import drinkVermelho from '../assets/drinks/drink-vermelho.jpg';
+import drinkWhisky from '../assets/drinks/drink-whisky.jpg';
+import logoWordmark from '../assets/logo/logo-escrita.png';
+
+const hero = await getEntry('hero', 'hero');
+const data = hero!.data;
+
+const tubeWidths = [400, 800];
+const tubeSizes = '(max-width: 800px) 100vw, 800px';
+---
+
+<section id="inicio" class="hero">
+  <div class="hero-content">
+    <div
+      data-w-id="c502dfd1-c76a-32ee-24ee-e727610293da"
+      class="hero-background-columns"
+    >
+      <div class="flex-row rotated-left">
+        <div class="hero-column opacity-70 rotate">
+          <div
+            data-w-id="c502dfd1-c76a-32ee-24ee-e727610293dd"
+            class="tubes-block to-up"
+          >
+            <div class="tube">
+              <Image src={drinkRosa} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkAlecrim} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+          </div>
+          <div
+            data-w-id="bd757900-d861-48c3-aa7d-211c0f0ad679"
+            class="tubes-block to-up"
+          >
+            <div class="tube">
+              <Image src={drinkRosa} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkAlecrim} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+          </div>
+        </div>
+        <div class="hero-column opacity-60 rotate">
+          <div
+            data-w-id="c502dfd1-c76a-32ee-24ee-e727610293e8"
+            class="tubes-block to-down"
+          >
+            <div class="tube">
+              <Image src={drinkMaracuja} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkCamadas} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+          </div>
+          <div
+            data-w-id="9138cbcd-4b31-5bd0-f43e-39f3ebe97b6c"
+            class="tubes-block to-down"
+          >
+            <div class="tube">
+              <Image src={drinkMaracuja} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkCamadas} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex-row rotated-right">
+        <div class="hero-column opacity-60 rotate">
+          <div
+            data-w-id="c502dfd1-c76a-32ee-24ee-e727610293f4"
+            class="tubes-block to-up"
+          >
+            <div class="tube">
+              <Image src={drinkCitrico} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkAzul} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+          </div>
+          <div
+            data-w-id="254e5829-76ea-95a0-311c-3f022e539c81"
+            class="tubes-block to-up"
+          >
+            <div class="tube">
+              <Image src={drinkCitrico} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkAzul} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+          </div>
+        </div>
+        <div class="hero-column opacity-70 rotate">
+          <div
+            data-w-id="c502dfd1-c76a-32ee-24ee-e727610293ff"
+            class="tubes-block to-down"
+          >
+            <div class="tube">
+              <Image src={drinkCristalino} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkWhisky} alt="" widths={tubeWidths} sizes={tubeSizes} loading="eager" class="cover-image" />
+            </div>
+          </div>
+          <div
+            data-w-id="89e6d390-989f-f46c-2edc-537887598206"
+            class="tubes-block to-down"
+          >
+            <div class="tube">
+              <Image src={drinkCristalino} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+            <div class="tube">
+              <Image src={drinkWhisky} alt="" widths={tubeWidths} sizes={tubeSizes} loading="lazy" class="cover-image" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-background-row">
+      <div class="tubes-block to-left">
+        <div class="tube-row">
+          <Image src={drinkRose} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkCoral} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+      </div>
+      <div class="tubes-block to-left">
+        <div class="tube-row">
+          <Image src={drinkRose} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkCoral} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+      </div>
+    </div>
+    <div class="hero-background-row">
+      <div class="tubes-block to-right">
+        <div class="tube-row">
+          <Image src={drinkCoupe} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkVermelho} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+      </div>
+      <div class="tubes-block to-right">
+        <div class="tube-row">
+          <Image src={drinkCoupe} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+        <div class="tube-row">
+          <Image src={drinkVermelho} alt="" widths={tubeWidths} sizes="100vw" loading="lazy" class="cover-image" />
+        </div>
+      </div>
+    </div>
+    <div class="hero-cta-wrapper">
+      <Image
+        src={logoWordmark}
+        alt="Cinnamon Drinks"
+        widths={[400, 600, 800]}
+        sizes="(max-width: 768px) 80vw, 600px"
+        class="hero-wordmark"
+        loading="eager"
+      />
+      <h1 class="hero-tagline">{data.heading}</h1>
+      <p
+        class="hero-subheading"
+        set:html={data.subheading.replace(/\n/g, '<br/>')}
+      />
+      <a href="#reserva" class="hero-cta">
+        {data.ctaText}
+      </a>
+    </div>
+  </div>
+</section>

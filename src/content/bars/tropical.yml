@@ -1,0 +1,8 @@
+name: Tropical
+description: Elementos tropicais para eventos ao ar livre e festas temáticas.
+gallery:
+  - { src: /uploads/tropical-1.jpg, alt: Bar Tropical — vista frontal }
+  - { src: /uploads/tropical-2.jpg, alt: Bar Tropical — ângulo lateral }
+  - { src: /uploads/tropical-3.jpg, alt: Bar Tropical — detalhe com barris }
+tallPhoto: { src: /uploads/tropical-vertical.jpg, alt: Bar Tropical — vista do horizonte e barril Cinnamon, enquadramento vertical }
+order: 4

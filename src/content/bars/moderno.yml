@@ -1,0 +1,6 @@
+name: Moderno
+description: Bar espelhado de linhas contemporâneas, pegada urbana.
+gallery:
+  - { src: /uploads/moderno-1.jpg, alt: Bar Moderno — bar espelhado com estrutura metálica }
+tallPhoto: { src: /uploads/moderno-vertical.jpg, alt: Bar Moderno — bebidas e taças de cobre no balcão, enquadramento vertical }
+order: 2

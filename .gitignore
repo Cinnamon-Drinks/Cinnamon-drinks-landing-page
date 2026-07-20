@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Astro
+.astro/
+dist/
+
+# Env
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+
+# Playwright MCP screenshots (not project assets)
+.playwright-mcp/
+
+# Serena MCP (local agent state)
+.serena/
+
+# Superpowers
+.superpowers/
+
+# Local reference screenshots (not project assets)
+menu-cards.png
+template-menu.png
+
+# Claude Code (runtime local)
+.claude/scheduled_tasks.lock
