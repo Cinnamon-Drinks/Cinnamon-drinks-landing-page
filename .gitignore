@@ -31,3 +31,9 @@ template-menu.png
 
 # Claude Code (runtime local)
 .claude/scheduled_tasks.lock
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
