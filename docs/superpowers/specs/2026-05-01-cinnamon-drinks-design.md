@@ -1,7 +1,7 @@
 # Cinnamon Drinks — Landing Page · Design Spec
 
-**Status:** Draft v6 — IDV · stack · convenções · guardrails · domínio · navbar revista (5 anchors + Menu TBD) · 3/17 TBDs resolvidos · em execução
-**Data:** 2026-05-01 · Atualizações: 2026-05-04 (v2: IDV · v3: convenções · v4: Biome · v5: domínio · v6: navbar)
+**Status:** Draft v7 — IDV · stack · convenções · guardrails · domínio · navbar revista (5 anchors + Menu TBD) · 3/17 TBDs resolvidos · em execução · deploy Workers Static Assets
+**Data:** 2026-05-01 · Atualizações: 2026-05-04 (v2: IDV · v3: convenções · v4: Biome · v5: domínio · v6: navbar) · 2026-07-20 (v7: hospedagem Cloudflare Pages → Workers Static Assets)
 **Autor:** Luiz Carlos Vitoriano Neto (CONTRATADO)
 **Cliente:** Cinnamon Drinks — Maria da Penha Monteiro da Sé Apolinário (CONTRATANTE) · interlocutor operacional: Roger Apolinário
 **Contrato:** ZapSign d303644b-0df6-4ae6-b8dd-ddc6c5539b40 (assinado 28/04/2026)
@@ -84,7 +84,7 @@ São responsabilidade da CONTRATANTE: domínio, hospedagem, banco de dados, gate
 | Package manager | **pnpm** | Decisão 2026-05-04 — disk-efficient (store global com hardlinks), lockfile estrito, suporte nativo do Astro. Cloudflare Pages detecta `pnpm-lock.yaml` automaticamente |
 | CMS | **Sveltia CMS** | Sucessor moderno e ativo do Decap CMS (drop-in: mantém o mesmo formato `config.yml`). Git-based, zero infra, painel `/admin`, melhor UX/perf, suporte i18n nativo. CDN: `unpkg.com/@sveltia/cms` |
 | Auth do CMS | **Cloudflare Worker** (OAuth proxy próprio) | Substitui o descontinuado Netlify Identity; usa GitHub OAuth |
-| Hospedagem | **Cloudflare Pages** | Free tier robusto, CDN com POPs no Brasil, build automático no `git push`, uso comercial OK |
+| Hospedagem | **Cloudflare Workers (Static Assets)** | Evoluído de Cloudflare Pages em 2026-07-20 (v7) — a UI da Cloudflare unificou o deploy git em Workers Builds. Mesmo edge/CDN com POPs no Brasil, build automático no `git push`, static puro via `wrangler.jsonc` (`assets.directory: ./dist`, `not_found_handling: 404-page`), uso comercial OK. Funcionalmente equivalente a Pages |
 | Repositório | **GitHub** | Sveltia exige; criado pelo Luis, transferido pro Roger no fim do projeto (estratégia R2) |
 | Form backend | **Formspree** (free tier 50/mês) | Captação de lead independente do WhatsApp (Modelo B) |
 | **Vídeos** | **Self-host no Cloudflare Pages** (`public/videos/`) | Máx 3 vídeos comprimidos; Cloudinary descartado para reduzir dependências |

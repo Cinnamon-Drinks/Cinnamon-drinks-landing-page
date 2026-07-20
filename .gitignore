@@ -31,3 +31,6 @@ template-menu.png
 
 # Claude Code (runtime local)
 .claude/scheduled_tasks.lock
+
+# Wrangler (Cloudflare) — estado local
+.wrangler/

@@ -1,0 +1,11 @@
+{
+  "name": "cinnamon-drinks-landing-page",
+  "compatibility_date": "2026-07-20",
+  // Site 100% estático servido via Workers Static Assets: só assets, sem
+  // Worker script (sem "main"). O `astro build` (output: static) gera ./dist.
+  "assets": {
+    "directory": "./dist",
+    // Serve /404.html com status 404 em rotas inexistentes.
+    "not_found_handling": "404-page"
+  }
+}
