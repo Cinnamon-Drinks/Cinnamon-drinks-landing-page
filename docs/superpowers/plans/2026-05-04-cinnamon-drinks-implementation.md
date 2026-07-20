@@ -2824,11 +2824,15 @@ Se algum falhar, anotar issues e abrir tasks específicas (LCP imagem, contraste
 
 - [ ] **Step 1: CF dashboard → Pages → Create**
 
-- Connect to GitHub → selecionar `<owner>/cinnamon-drinks`
+- Connect to GitHub → selecionar `Cinnamon-Drinks/Cinnamon-drinks-landing-page`
 - Branch: `main`
+- Framework preset: `Astro`
 - Build command: `pnpm build`
 - Build output: `dist`
-- Env vars: nenhuma (Astro lê site URL do astro.config.mjs)
+- Env vars (Production + Preview):
+  - `PUBLIC_TURNSTILE_SITE_KEY` — sitekey do Cloudflare Turnstile, lida em build-time por `ReserveForm.astro`; sem ela o CAPTCHA do form não renderiza. Pública por natureza (não é segredo).
+  - `NODE_VERSION` = `22` — compat Astro 5 (o default da CF varia). Se o build reclamar do pnpm, somar `PNPM_VERSION` = `10.33.0`.
+  - O site URL de produção continua vindo de `astro.config.mjs` (`site:`), não de env var.
 
 - [ ] **Step 2: Deploy**
 
