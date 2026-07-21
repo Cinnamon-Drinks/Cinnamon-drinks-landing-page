@@ -22,7 +22,8 @@ Anote o **Client ID** e gere um **Client Secret**.
 ```bash
 cd cms-oauth
 pnpm install
-pnpm deploy        # = wrangler deploy (pede login na Cloudflare na 1ª vez)
+pnpm run deploy    # = wrangler deploy (pede login na Cloudflare na 1ª vez)
+                   # use `run`: `pnpm deploy` colide com um comando nativo do pnpm
 ```
 
 O deploy imprime a URL pública, algo como
