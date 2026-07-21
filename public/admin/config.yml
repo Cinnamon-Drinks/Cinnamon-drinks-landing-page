@@ -6,8 +6,7 @@ backend:
   name: github
   repo: Cinnamon-Drinks/Cinnamon-drinks-landing-page
   branch: main
-  # TODO Phase 7: trocar pela URL real do Worker após `wrangler deploy`.
-  base_url: https://cms-oauth.PLACEHOLDER.workers.dev
+  base_url: https://cinnamon-cms-oauth.rogercinnamondrinks.workers.dev
   auth_endpoint: auth
   commit_messages:
     create: 'CMS: cria {{collection}} "{{slug}}"'
