@@ -13,13 +13,20 @@ const site = defineCollection({
   schema: z.object({
     brandName: z.string(),
     tagline: z.string(),
+    cnpj: z
+      .string()
+      .regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'cnpj deve estar em formato XX.XXX.XXX/XXXX-XX'),
+    city: z.string(),
     address: z.string(),
     businessHours: z.string(),
     whatsappNumber: z
       .string()
       .regex(/^\d{12,13}$/, 'whatsappNumber deve estar em formato 55XX9XXXXXXXX'),
     email: z.string().email(),
-    instagram: z.string()
+    instagram: z.string(),
+    responsibleConsumptionNotice: z
+      .string()
+      .default('Aprecie com moderação. Venda proibida para menores de 18 anos.')
   })
 });
 
@@ -94,11 +101,27 @@ const menuPackages = defineCollection({
       .array(
         z.object({
           bar: reference('bars'),
-          category: z.enum(["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais'])
+          category: z.enum(["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']),
+          // Rótulo da aba independente do nome do bar (ex: "Standard" numa
+          // aba que usa o bar "PREMIUM") — sem isso, cai no nome do bar.
+          label: z.string().optional(),
+          // Texto breve exibido acima da lista de drinks na aba — editável
+          // pelo CMS, sem isso a aba simplesmente não mostra descrição.
+          description: z.string().optional(),
+          // Texto miúdo abaixo da descrição (ex: regra de troca/seleção de
+          // drinks). Editável pelo CMS, independente da description.
+          note: z.string().optional(),
+          // Preço exibido abaixo do nome da aba na sidebar (SidebarMenuLayout).
+          // String livre pra caber formatos como "R$ 45 / pessoa - R$ 2.250 total".
+          price: z.string().optional()
         })
       )
       .min(1),
-    order: z.number().int()
+    order: z.number().int(),
+    // Some do dropdown do navbar e da página /menu (listagem), mas a página
+    // /menu/[slug] continua acessível por link direto — pra pacotes ainda
+    // não prontos pra divulgação geral (ex: orçamentos sob consulta).
+    hidden: z.boolean().default(false)
   })
 });
 

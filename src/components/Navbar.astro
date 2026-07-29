@@ -11,7 +11,7 @@ interface Props {
 
 const { hideBottomCta = false } = Astro.props;
 
-const menuPackages = (await getCollection('menuPackages')).sort(
+const menuPackages = (await getCollection('menuPackages', ({ data }) => !data.hidden)).sort(
   (a, b) => a.data.order - b.data.order
 );
 ---
@@ -107,4 +107,5 @@ const menuPackages = (await getCollection('menuPackages')).sort(
 
 <script>
   import '../scripts/nav-drawer-menu.ts';
+  import '../scripts/nav-anchor-scroll.ts';
 </script>

@@ -5,10 +5,15 @@
 // completa por bar com grid de cards — cada card com a foto do próprio
 // drink como fundo. Navegação por âncora nativa, sem JS.
 import type { CollectionEntry } from 'astro:content';
+import { renderInlineBold } from '../../scripts/inline-markup';
 
 interface Combination {
   bar: CollectionEntry<'bars'>;
   category: string;
+  label?: string;
+  description?: string;
+  note?: string;
+  price?: string;
   drinks: CollectionEntry<'drinks'>[];
 }
 
@@ -28,7 +33,7 @@ const { combinations } = Astro.props;
             const photo = combo.bar.data.gallery[0];
             return (
               <div class="category-item">
-                <h4 class="heading-4 menu-name">{combo.bar.data.name}</h4>
+                <h4 class="heading-4 menu-name">{combo.label ?? combo.bar.data.name}</h4>
                 <a href={`#${combo.bar.id}`} class="category-cover w-inline-block">
                   <div class="cover-gradient" />
                   <div
@@ -50,8 +55,10 @@ const { combinations } = Astro.props;
     <div id={combo.bar.id} class="section flex-with-padding">
       <div class="container">
         <div class="sub-menu-title-wrapper">
-          <h3 class="heading-3">{combo.bar.data.name}</h3>
+          <h3 class="heading-3">{combo.label ?? combo.bar.data.name}</h3>
         </div>
+        {combo.description && <p class="menu-tab-description">{combo.description}</p>}
+        {combo.note && <p class="menu-tab-note" set:html={renderInlineBold(combo.note)} />}
         <div class="sub-menu-list">
           {combo.drinks.length > 0 ? (
             combo.drinks.map((drink) => (

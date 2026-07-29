@@ -7,10 +7,15 @@
 // global.css já define esse comportamento nos breakpoints). Troca de aba
 // usa o widget nativo de Tabs do Webflow, sem JS próprio.
 import type { CollectionEntry } from 'astro:content';
+import { renderInlineBold } from '../../scripts/inline-markup';
 
 interface Combination {
   bar: CollectionEntry<'bars'>;
   category: string;
+  label?: string;
+  description?: string;
+  note?: string;
+  price?: string;
   drinks: CollectionEntry<'drinks'>[];
 }
 
@@ -35,7 +40,7 @@ const { combinations } = Astro.props;
           data-w-tab={`Tab ${i + 1}`}
           class={`menu-4-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
         >
-          <div class="menu-4-link">{combo.bar.data.name}</div>
+          <div class="menu-4-link">{combo.label ?? combo.bar.data.name}</div>
           <div class="tab-bg m4" />
         </a>
       ))
@@ -49,6 +54,10 @@ const { combinations } = Astro.props;
           <div data-w-tab={`Tab ${i + 1}`} class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
             <div class="tabs-content-wrapper">
               <div class="menu-items-list menu4">
+                {combo.description && <p class="menu-tab-description">{combo.description}</p>}
+                {combo.note && (
+                  <p class="menu-tab-note" set:html={renderInlineBold(combo.note)} />
+                )}
                 {combo.drinks.length > 0 ? (
                   combo.drinks.map((drink) => (
                     <div class="collection-item-2">
@@ -65,7 +74,7 @@ const { combinations } = Astro.props;
               <div class="menu-4-img">
                 {photo && <img src={photo.src} alt={photo.alt} loading="lazy" class="cover-image" />}
                 <div class="text-holder tablet-gradient">
-                  <p class="menu-1-title heading-3">{combo.bar.data.name}</p>
+                  <p class="menu-1-title heading-3">{combo.label ?? combo.bar.data.name}</p>
                 </div>
               </div>
             </div>
