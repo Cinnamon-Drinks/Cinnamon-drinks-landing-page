@@ -783,3 +783,97 @@ img.cover-image[alt=''] {
   display: flex;
   opacity: 1;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Footer — linha de CNPJ/copyright: cada trecho ("CNPJ ...", "© ... Cinnamon
+ * Drinks") não pode quebrar no meio quando a linha estoura em telas
+ * estreitas — sem isso, "Drinks" ficava sozinho numa linha separada de
+ * "Cinnamon". Cada .contact-legal-item quebra como bloco, não por palavra.
+ * ────────────────────────────────────────────────────────────────────*/
+.contact-legal-item {
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Menu packages (/menu/[package]) — descrição breve por aba, opcional via
+ * CMS. Aparece acima da lista de drinks, logo abaixo do nome da aba.
+ * Classe compartilhada pelos 4 layouts em menu-layouts/*.astro.
+ *
+ * Causa raiz da colisão com a sidebar fixa de abas (.sidebar-menu-tabs):
+ * no layout menu-1 (SidebarMenuLayout), .menu-items-list nasce ~1vw por
+ * baixo do fim da sidebar (25vw vs margin-left:24% do .tabs-content) —
+ * isso é mascarado pelo padding-left:1.7em que TODO item de drink ganha
+ * via .collection-item-2. Este parágrafo é filho direto de
+ * .menu-items-list (não passa por .collection-item-2), então precisa do
+ * mesmo padding horizontal pra não cair nessa faixa. No mobile o padding
+ * já vem do próprio .menu-items-list (8.33vw, herdado automaticamente),
+ * por isso o reset a 0 no breakpoint — mesmo padrão de .collection-item-2.
+ *
+ * width:100% + box-sizing:border-box trava a largura no container do
+ * próprio layout em vez de deixar o texto ditar a largura. Centralizado
+ * (text-align:center) dentro da própria área já protegida pelo padding —
+ * a centralização nunca reduz esse respiro lateral, só centraliza o texto
+ * dentro dele. font-size/weight/line-height espelham .menu-1-name (nome
+ * do drink) pra dar mais destaque que o texto padrão de ingredientes.
+ * ────────────────────────────────────────────────────────────────────*/
+.menu-tab-description {
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 1.7em;
+  padding-right: 1.7em;
+  margin: 0 0 1.25em;
+  font-size: 1.01em;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--gray-300);
+}
+@media screen and (max-width: 991px) {
+  .menu-tab-description {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 1.8em;
+  }
+}
+@media screen and (max-width: 479px) {
+  .menu-tab-description {
+    font-size: 2.13em;
+  }
+}
+
+/* Subdescrição em letras miúdas abaixo de .menu-tab-description (ex: regra
+ * de troca/seleção de drinks). Mesmo padding anti-colisão e centralização;
+ * escala de fonte igual à de .menu-1-descript (texto de ingredientes) —
+ * deliberadamente menor que .menu-tab-description, para ficar "miúdo" de
+ * verdade e não competir com a descrição principal. */
+.menu-tab-note {
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 1.7em;
+  padding-right: 1.7em;
+  margin: 0 0 1.25em;
+  font-size: 0.52em;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--gray-400);
+}
+@media screen and (max-width: 991px) {
+  .menu-tab-note {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 1.07em;
+  }
+}
+@media screen and (max-width: 479px) {
+  .menu-tab-note {
+    font-size: 1.4em;
+  }
+}
+/* Trecho em **negrito** dentro de .menu-tab-note (via renderInlineBold) —
+ * destaque pontual com a cor de acento da marca, conforme a regra do
+ * brandbook (rosa/laranja só em destaques explicitamente desenhados, não
+ * wholesale). */
+.menu-tab-note strong {
+  color: var(--accent);
+  font-weight: 700;
+}

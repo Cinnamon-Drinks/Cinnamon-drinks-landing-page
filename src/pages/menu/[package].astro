@@ -25,6 +25,10 @@ const combinations = await Promise.all(
     return {
       bar: bar!,
       category: combination.category,
+      label: combination.label,
+      description: combination.description,
+      note: combination.note,
+      price: combination.price,
       drinks: drinks
         .filter((drink) => drink.data.category === combination.category)
         .sort((a, b) => a.data.order - b.data.order)

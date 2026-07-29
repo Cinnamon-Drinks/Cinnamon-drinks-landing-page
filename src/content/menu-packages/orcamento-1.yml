@@ -1,0 +1,13 @@
+name: Orçamento 1
+layout: menu-1
+combinations:
+  - bar: tropical
+    category: Caip's
+    description: Bar Tropical com cardápio de Caipirinhas e Caipvodkas.
+    price: "R$ 50 / pessoa - R$ 2.500 total"
+  - bar: interno
+    category: Clássicos
+    description: Bar Interno com cardápio de drinks clássicos.
+    price: "R$ 70 / pessoa - R$ 3.500 total"
+order: 3
+hidden: true

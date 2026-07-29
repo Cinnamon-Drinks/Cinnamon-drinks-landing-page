@@ -1,0 +1,13 @@
+name: Orçamento 2
+layout: menu-1
+combinations:
+  - bar: rustico
+    category: Especiais
+    description: Bar Rústico com cardápio de drinks especiais.
+    price: "R$ 90 / pessoa - R$ 4.500 total"
+  - bar: tropical
+    category: Gin & Whisky
+    description: Bar Tropical com cardápio de Gin & Whisky.
+    price: "R$ 75 / pessoa - R$ 3.750 total"
+order: 4
+hidden: true

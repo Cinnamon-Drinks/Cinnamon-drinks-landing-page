@@ -41,7 +41,13 @@ collections:
             fields:
               - { name: brandName, label: Nome da marca, widget: string }
               - { name: tagline, label: Slogan, widget: string }
-              - { name: address, label: Endereço (uso interno), widget: text }
+              - name: cnpj
+                label: CNPJ
+                widget: string
+                hint: 'Formato XX.XXX.XXX/XXXX-XX'
+                pattern: ['^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$', 'Use o formato XX.XXX.XXX/XXXX-XX']
+              - { name: city, label: 'Cidade-base (exibida no rodapé)', widget: string }
+              - { name: address, label: Endereço completo (uso interno), widget: text }
               - { name: businessHours, label: Horário comercial, widget: string }
               - name: whatsappNumber
                 label: WhatsApp comercial
@@ -53,6 +59,7 @@ collections:
                 widget: string
                 pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', 'E-mail inválido']
               - { name: instagram, label: 'Instagram (handle sem @)', widget: string }
+              - { name: responsibleConsumptionNotice, label: 'Aviso de consumo responsável', widget: string }
 
   - name: hero
     label: Início (Hero)
@@ -220,10 +227,36 @@ collections:
             label: Categoria de drink
             widget: select
             options: ["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']
+          - name: label
+            label: 'Rótulo da aba (opcional)'
+            widget: string
+            required: false
+            hint: 'Se vazio, usa o nome do bar. Ex: "Standard" numa aba que usa o bar "PREMIUM".'
+          - name: description
+            label: 'Descrição breve (opcional)'
+            widget: text
+            required: false
+            hint: 'Aparece acima da lista de drinks nessa aba. Ex: "Para celebrações menores e cardápios objetivos."'
+          - name: note
+            label: 'Observação em texto miúdo (opcional)'
+            widget: text
+            required: false
+            hint: 'Aparece abaixo da descrição, em letra menor. Coloque **texto** para dar destaque colorido a um trecho. Ex: regra de troca/seleção de drinks.'
+          - name: price
+            label: 'Preço (opcional)'
+            widget: string
+            required: false
+            hint: 'Aparece abaixo do nome da aba na sidebar. Ex: "R$ 45 / pessoa - R$ 2.250 total"'
       - name: order
         label: Ordem
         widget: number
         value_type: int
+      - name: hidden
+        label: 'Ocultar do menu e do dropdown (opcional)'
+        widget: boolean
+        required: false
+        default: false
+        hint: 'A página continua acessível por link direto — só some do dropdown do navbar e da lista em /menu.'
 
   - name: testimonials
     label: Depoimentos

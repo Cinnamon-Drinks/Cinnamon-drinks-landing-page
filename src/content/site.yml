@@ -1,8 +1,11 @@
 site:
   brandName: Cinnamon Drinks
   tagline: Sofisticação & Experiência
+  cnpj: "60.606.470/0001-25"
+  city: Lavras/MG
   address: Av. Doutor Silvio Menicucci, 2313 — Lavras/MG
   businessHours: Segunda a sexta, 9h às 18h
   whatsappNumber: "5535998224771"
   email: cinnamondrinks@gmail.com
   instagram: cinnamondrinks
+  responsibleConsumptionNotice: Aprecie com moderação. Venda proibida para menores de 18 anos.

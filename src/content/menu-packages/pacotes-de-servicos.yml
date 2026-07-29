@@ -1,0 +1,25 @@
+name: Pacotes de Serviços
+layout: menu-1
+combinations:
+  - bar: glamouroso
+    category: Gin & Whisky
+    label: Standard
+    description: Para celebrações menores e cardápios objetivos.
+    price: "R$ 45 / pessoa - R$ 2.250 total"
+  - bar: moderno
+    category: Clássicos
+    label: Premium
+    description: Maior variedade de drinks e possibilidades de personalização.
+    price: "R$ 65 / pessoa - R$ 3.250 total"
+  - bar: rustico
+    category: Especiais
+    label: Cinnamon
+    description: Experiência completa para eventos que buscam impacto e sofisticação.
+    price: "R$ 85 / pessoa - R$ 4.250 total"
+  - bar: tropical
+    category: "Caip's"
+    label: Signature
+    description: Seleção ampla, destilados especiais e máxima personalização.
+    note: "Além de Caipirinha e Caipvodka, você poderá **selecionar mais 2 drinks do menu abaixo:**"
+    price: "R$ 120 / pessoa - R$ 6.000 total"
+order: 2

@@ -5,10 +5,15 @@
 // impresso. Troca de aba usa o widget nativo de Tabs do Webflow, sem JS
 // próprio.
 import type { CollectionEntry } from 'astro:content';
+import { renderInlineBold } from '../../scripts/inline-markup';
 
 interface Combination {
   bar: CollectionEntry<'bars'>;
   category: string;
+  label?: string;
+  description?: string;
+  note?: string;
+  price?: string;
   drinks: CollectionEntry<'drinks'>[];
 }
 
@@ -37,7 +42,7 @@ const { combinations } = Astro.props;
             data-w-tab={`Tab ${i + 1}`}
             class={`tab-link w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
           >
-            <div>{combo.bar.data.name}</div>
+            <div>{combo.label ?? combo.bar.data.name}</div>
           </a>
         ))
       }
@@ -48,6 +53,8 @@ const { combinations } = Astro.props;
           <div data-w-tab={`Tab ${i + 1}`} class={`tab-plane w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
             <div class="extra-border border" />
             <div class="text-menu-list-wrapper w-dyn-list">
+              {combo.description && <p class="menu-tab-description">{combo.description}</p>}
+              {combo.note && <p class="menu-tab-note" set:html={renderInlineBold(combo.note)} />}
               <div class="menu-list w-dyn-items">
                 {combo.drinks.length > 0 ? (
                   combo.drinks.map((drink) => (

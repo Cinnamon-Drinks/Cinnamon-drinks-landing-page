@@ -7,10 +7,15 @@
 // widget nativo de Tabs do Webflow (w-tabs/w-tab-link/w-tab-pane), já
 // embutido em public/webflow.js — sem JS próprio.
 import type { CollectionEntry } from 'astro:content';
+import { renderInlineBold } from '../../scripts/inline-markup';
 
 interface Combination {
   bar: CollectionEntry<'bars'>;
   category: string;
+  label?: string;
+  description?: string;
+  note?: string;
+  price?: string;
   drinks: CollectionEntry<'drinks'>[];
 }
 
@@ -35,7 +40,8 @@ const { combinations } = Astro.props;
           data-w-tab={`Tab ${i + 1}`}
           class={`menu-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
         >
-          <div class="menu-text">{combo.bar.data.name}</div>
+          <div class="menu-text">{combo.label ?? combo.bar.data.name}</div>
+          {combo.price && <div class="menu-tab-price">{combo.price}</div>}
           <div class="tab-bg menu-1" />
         </a>
       ))
@@ -49,12 +55,21 @@ const { combinations } = Astro.props;
           <div data-w-tab={`Tab ${i + 1}`} class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
             <div class="tabs-content-wrapper">
               <div class="menu-items-list">
+                {combo.description && <p class="menu-tab-description">{combo.description}</p>}
+                {combo.note && (
+                  <p class="menu-tab-note" set:html={renderInlineBold(combo.note)} />
+                )}
                 {combo.drinks.length > 0 ? (
                   combo.drinks.map((drink) => (
-                    <div class="collection-item-2">
+                    <button
+                      type="button"
+                      class="collection-item-2"
+                      data-drink-image={drink.data.image}
+                      data-drink-name={drink.data.name}
+                    >
                       <p class="menu-1-name">{drink.data.name}</p>
                       <p class="menu-1-descript">{drink.data.ingredients.join(', ')}</p>
-                    </div>
+                    </button>
                   ))
                 ) : (
                   <div class="collection-item-2">
@@ -65,7 +80,7 @@ const { combinations } = Astro.props;
               <div class="menu-1-img border">
                 {photo && <img src={photo.src} alt={photo.alt} loading="lazy" class="cover-image" />}
                 <div class="text-holder tablet-gradient">
-                  <p class="menu-1-title heading-3">{combo.bar.data.name}</p>
+                  <p class="menu-1-title heading-3">{combo.label ?? combo.bar.data.name}</p>
                 </div>
               </div>
             </div>
@@ -76,6 +91,10 @@ const { combinations } = Astro.props;
   </div>
   <div class="menu-border border" />
 </div>
+
+<script>
+  import '../../scripts/menu-drink-image.ts';
+</script>
 
 <style>
   /* .menu-tabs original do global.css é usada (com ID diferente) pelas
@@ -150,6 +169,50 @@ const { combinations } = Astro.props;
     .text-holder .menu-1-title {
       font-size: 2.6rem;
     }
+  }
+
+  /* Preço abaixo do nome de cada aba na sidebar (todas as 4 abas mostram
+   * preço ao mesmo tempo, editável via CMS em combinations[].price).
+   * .menu-tab:has(.menu-tab-price) força column só quando há preço — no
+   * mobile .menu-tab é flex-row (abas lado a lado na barra), então sem
+   * isso o preço ficava colado no nome na mesma linha ("STANDARDR$..."). */
+  .menu-tab-price {
+    display: block;
+    width: 100%;
+    font-size: 0.42em;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-top: 0.2em;
+  }
+  @media screen and (max-width: 991px) {
+    .menu-tab:has(.menu-tab-price) {
+      flex-direction: column;
+    }
+    .menu-tab-price {
+      font-size: 0.8em;
+      margin-top: 0.2em;
+    }
+  }
+
+  /* Cada drink real vira <button> (clicável/focável) pra trocar a foto do
+   * painel fixo ao lado — menu-drink-image.ts faz a troca em runtime.
+   * Reset de estilos padrão de <button> pra ficar idêntico ao <div> que
+   * era antes; :focus-visible fica no default do browser (não removido)
+   * pra não perder o indicador de foco no teclado. O placeholder "Em
+   * breve" continua <div>, sem nada disso, porque não é clicável. */
+  .collection-item-2 {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .collection-item-2:hover .menu-1-name,
+  .collection-item-2.is-selected .menu-1-name {
+    color: var(--accent);
   }
 </style>
 
