@@ -3,11 +3,27 @@ layout: menu-1
 combinations:
   - bar: tropical
     category: Caip's
-    description: Bar Tropical com cardápio de Caipirinhas e Caipvodkas.
-    price: "R$ 50 / pessoa - R$ 2.500 total"
+    label: Standard
+    description: Para celebrações menores e cardápios objetivos.
+    note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 2 drinks do menu abaixo**:'
+    price: R$ 50 / pessoa - R$ 2.500 total
   - bar: interno
     category: Clássicos
-    description: Bar Interno com cardápio de drinks clássicos.
-    price: "R$ 70 / pessoa - R$ 3.500 total"
+    label: Premium
+    description: Maior variedade de drinks e possibilidades de personalização.
+    note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 4 drinks do menu abaixo, incluindo os do pacote anterior**:'
+    price: R$ 70 / pessoa - R$ 3.500 total
+  - bar: Moderno
+    category: Clássicos
+    label: Cinnamon
+    description: Experiência completa para eventos que buscam impacto e sofisticação.
+    note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
+    price: R$ 85/ pessoa 3.000
+  - bar: Moderno
+    category: Clássicos
+    label: Signature
+    description: Seleção ampla, destilados especiais e máxima personalização.
+    note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
+    price: ''
 order: 3
 hidden: true
