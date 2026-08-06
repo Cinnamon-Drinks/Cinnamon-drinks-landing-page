@@ -1,5 +1,6 @@
 name: Mojito
 category: Clássicos
-ingredients: [rum branco, hortelã, limão, açúcar, água com gás, gelo]
+ingredients:
+  - Rum, Limão, Hortelã e Gaseificado
 image: /uploads/drink-alecrim.jpg
 order: 2
