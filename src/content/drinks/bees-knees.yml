@@ -1,5 +1,8 @@
 name: Bee's Knees
 category: Gin & Whisky
-ingredients: [gin, mel, suco de limão, gelo]
+ingredients:
+  - Gin
+  - Limão Siciliano
+  - Mel
 image: /uploads/drink-coupe.jpg
 order: 3
