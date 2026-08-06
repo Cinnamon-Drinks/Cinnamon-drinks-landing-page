@@ -1,5 +1,9 @@
 name: Cosmopolitan
 category: Gin & Whisky
-ingredients: [vodka, licor triple sec, suco de cranberry, suco de limão, gelo]
-image: /uploads/drink-rosa.jpg
+ingredients:
+  - Vodka
+  - Triple Sec (Licor fino de Laranja)
+  - Xarope de Cranberry
+  - Suco de Limão
+image: ''
 order: 5
