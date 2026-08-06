@@ -148,6 +148,15 @@ const menuPackages = defineCollection({
   schema: z.discriminatedUnion('type', [menuPackageMenu, menuPackageStructure])
 });
 
+// Orçamentos: propostas enviadas por link no WhatsApp. Pasta própria (separada
+// dos 3 pacotes institucionais) pra que o CMS possa travar exclusão dos fixos e
+// liberar criar/excluir só aqui — delete no Sveltia é por-coleção. Sempre type
+// menu, sempre hidden.
+const orcamentos = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './src/content/orcamentos' }),
+  schema: menuPackageMenu
+});
+
 const testimonials = defineCollection({
   loader: glob({ pattern: '**/*.yml', base: './src/content/testimonials' }),
   schema: z.object({
@@ -188,6 +197,7 @@ export const collections = {
   drinks,
   bars,
   menuPackages,
+  orcamentos,
   testimonials,
   form,
   pricing
