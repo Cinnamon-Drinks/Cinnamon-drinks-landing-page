@@ -1,5 +1,8 @@
 name: Maracujack
 category: Especiais
-ingredients: [whisky Jack Daniel's, polpa de maracujá, açúcar, gelo]
-image: /uploads/drink-maracuja.jpg
+ingredients:
+  - Whisky Jack Daniel's
+  - Maracujá
+  - Schwepp's Citrus
+image: ''
 order: 2
