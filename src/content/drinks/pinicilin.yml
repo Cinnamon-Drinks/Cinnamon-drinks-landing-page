@@ -1,5 +1,6 @@
-name: Pinicilin
+name: Penicilin
 category: Gin & Whisky
-ingredients: [whisky escocês, mel, gengibre, suco de limão, whisky defumado, gelo]
+ingredients:
+  - Whisk, Limão Siciliano, Xarope de Mel e Gengibre
 image: /uploads/drink-whisky.jpg
 order: 4
