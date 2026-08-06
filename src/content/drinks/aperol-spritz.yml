@@ -1,5 +1,9 @@
 name: Aperol Spritz
 category: Especiais
-ingredients: [aperol, prosecco, água com gás, gelo, fatia de laranja]
-image: /uploads/drink-coral.jpg
+ingredients:
+  - Aperol
+  - Prosecco
+  - Água com Gás
+  - Guarnição com Laranja
+image: ''
 order: 1
