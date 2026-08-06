@@ -1,5 +1,8 @@
 name: Negroni
 category: Gin & Whisky
-ingredients: [gin, campari, vermute tinto, gelo, casca de laranja]
-image: /uploads/drink-vermelho.jpg
+ingredients:
+  - Gin
+  - Campari
+  - Vermute tinto
+image: ''
 order: 1
