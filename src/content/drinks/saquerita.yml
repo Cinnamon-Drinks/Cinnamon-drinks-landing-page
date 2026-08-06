@@ -1,5 +1,6 @@
 name: Saquerita
 category: Especiais
-ingredients: [saquê, limão, açúcar, gelo]
-image: /uploads/drink-rose.jpg
+ingredients:
+  - Sakê e Frutas Opcionais
+image: ''
 order: 3
