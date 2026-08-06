@@ -1,5 +1,7 @@
 name: Caipirinha
-category: "Caip's"
-ingredients: [cachaça, limão, açúcar, gelo]
-image: /uploads/drink-citrico.jpg
+category: Caip's
+ingredients:
+  - Limão-Taiti
+  - Rainha da Cana Prata
+image: ''
 order: 1
