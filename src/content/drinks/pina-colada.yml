@@ -1,5 +1,8 @@
 name: Piña Colada
 category: Clássicos
-ingredients: [rum branco, leite de coco, suco de abacaxi, gelo]
-image: /uploads/drink-camadas.jpg
+ingredients:
+  - Rum Branco
+  - Creme de coco
+  - Abacaxi
+image: ''
 order: 3
