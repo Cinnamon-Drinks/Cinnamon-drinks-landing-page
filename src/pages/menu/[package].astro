@@ -1,11 +1,8 @@
 ---
 // src/pages/menu/[package].astro
 import { getCollection, getEntry } from 'astro:content';
-import CategoryGridMenuLayout from '../../components/menu-layouts/CategoryGridMenuLayout.astro';
-import CenteredPillMenuLayout from '../../components/menu-layouts/CenteredPillMenuLayout.astro';
 import SidebarMenuLayout from '../../components/menu-layouts/SidebarMenuLayout.astro';
 import StructureLayout from '../../components/menu-layouts/StructureLayout.astro';
-import TextGridMenuLayout from '../../components/menu-layouts/TextGridMenuLayout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Base from '../../layouts/Base.astro';
 
@@ -19,26 +16,21 @@ export async function getStaticPaths() {
 
 const { pkg } = Astro.props;
 
-// Só a variante "menu" deriva drinks da combinação bar+categoria; "structure"
-// usa rótulos livres (labels) e é renderizada pelo StructureLayout.
-const drinks = pkg.data.type === 'menu' ? await getCollection('drinks') : [];
+// A variante "menu" resolve os drinks curados de cada aba; "structure" usa
+// rótulos livres (labels) e é renderizada pelo StructureLayout.
 const combinations =
   pkg.data.type === 'menu'
     ? await Promise.all(
-        pkg.data.combinations.map(async (combination) => {
-          const bar = await getEntry(combination.bar);
-          return {
-            bar: bar!,
-            category: combination.category,
-            label: combination.label,
-            description: combination.description,
-            note: combination.note,
-            price: combination.price,
-            drinks: drinks
-              .filter((drink) => drink.data.category === combination.category)
-              .sort((a, b) => a.data.order - b.data.order)
-          };
-        })
+        pkg.data.combinations.map(async (combination) => ({
+          label: combination.label,
+          description: combination.description,
+          note: combination.note,
+          price: combination.price,
+          image: combination.image,
+          drinks: combination.drinks?.length
+            ? await Promise.all(combination.drinks.map((ref) => getEntry(ref)))
+            : []
+        }))
       )
     : [];
 ---
@@ -47,10 +39,7 @@ const combinations =
   <Navbar hideBottomCta />
   <h1 class="sr-only">{pkg.data.name}</h1>
   {pkg.data.type === 'structure' && <StructureLayout labels={pkg.data.labels} />}
-  {pkg.data.type === 'menu' && pkg.data.layout === 'menu-1' && <SidebarMenuLayout combinations={combinations} />}
-  {pkg.data.type === 'menu' && pkg.data.layout === 'menu-2' && <TextGridMenuLayout combinations={combinations} />}
-  {pkg.data.type === 'menu' && pkg.data.layout === 'menu-3' && <CategoryGridMenuLayout combinations={combinations} />}
-  {pkg.data.type === 'menu' && pkg.data.layout === 'menu-4' && <CenteredPillMenuLayout combinations={combinations} />}
+  {pkg.data.type === 'menu' && <SidebarMenuLayout combinations={combinations} />}
 </Base>
 
 <style>

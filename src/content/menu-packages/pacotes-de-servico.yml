@@ -1,29 +1,47 @@
 type: menu
 name: Pacotes de Serviço
-layout: menu-1
 combinations:
-  - bar: glamouroso
-    category: Clássicos
-    label: Standard
+  - label: Standard
     description: Para celebrações menores e cardápios objetivos.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 2 drinks do menu abaixo**:'
     price: R$ 45 / pessoa - R$ 2.250 total
-  - bar: moderno
-    category: Clássicos
-    label: Premium
+    drinks:
+      - moscow-mule
+      - mojito
+      - pina-colada
+      - sex-on-the-beach
+      - ipanema
+      - daiquiri
+      - lagoa-azul
+      - dream-coffee
+  - label: Premium
     description: Maior variedade de drinks e possibilidades de personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 4 drinks do menu abaixo, incluindo os do pacote anterior**:'
     price: R$ 65 / pessoa - R$ 3.250 total
-  - bar: rustico
-    category: Especiais
-    label: Cinnamon
+    drinks:
+      - moscow-mule
+      - mojito
+      - pina-colada
+      - sex-on-the-beach
+      - ipanema
+      - daiquiri
+      - lagoa-azul
+      - dream-coffee
+  - label: Cinnamon
     description: Experiência completa para eventos que buscam impacto e sofisticação.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
     price: R$ 85 / pessoa - R$ 4.250 total
-  - bar: tropical
-    category: Caip's
-    label: Signature
+    drinks:
+      - aperol-spritz
+      - maracujack
+      - saquerita
+      - spritz-grape
+      - bramble
+  - label: Signature
     description: Seleção ampla, destilados especiais e máxima personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
     price: R$ 120 / pessoa - R$ 6.000 total
+    drinks:
+      - caipirinha
+      - caipvodka
 order: 3

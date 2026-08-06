@@ -10,12 +10,11 @@ import type { CollectionEntry } from 'astro:content';
 import { renderInlineBold } from '../../scripts/inline-markup';
 
 interface Combination {
-  bar: CollectionEntry<'bars'>;
-  category: string;
-  label?: string;
+  label: string;
   description?: string;
   note?: string;
   price?: string;
+  image?: { src: string; alt: string } | null;
   drinks: CollectionEntry<'drinks'>[];
 }
 
@@ -40,7 +39,7 @@ const { combinations } = Astro.props;
           data-w-tab={`Tab ${i + 1}`}
           class={`menu-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
         >
-          <div class="menu-text">{combo.label ?? combo.bar.data.name}</div>
+          <div class="menu-text">{combo.label}</div>
           {combo.price && <div class="menu-tab-price">{combo.price}</div>}
           <div class="tab-bg menu-1" />
         </a>
@@ -50,7 +49,15 @@ const { combinations } = Astro.props;
   <div class="tabs-content w-tab-content">
     {
       combinations.map((combo, i) => {
-        const photo = combo.bar.data.tallPhoto;
+        // Painel lateral: imagem própria da aba (override do admin) ou, sem
+        // ela, a foto do 1º drink curado — garante que o painel nunca fica
+        // vazio e que o <img> existe pro menu-drink-image.ts trocar no clique.
+        const firstDrink = combo.drinks[0];
+        const photo =
+          combo.image ??
+          (firstDrink?.data.image
+            ? { src: firstDrink.data.image, alt: firstDrink.data.name }
+            : null);
         return (
           <div data-w-tab={`Tab ${i + 1}`} class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
             <div class="tabs-content-wrapper">
@@ -80,7 +87,7 @@ const { combinations } = Astro.props;
               <div class="menu-1-img border">
                 {photo && <img src={photo.src} alt={photo.alt} loading="lazy" class="cover-image" />}
                 <div class="text-holder tablet-gradient">
-                  <p class="menu-1-title heading-3">{combo.label ?? combo.bar.data.name}</p>
+                  <p class="menu-1-title heading-3">{combo.label}</p>
                 </div>
               </div>
             </div>

@@ -1,30 +1,51 @@
 type: menu
 name: Orçamento 1
-layout: menu-1
 combinations:
-  - bar: tropical
-    category: Caip's
-    label: Standard
+  - label: Standard
     description: Para celebrações menores e cardápios objetivos.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 2 drinks do menu abaixo**:'
     price: R$ 50 / pessoa - R$ 2.500 total
-  - bar: interno
-    category: Clássicos
-    label: Premium
+    drinks:
+      - caipirinha
+      - caipvodka
+  - label: Premium
     description: Maior variedade de drinks e possibilidades de personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 4 drinks do menu abaixo, incluindo os do pacote anterior**:'
     price: R$ 70 / pessoa - R$ 3.500 total
-  - bar: moderno
-    category: Clássicos
-    label: Cinnamon
+    drinks:
+      - moscow-mule
+      - mojito
+      - pina-colada
+      - sex-on-the-beach
+      - ipanema
+      - daiquiri
+      - lagoa-azul
+      - dream-coffee
+  - label: Cinnamon
     description: Experiência completa para eventos que buscam impacto e sofisticação.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
     price: R$ 85/ pessoa 3.000
-  - bar: moderno
-    category: Clássicos
-    label: Signature
+    drinks:
+      - moscow-mule
+      - mojito
+      - pina-colada
+      - sex-on-the-beach
+      - ipanema
+      - daiquiri
+      - lagoa-azul
+      - dream-coffee
+  - label: Signature
     description: Seleção ampla, destilados especiais e máxima personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
     price: ''
+    drinks:
+      - moscow-mule
+      - mojito
+      - pina-colada
+      - sex-on-the-beach
+      - ipanema
+      - daiquiri
+      - lagoa-azul
+      - dream-coffee
 order: 3
 hidden: true
