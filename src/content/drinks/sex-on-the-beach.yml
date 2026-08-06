@@ -1,5 +1,9 @@
 name: Sex on the Beach
 category: Clássicos
-ingredients: [vodka, licor de pêssego, suco de laranja, suco de cranberry, gelo]
-image: /uploads/drink-coral.jpg
+ingredients:
+  - Vodka
+  - Licor de Pêssego
+  - Suco de Laranja
+  - Granadine
+image: ''
 order: 4
