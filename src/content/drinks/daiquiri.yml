@@ -1,5 +1,7 @@
 name: Daiquiri
 category: Clássicos
-ingredients: [rum branco, suco de limão, açúcar, gelo]
-image: /uploads/drink-cristalino.jpg
+ingredients:
+  - Rum Branco
+  - Limão e Abacaxi
+image: ''
 order: 6
