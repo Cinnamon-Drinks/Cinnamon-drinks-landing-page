@@ -1,34 +1,16 @@
+type: structure
 name: Estrutura e Serviços Extras
-layout: menu-1
-combinations:
-  - bar: tropical
-    category: Clássicos
-    label: MADEIRA CLASSIC
+labels:
+  - name: MADEIRA CLASSIC
     description: ''
-    note: ''
     price: '350'
-  - bar: moderno
-    category: Clássicos
-    label: CAPTONADO
+  - name: CAPTONADO
     description: ''
-    note: ''
     price: '1000'
-  - bar: moderno
-    category: Clássicos
-    label: ''
+  - name: VERDE
     description: ''
-    note: ''
-    price: ''
-  - bar: moderno
-    category: Clássicos
-    label: VERDE
-    description: ''
-    note: ''
     price: '450'
-  - bar: moderno
-    category: Clássicos
-    label: BIKE SPRITZ
+  - name: BIKE SPRITZ
     description: ''
-    note: ''
     price: '2250'
 order: 1

@@ -2,7 +2,9 @@
 
 **Data:** 2026-08-05
 **Solicitante:** Zandor/Roger (via Luis), repassado na sessão de auditoria do CMS
-**Escopo:** `menuPackages` (`/menu/[package]`) — Pacotes de Serviços, Estrutura e Serviços Extras, Orçamento 1, Orçamento 2
+**Escopo:** `menuPackages` (`/menu/[package]`) — Pacotes de Serviços, Orçamento 1, Orçamento 2 (ver atualização abaixo)
+
+> **Atualização (rótulos de estrutura):** "Estrutura e Serviços Extras" **saiu deste escopo** — passou a usar rótulos livres (nome + descrição + imagem + preço), sem drinks nem combinação bar+categoria. Ver [`2026-08-05-menu-estrutura-rotulos-design.md`](./2026-08-05-menu-estrutura-rotulos-design.md). A curadoria de drinks descrita abaixo vale só para os **cardápios**: Pacotes de Serviços, Orçamento 1 e Orçamento 2.
 
 ## Contexto
 
