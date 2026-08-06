@@ -1,5 +1,6 @@
 name: Ipanema
 category: Clássicos
-ingredients: [limão, açúcar, gelo, ginger ale]
-image: /uploads/drink-citrico.jpg
+ingredients:
+  - Vodka, Melancia, Limão, Hortelã e Xarope de Gengibre
+image: ''
 order: 5
