@@ -1,5 +1,6 @@
 name: GT & Especiarias
 category: Gin & Whisky
-ingredients: [gin, água tônica, especiarias (cardamomo, anis-estrelado, pimenta rosa), gelo]
-image: /uploads/drink-whisky.jpg
+ingredients:
+  - Gin, Água Tônica e Especiarias
+image: ''
 order: 2
