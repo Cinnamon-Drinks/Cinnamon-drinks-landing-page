@@ -7,14 +7,19 @@ import Navbar from '../../components/Navbar.astro';
 import Base from '../../layouts/Base.astro';
 
 export async function getStaticPaths() {
-  const packages = await getCollection('menuPackages');
-  return packages.map((pkg) => ({
+  const [fixos, orcamentos] = await Promise.all([
+    getCollection('menuPackages'),
+    getCollection('orcamentos')
+  ]);
+  return [...fixos, ...orcamentos].map((pkg) => ({
     params: { package: pkg.id },
     props: { pkg }
   }));
 }
 
 const { pkg } = Astro.props;
+// Orçamentos saem do índice de busca (link não-listado); os 3 fixos ficam indexáveis.
+const noindex = pkg.collection === 'orcamentos';
 
 // A variante "menu" resolve os drinks curados de cada aba; "structure" usa
 // rótulos livres (labels) e é renderizada pelo StructureLayout.
@@ -35,7 +40,7 @@ const combinations =
     : [];
 ---
 
-<Base title={`${pkg.data.name} — Cardápio`} description={`Combinações do ${pkg.data.name}.`}>
+<Base title={`${pkg.data.name} — Cardápio`} description={`Combinações do ${pkg.data.name}.`} noindex={noindex}>
   <Navbar hideBottomCta />
   <h1 class="sr-only">{pkg.data.name}</h1>
   {pkg.data.type === 'structure' && <StructureLayout labels={pkg.data.labels} />}

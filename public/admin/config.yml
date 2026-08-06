@@ -191,20 +191,152 @@ collections:
         widget: number
         value_type: int
 
-  - name: menuPackages
-    label: Pacotes de Cardápio
-    label_singular: Pacote de cardápio
+  # ── Menu institucional (fixo): file collections não têm botão criar/excluir ──
+  # no CMS, o que trava os 3 itens do menu contra exclusão acidental. `type` é
+  # hidden e OBRIGATÓRIO declarar em cada file: sem ele o Sveltia apaga a chave no
+  # 1º save e o discriminatedUnion de menuPackages (content.config.ts) quebra no
+  # build. O campo `hidden` é omitido de propósito — esses 3 são sempre visíveis.
+  - name: siteStructures
+    label: Estrutura e Serviços
+    icon: deck
+    files:
+      - name: estruturas
+        label: Estruturas
+        file: src/content/menu-packages/estruturas.yml
+        fields:
+          - { name: type, widget: hidden, default: structure }
+          - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Estruturas" ou "Serviços Extras"' }
+          - name: labels
+            label: 'Rótulos (máx. 5)'
+            widget: list
+            min: 1
+            max: 5
+            hint: 'Cada rótulo vira uma aba na página, com nome, descrição, imagem e preço próprios.'
+            fields:
+              - { name: name, label: Nome do rótulo, widget: string, hint: 'Ex: "Bike Spritz"' }
+              - { name: description, label: Descrição, widget: text, required: false }
+              - name: image
+                label: Imagem
+                widget: object
+                required: false
+                fields:
+                  - { name: src, label: Foto, widget: image }
+                  - { name: alt, label: Texto alternativo, widget: string }
+              - { name: price, label: 'Preço (opcional)', widget: string, required: false }
+          - name: order
+            label: Ordem
+            widget: number
+            value_type: int
+      - name: servicos-extras
+        label: Serviços Extras
+        file: src/content/menu-packages/servicos-extras.yml
+        fields:
+          - { name: type, widget: hidden, default: structure }
+          - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Estruturas" ou "Serviços Extras"' }
+          - name: labels
+            label: 'Rótulos (máx. 5)'
+            widget: list
+            min: 1
+            max: 5
+            hint: 'Cada rótulo vira uma aba na página, com nome, descrição, imagem e preço próprios.'
+            fields:
+              - { name: name, label: Nome do rótulo, widget: string, hint: 'Ex: "Bike Spritz"' }
+              - { name: description, label: Descrição, widget: text, required: false }
+              - name: image
+                label: Imagem
+                widget: object
+                required: false
+                fields:
+                  - { name: src, label: Foto, widget: image }
+                  - { name: alt, label: Texto alternativo, widget: string }
+              - { name: price, label: 'Preço (opcional)', widget: string, required: false }
+          - name: order
+            label: Ordem
+            widget: number
+            value_type: int
+
+  - name: siteMenu
+    label: Cardápio do site
     icon: restaurant_menu
-    folder: src/content/menu-packages
+    files:
+      - name: pacotes-de-servico
+        label: Pacotes de Serviço
+        file: src/content/menu-packages/pacotes-de-servico.yml
+        fields:
+          - { name: type, widget: hidden, default: menu }
+          - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Pacotes de Serviço"' }
+          - name: combinations
+            label: Abas do cardápio
+            widget: list
+            min: 1
+            fields:
+              - name: label
+                label: Nome da aba
+                widget: string
+                hint: 'Ex: "Standard", "Premium".'
+              - name: description
+                label: 'Descrição breve (opcional)'
+                widget: text
+                required: false
+                hint: 'Aparece acima da lista de drinks. Ex: "Para celebrações menores e cardápios objetivos."'
+              - name: note
+                label: 'Observação em texto miúdo (opcional)'
+                widget: text
+                required: false
+                hint: 'Abaixo da descrição, em letra menor. Use **texto** para destaque colorido. Ex: regra de escolha de drinks.'
+              - name: price
+                label: 'Preço (opcional)'
+                widget: string
+                required: false
+                hint: 'Ex: "R$ 45 / pessoa - R$ 2.250 total"'
+              - name: image
+                label: 'Imagem do painel (opcional)'
+                widget: object
+                required: false
+                fields:
+                  - { name: src, label: Foto, widget: image }
+                  - { name: alt, label: Texto alternativo, widget: string }
+              - name: drinks
+                label: 'Drinks da aba'
+                widget: list
+                required: false
+                max: 20
+                hint: 'Escolha os drinks desta aba, na ordem em que devem aparecer. Vazio mostra "Em breve".'
+                field:
+                  label: Drink
+                  name: drink
+                  widget: relation
+                  collection: drinks
+                  search_fields: [name]
+                  value_field: '{{slug}}'
+                  display_fields: [name]
+          - name: order
+            label: Ordem
+            widget: number
+            value_type: int
+
+  # ── Orçamentos (sob demanda): folder collection com criar/excluir liberados. ──
+  # O vendedor cria uma proposta por cliente e manda o link /menu/<slug> no
+  # WhatsApp. type/hidden/order são fixos e escondidos — ele só mexe em nome+abas.
+  - name: orcamentos
+    label: Orçamentos
+    label_singular: Orçamento
+    icon: request_quote
+    folder: src/content/orcamentos
     extension: yml
     format: yml
     identifier_field: name
-    filter: { field: type, value: menu }
     slug: '{{slug}}'
     create: true
+    delete: true
     fields:
       - { name: type, widget: hidden, default: menu }
-      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Pacotes de Serviço"' }
+      - { name: hidden, widget: hidden, default: true }
+      - { name: order, widget: hidden, default: 99 }
+      - name: name
+        label: Nome do orçamento
+        widget: string
+        hint: 'Numere em sequência (ex: "Orçamento 3") — vira o link /menu/orcamento-3. Não repita um número já usado.'
       - name: combinations
         label: Abas do cardápio
         widget: list
@@ -250,58 +382,6 @@ collections:
               search_fields: [name]
               value_field: '{{slug}}'
               display_fields: [name]
-      - name: order
-        label: Ordem
-        widget: number
-        value_type: int
-      - name: hidden
-        label: 'Ocultar do menu e do dropdown (opcional)'
-        widget: boolean
-        required: false
-        default: false
-        hint: 'A página continua acessível por link direto — só some do dropdown do navbar e da lista em /menu.'
-
-  - name: menuStructures
-    label: Estrutura e Serviços
-    label_singular: Pacote de estrutura
-    icon: deck
-    folder: src/content/menu-packages
-    extension: yml
-    format: yml
-    identifier_field: name
-    filter: { field: type, value: structure }
-    slug: '{{slug}}'
-    create: true
-    fields:
-      - { name: type, widget: hidden, default: structure }
-      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Estruturas" ou "Serviços Extras"' }
-      - name: labels
-        label: 'Rótulos (máx. 5)'
-        widget: list
-        min: 1
-        max: 5
-        hint: 'Cada rótulo vira uma aba na página, com nome, descrição, imagem e preço próprios.'
-        fields:
-          - { name: name, label: Nome do rótulo, widget: string, hint: 'Ex: "Bike Spritz"' }
-          - { name: description, label: Descrição, widget: text, required: false }
-          - name: image
-            label: Imagem
-            widget: object
-            required: false
-            fields:
-              - { name: src, label: Foto, widget: image }
-              - { name: alt, label: Texto alternativo, widget: string }
-          - { name: price, label: 'Preço (opcional)', widget: string, required: false }
-      - name: order
-        label: Ordem
-        widget: number
-        value_type: int
-      - name: hidden
-        label: 'Ocultar do menu e do dropdown (opcional)'
-        widget: boolean
-        required: false
-        default: false
-        hint: 'A página continua acessível por link direto — só some do dropdown do navbar e da lista em /menu.'
 
   - name: testimonials
     label: Depoimentos
