@@ -1,5 +1,5 @@
 type: menu
-name: Pacotes de Serviços
+name: Pacotes de Serviço
 layout: menu-1
 combinations:
   - bar: glamouroso
@@ -26,4 +26,4 @@ combinations:
     description: Seleção ampla, destilados especiais e máxima personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
     price: R$ 120 / pessoa - R$ 6.000 total
-order: 1
+order: 3

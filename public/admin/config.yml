@@ -273,7 +273,7 @@ collections:
     create: true
     fields:
       - { name: type, widget: hidden, default: structure }
-      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Estrutura e Serviços Extras"' }
+      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Estruturas" ou "Serviços Extras"' }
       - name: labels
         label: 'Rótulos (máx. 5)'
         widget: list

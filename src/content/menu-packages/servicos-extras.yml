@@ -1,0 +1,14 @@
+type: structure
+name: Serviços Extras
+labels:
+  - name: BIKE SPRITZ
+    description: ''
+  - name: DEFUMAÇÃO AO VIVO
+    description: ''
+  - name: FANTASY & SHOTS
+    description: ''
+  - name: ICE CUBE CLERICOT
+    description: ''
+  - name: TORRE DE TAÇAS
+    description: ''
+order: 2

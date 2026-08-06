@@ -1,5 +1,7 @@
 # Pacote de Estrutura como rótulos livres — Design Spec
 
+> **Atualização 2026-08-06 (via Luis):** o pacote foi **dividido em dois** e renomeado. O antigo "Estrutura e Serviços Extras" (`/menu/estrutura-e-servicos-extras`) passou a **"Estruturas"** (`/menu/estruturas`), preservando os 4 rótulos originais (MADEIRA CLASSIC, CAPTONADO, VERDE, BIKE SPRITZ). Foi criado um segundo pacote `type: structure` **"Serviços Extras"** (`/menu/servicos-extras`) com 5 rótulos — BIKE SPRITZ, DEFUMAÇÃO AO VIVO, FANTASY & SHOTS, ICE CUBE CLERICOT, TORRE DE TAÇAS (descrição/imagem/preço a preencher no CMS). Em paralelo, "Pacotes de Serviços" virou **"Pacotes de Serviço"** (`/menu/pacotes-de-servico`). Com isso a decisão travada abaixo ("Opção A — só um pacote de estrutura") fica **superada**: a variante `structure` passa a comportar N pacotes, o que o schema (`labels.min(1).max(5)` por arquivo) já suportava sem alteração de código. Menu final do dropdown: **Estruturas · Serviços Extras · Pacotes de Serviço**.
+
 **Data:** 2026-08-05
 **Solicitante:** Zandor (via Luis)
 **Escopo:** o pacote **"Estrutura e Serviços Extras"** (`menuPackages` → `/menu/estrutura-e-servicos-extras`). Os demais pacotes de menu não mudam.
