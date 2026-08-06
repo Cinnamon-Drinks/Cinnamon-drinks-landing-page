@@ -7,25 +7,25 @@ combinations:
     description: ''
     note: ''
     price: '350'
-  - bar: Moderno
+  - bar: moderno
     category: Clássicos
     label: CAPTONADO
     description: ''
     note: ''
     price: '1000'
-  - bar: Moderno
+  - bar: moderno
     category: Clássicos
     label: ''
     description: ''
     note: ''
     price: ''
-  - bar: Moderno
+  - bar: moderno
     category: Clássicos
     label: VERDE
     description: ''
     note: ''
     price: '450'
-  - bar: Moderno
+  - bar: moderno
     category: Clássicos
     label: BIKE SPRITZ
     description: ''
