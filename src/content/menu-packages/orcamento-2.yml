@@ -1,14 +1,23 @@
 type: menu
 name: Orçamento 2
-layout: menu-1
 combinations:
-  - bar: rustico
-    category: Especiais
+  - label: Rústico
     description: Bar Rústico com cardápio de drinks especiais.
     price: "R$ 90 / pessoa - R$ 4.500 total"
-  - bar: tropical
-    category: Gin & Whisky
+    drinks:
+      - aperol-spritz
+      - maracujack
+      - saquerita
+      - spritz-grape
+      - bramble
+  - label: Tropical
     description: Bar Tropical com cardápio de Gin & Whisky.
     price: "R$ 75 / pessoa - R$ 3.750 total"
+    drinks:
+      - negroni
+      - gt-especiarias
+      - bees-knees
+      - pinicilin
+      - cosmopolitan
 order: 4
 hidden: true

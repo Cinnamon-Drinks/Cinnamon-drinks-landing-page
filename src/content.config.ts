@@ -103,29 +103,26 @@ const structureLabel = z.object({
   price: z.string().optional()
 });
 
-// Pacote de cardápio: cada aba é uma combinação bar+categoria que deriva a
-// lista de drinks pela category (comportamento original).
+// Cardápio de serviço: cada aba tem nome livre, preço, descrição e uma lista
+// curada de drinks (fonte única — sem derivação por categoria). Imagem própria
+// no painel lateral, editável pelo admin.
 const menuPackageMenu = z.object({
   type: z.literal('menu'),
   name: z.string(),
-  layout: z.enum(['menu-1', 'menu-2', 'menu-3', 'menu-4']),
   combinations: z
     .array(
       z.object({
-        bar: reference('bars'),
-        category: z.enum(["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']),
-        // Rótulo da aba independente do nome do bar (ex: "Standard" numa
-        // aba que usa o bar "PREMIUM") — sem isso, cai no nome do bar.
-        label: z.string().optional(),
-        // Texto breve exibido acima da lista de drinks na aba — editável
-        // pelo CMS, sem isso a aba simplesmente não mostra descrição.
+        // Nome da aba (ex: "Standard"). Obrigatório — antes caía no nome do bar.
+        label: z.string(),
         description: z.string().optional(),
-        // Texto miúdo abaixo da descrição (ex: regra de troca/seleção de
-        // drinks). Editável pelo CMS, independente da description.
         note: z.string().optional(),
-        // Preço exibido abaixo do nome da aba na sidebar (SidebarMenuLayout).
-        // String livre pra caber formatos como "R$ 45 / pessoa - R$ 2.250 total".
-        price: z.string().optional()
+        price: z.string().optional(),
+        // Painel lateral. nullish: o Sveltia grava null quando o object de
+        // imagem é deixado desabilitado no CMS (mesmo padrão do structureLabel).
+        image: z.object({ src: z.string(), alt: z.string() }).nullish(),
+        // Fonte única dos drinks da aba, na ordem escolhida. Vazio/omitido →
+        // aba mostra "Em breve". Teto 20 (= total de drinks hoje).
+        drinks: z.array(reference('drinks')).max(20).optional()
       })
     )
     .min(1),

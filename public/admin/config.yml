@@ -204,51 +204,52 @@ collections:
     create: true
     fields:
       - { name: type, widget: hidden, default: menu }
-      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Menu 1"' }
-      - name: layout
-        label: Estilo visual da página
-        widget: select
-        options:
-          - { label: 'Menu 1 — sidebar + lista + foto grande', value: menu-1 }
-          - { label: 'Menu 2 — abas + grid de texto', value: menu-2 }
-          - { label: 'Menu 3 — grade de categorias + cards com foto', value: menu-3 }
-          - { label: 'Menu 4 — abas em pill + foto redonda', value: menu-4 }
+      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Pacotes de Serviço"' }
       - name: combinations
-        label: Combinações (bar + categoria)
+        label: Abas do cardápio
         widget: list
         min: 1
         fields:
-          - name: bar
-            label: Bar
-            widget: relation
-            collection: bars
-            search_fields: [name]
-            value_field: '{{slug}}'
-            display_fields: [name]
-          - name: category
-            label: Categoria de drink
-            widget: select
-            options: ["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']
           - name: label
-            label: 'Rótulo da aba (opcional)'
+            label: Nome da aba
             widget: string
-            required: false
-            hint: 'Se vazio, usa o nome do bar. Ex: "Standard" numa aba que usa o bar "PREMIUM".'
+            hint: 'Ex: "Standard", "Premium".'
           - name: description
             label: 'Descrição breve (opcional)'
             widget: text
             required: false
-            hint: 'Aparece acima da lista de drinks nessa aba. Ex: "Para celebrações menores e cardápios objetivos."'
+            hint: 'Aparece acima da lista de drinks. Ex: "Para celebrações menores e cardápios objetivos."'
           - name: note
             label: 'Observação em texto miúdo (opcional)'
             widget: text
             required: false
-            hint: 'Aparece abaixo da descrição, em letra menor. Coloque **texto** para dar destaque colorido a um trecho. Ex: regra de troca/seleção de drinks.'
+            hint: 'Abaixo da descrição, em letra menor. Use **texto** para destaque colorido. Ex: regra de escolha de drinks.'
           - name: price
             label: 'Preço (opcional)'
             widget: string
             required: false
-            hint: 'Aparece abaixo do nome da aba na sidebar. Ex: "R$ 45 / pessoa - R$ 2.250 total"'
+            hint: 'Ex: "R$ 45 / pessoa - R$ 2.250 total"'
+          - name: image
+            label: 'Imagem do painel (opcional)'
+            widget: object
+            required: false
+            fields:
+              - { name: src, label: Foto, widget: image }
+              - { name: alt, label: Texto alternativo, widget: string }
+          - name: drinks
+            label: 'Drinks da aba'
+            widget: list
+            required: false
+            max: 20
+            hint: 'Escolha os drinks desta aba, na ordem em que devem aparecer. Vazio mostra "Em breve".'
+            field:
+              label: Drink
+              name: drink
+              widget: relation
+              collection: drinks
+              search_fields: [name]
+              value_field: '{{slug}}'
+              display_fields: [name]
       - name: order
         label: Ordem
         widget: number
