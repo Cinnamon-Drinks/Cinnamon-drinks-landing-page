@@ -1,5 +1,6 @@
 name: Lagoa Azul
 category: Clássicos
-ingredients: [vodka, curaçau blue, suco de limão, água tônica, gelo]
+ingredients:
+  - Vodka, Curaçau Blue, Limão e Gaseificado
 image: /uploads/drink-azul.jpg
 order: 7
