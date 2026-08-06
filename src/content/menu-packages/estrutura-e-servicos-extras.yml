@@ -1,14 +1,34 @@
 name: Estrutura e Serviços Extras
 layout: menu-1
 combinations:
-  - bar: glamouroso
-    category: Clássicos
-  - bar: moderno
-    category: Especiais
-  - bar: interno
-    category: Gin & Whisky
-  - bar: rustico
-    category: "Caip's"
   - bar: tropical
     category: Clássicos
+    label: MADEIRA CLASSIC
+    description: ''
+    note: ''
+    price: '350'
+  - bar: Moderno
+    category: Clássicos
+    label: CAPTONADO
+    description: ''
+    note: ''
+    price: '1000'
+  - bar: Moderno
+    category: Clássicos
+    label: ''
+    description: ''
+    note: ''
+    price: ''
+  - bar: Moderno
+    category: Clássicos
+    label: VERDE
+    description: ''
+    note: ''
+    price: '450'
+  - bar: Moderno
+    category: Clássicos
+    label: BIKE SPRITZ
+    description: ''
+    note: ''
+    price: '2250'
 order: 1
