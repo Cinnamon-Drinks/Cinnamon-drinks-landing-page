@@ -192,16 +192,18 @@ collections:
         value_type: int
 
   - name: menuPackages
-    label: Pacotes de Menu
-    label_singular: Pacote
+    label: Pacotes de Cardápio
+    label_singular: Pacote de cardápio
     icon: restaurant_menu
     folder: src/content/menu-packages
     extension: yml
     format: yml
     identifier_field: name
+    filter: { field: type, value: menu }
     slug: '{{slug}}'
     create: true
     fields:
+      - { name: type, widget: hidden, default: menu }
       - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Menu 1"' }
       - name: layout
         label: Estilo visual da página
@@ -221,7 +223,7 @@ collections:
             widget: relation
             collection: bars
             search_fields: [name]
-            value_field: slug
+            value_field: '{{slug}}'
             display_fields: [name]
           - name: category
             label: Categoria de drink
@@ -247,6 +249,48 @@ collections:
             widget: string
             required: false
             hint: 'Aparece abaixo do nome da aba na sidebar. Ex: "R$ 45 / pessoa - R$ 2.250 total"'
+      - name: order
+        label: Ordem
+        widget: number
+        value_type: int
+      - name: hidden
+        label: 'Ocultar do menu e do dropdown (opcional)'
+        widget: boolean
+        required: false
+        default: false
+        hint: 'A página continua acessível por link direto — só some do dropdown do navbar e da lista em /menu.'
+
+  - name: menuStructures
+    label: Estrutura e Serviços
+    label_singular: Pacote de estrutura
+    icon: deck
+    folder: src/content/menu-packages
+    extension: yml
+    format: yml
+    identifier_field: name
+    filter: { field: type, value: structure }
+    slug: '{{slug}}'
+    create: true
+    fields:
+      - { name: type, widget: hidden, default: structure }
+      - { name: name, label: Nome do pacote, widget: string, hint: 'Ex: "Estrutura e Serviços Extras"' }
+      - name: labels
+        label: 'Rótulos (máx. 5)'
+        widget: list
+        min: 1
+        max: 5
+        hint: 'Cada rótulo vira uma aba na página, com nome, descrição, imagem e preço próprios.'
+        fields:
+          - { name: name, label: Nome do rótulo, widget: string, hint: 'Ex: "Bike Spritz"' }
+          - { name: description, label: Descrição, widget: text, required: false }
+          - name: image
+            label: Imagem
+            widget: object
+            required: false
+            fields:
+              - { name: src, label: Foto, widget: image }
+              - { name: alt, label: Texto alternativo, widget: string }
+          - { name: price, label: 'Preço (opcional)', widget: string, required: false }
       - name: order
         label: Ordem
         widget: number

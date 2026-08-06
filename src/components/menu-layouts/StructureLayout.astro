@@ -1,0 +1,147 @@
+---
+// src/components/menu-layouts/StructureLayout.astro
+// Variante "structure" do pacote de menu: sidebar de abas (uma por rótulo)
+// com preenchimento em gradiente ao ativar/hover, descrição em texto e
+// imagem própria do rótulo no painel fixo à direita. Reaproveita o widget
+// nativo de Tabs do Webflow (w-tabs/w-tab-link/w-tab-pane) — sem JS próprio.
+interface Label {
+  name: string;
+  description?: string;
+  image?: { src: string; alt: string } | null;
+  price?: string;
+}
+
+interface Props {
+  labels: Label[];
+}
+
+const { labels } = Astro.props;
+---
+
+<div
+  data-current="Tab 1"
+  data-easing="ease"
+  data-duration-in="300"
+  data-duration-out="100"
+  class="flex-container w-tabs"
+>
+  <div class="sidebar-menu-tabs w-tab-menu">
+    {
+      labels.map((label, i) => (
+        <a
+          data-w-tab={`Tab ${i + 1}`}
+          class={`menu-tab w-inline-block w-tab-link${i === 0 ? ' w--current' : ''}`}
+        >
+          <div class="menu-text">{label.name}</div>
+          {label.price && <div class="menu-tab-price">{label.price}</div>}
+          <div class="tab-bg menu-1" />
+        </a>
+      ))
+    }
+  </div>
+  <div class="tabs-content w-tab-content">
+    {
+      labels.map((label, i) => (
+        <div data-w-tab={`Tab ${i + 1}`} class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
+          <div class="tabs-content-wrapper">
+            <div class="menu-items-list">
+              {label.description && <p class="menu-tab-description">{label.description}</p>}
+            </div>
+            <div class="menu-1-img border">
+              {label.image && (
+                <img
+                  src={label.image.src}
+                  alt={label.image.alt || label.name}
+                  loading="lazy"
+                  class="cover-image"
+                />
+              )}
+              <div class="text-holder tablet-gradient">
+                <p class="menu-1-title heading-3">{label.name}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <div class="menu-border border" />
+</div>
+
+<style>
+  /* Sidebar de abas fixa — replica os valores do template original com "top"
+   * ajustado pra não ficar sob a navbar sticky. Idêntico ao SidebarMenuLayout. */
+  .sidebar-menu-tabs {
+    z-index: 5;
+    grid-row-gap: 0.2em;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 25vw;
+    padding-top: 2rem;
+    display: flex;
+    position: fixed;
+    top: 10rem;
+  }
+  @media screen and (max-width: 991px) {
+    .sidebar-menu-tabs {
+      background-color: var(--brand-white);
+      border-radius: 2.5em;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 95vw;
+      height: auto;
+      margin-bottom: 1em;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0.3em;
+      position: fixed;
+      top: auto;
+      inset: auto 0% 0%;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    .menu-tab {
+      font-size: 1.3em;
+      padding-left: 6.5vw;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    .menu-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.55em 0.4em;
+      font-size: 0.92em;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    .text-holder .menu-1-title {
+      font-size: 2.6rem;
+    }
+  }
+
+  /* Preço abaixo do nome de cada aba (todas mostram preço ao mesmo tempo,
+   * editável via CMS em labels[].price). :has força column só quando há
+   * preço, pra no mobile (abas lado a lado) o preço não colar no nome. */
+  .menu-tab-price {
+    display: block;
+    width: 100%;
+    font-size: 0.42em;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-top: 0.2em;
+  }
+  @media screen and (max-width: 991px) {
+    .menu-tab:has(.menu-tab-price) {
+      flex-direction: column;
+    }
+    .menu-tab-price {
+      font-size: 0.8em;
+      margin-top: 0.2em;
+    }
+  }
+</style>

@@ -92,37 +92,63 @@ const bars = defineCollection({
   })
 });
 
+// Rótulo livre da variante "structure": nome, descrição, imagem e preço
+// próprios, editados manualmente — sem derivar drinks de categoria.
+const structureLabel = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  // nullish (não só optional): o Sveltia grava `null` quando o admin deixa o
+  // object de imagem desabilitado no CMS — optional sozinho só aceita omitido.
+  image: z.object({ src: z.string(), alt: z.string() }).nullish(),
+  price: z.string().optional()
+});
+
+// Pacote de cardápio: cada aba é uma combinação bar+categoria que deriva a
+// lista de drinks pela category (comportamento original).
+const menuPackageMenu = z.object({
+  type: z.literal('menu'),
+  name: z.string(),
+  layout: z.enum(['menu-1', 'menu-2', 'menu-3', 'menu-4']),
+  combinations: z
+    .array(
+      z.object({
+        bar: reference('bars'),
+        category: z.enum(["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']),
+        // Rótulo da aba independente do nome do bar (ex: "Standard" numa
+        // aba que usa o bar "PREMIUM") — sem isso, cai no nome do bar.
+        label: z.string().optional(),
+        // Texto breve exibido acima da lista de drinks na aba — editável
+        // pelo CMS, sem isso a aba simplesmente não mostra descrição.
+        description: z.string().optional(),
+        // Texto miúdo abaixo da descrição (ex: regra de troca/seleção de
+        // drinks). Editável pelo CMS, independente da description.
+        note: z.string().optional(),
+        // Preço exibido abaixo do nome da aba na sidebar (SidebarMenuLayout).
+        // String livre pra caber formatos como "R$ 45 / pessoa - R$ 2.250 total".
+        price: z.string().optional()
+      })
+    )
+    .min(1),
+  order: z.number().int(),
+  // Some do dropdown do navbar e da página /menu (listagem), mas a página
+  // /menu/[slug] continua acessível por link direto — pra pacotes ainda
+  // não prontos pra divulgação geral (ex: orçamentos sob consulta).
+  hidden: z.boolean().default(false)
+});
+
+// Pacote de estrutura: rótulos livres no lugar da combinação bar+categoria.
+// Máx. 5 rótulos pra caber na sidebar de abas (StructureLayout).
+const menuPackageStructure = z.object({
+  type: z.literal('structure'),
+  name: z.string(),
+  labels: z.array(structureLabel).min(1).max(5),
+  order: z.number().int(),
+  hidden: z.boolean().default(false)
+});
+
 const menuPackages = defineCollection({
   loader: glob({ pattern: '**/*.yml', base: './src/content/menu-packages' }),
-  schema: z.object({
-    name: z.string(),
-    layout: z.enum(['menu-1', 'menu-2', 'menu-3', 'menu-4']),
-    combinations: z
-      .array(
-        z.object({
-          bar: reference('bars'),
-          category: z.enum(["Caip's", 'Clássicos', 'Gin & Whisky', 'Especiais']),
-          // Rótulo da aba independente do nome do bar (ex: "Standard" numa
-          // aba que usa o bar "PREMIUM") — sem isso, cai no nome do bar.
-          label: z.string().optional(),
-          // Texto breve exibido acima da lista de drinks na aba — editável
-          // pelo CMS, sem isso a aba simplesmente não mostra descrição.
-          description: z.string().optional(),
-          // Texto miúdo abaixo da descrição (ex: regra de troca/seleção de
-          // drinks). Editável pelo CMS, independente da description.
-          note: z.string().optional(),
-          // Preço exibido abaixo do nome da aba na sidebar (SidebarMenuLayout).
-          // String livre pra caber formatos como "R$ 45 / pessoa - R$ 2.250 total".
-          price: z.string().optional()
-        })
-      )
-      .min(1),
-    order: z.number().int(),
-    // Some do dropdown do navbar e da página /menu (listagem), mas a página
-    // /menu/[slug] continua acessível por link direto — pra pacotes ainda
-    // não prontos pra divulgação geral (ex: orçamentos sob consulta).
-    hidden: z.boolean().default(false)
-  })
+  schema: z.discriminatedUnion('type', [menuPackageMenu, menuPackageStructure])
 });
 
 const testimonials = defineCollection({

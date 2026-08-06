@@ -1,3 +1,4 @@
+type: menu
 name: Orçamento 1
 layout: menu-1
 combinations:
@@ -13,13 +14,13 @@ combinations:
     description: Maior variedade de drinks e possibilidades de personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 4 drinks do menu abaixo, incluindo os do pacote anterior**:'
     price: R$ 70 / pessoa - R$ 3.500 total
-  - bar: Moderno
+  - bar: moderno
     category: Clássicos
     label: Cinnamon
     description: Experiência completa para eventos que buscam impacto e sofisticação.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
     price: R$ 85/ pessoa 3.000
-  - bar: Moderno
+  - bar: moderno
     category: Clássicos
     label: Signature
     description: Seleção ampla, destilados especiais e máxima personalização.
