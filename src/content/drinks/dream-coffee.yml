@@ -1,5 +1,6 @@
 name: Dream Coffee
 category: Clássicos
-ingredients: [vodka, licor de café, café espresso, açúcar, gelo]
+ingredients:
+  - Vodka e Creme de Café Artesanal
 image: /uploads/drink-whisky.jpg
 order: 8
