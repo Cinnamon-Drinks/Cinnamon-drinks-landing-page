@@ -2,14 +2,23 @@ type: structure
 name: Estruturas
 labels:
   - name: MADEIRA CLASSIC
-    description: ''
+    description: Bar rústico de madeira, ideal para eventos sob a luz do dia e locais onde a madeira prevalece sob a decoração.
+    image:
+      src: /uploads/rustico-2.jpg
+      alt: ttttttttttttttttttttttttttt
     price: '350'
   - name: CAPTONADO
-    description: ''
+    description: Um balcão luxuoso e encantador, disponível tanto no formato 360º, quanto para disposição linear.
+    image:
+      src: /uploads/glamouroso-1.jpg
+      alt: tttttttttttttttttttttttttttttttttttt
     price: '1000'
   - name: VERDE
-    description: ''
-    price: '450'
+    description: Totalmente pensado para interiores e com uma cor de fácil adaptação à qualquer decoração.
+    image:
+      src: /uploads/interno-1.jpg
+      alt: ttttttttttttttttttttttttttttt
+    price: 450R$
   - name: BIKE SPRITZ
     description: ''
     price: '2250'
