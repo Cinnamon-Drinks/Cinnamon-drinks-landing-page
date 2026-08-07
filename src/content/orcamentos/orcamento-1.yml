@@ -1,10 +1,15 @@
 type: menu
+hidden: true
+order: 3
 name: Orçamento 1
 combinations:
   - label: Standard
     description: Para celebrações menores e cardápios objetivos.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 2 drinks do menu abaixo**:'
     price: R$ 50 / pessoa - R$ 2.500 total
+    image:
+      src: https://i.pinimg.com/736x/fd/37/3b/fd373b5c4b45beeee319802121085b7c.jpg
+      alt: teste 01
     drinks:
       - caipirinha
       - caipvodka
@@ -12,6 +17,9 @@ combinations:
     description: Maior variedade de drinks e possibilidades de personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 4 drinks do menu abaixo, incluindo os do pacote anterior**:'
     price: R$ 70 / pessoa - R$ 3.500 total
+    image:
+      src: https://picsum.photos/id/951/1920/1280.webp
+      alt: teste 02
     drinks:
       - moscow-mule
       - mojito
@@ -47,5 +55,3 @@ combinations:
       - daiquiri
       - lagoa-azul
       - dream-coffee
-order: 3
-hidden: true
