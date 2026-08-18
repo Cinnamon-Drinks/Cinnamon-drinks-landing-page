@@ -333,9 +333,9 @@ collections:
     extension: yml
     format: yml
     identifier_field: name
-    summary: '{{name}} - {{clientName}} - https://cinnamondrinks.com.br/menu/{{clientName | slugify}}/'
-    slug: '{{clientName}}'
-    preview_path: '/menu/{{clientName | slugify}}/'
+    summary: "{{name}} - {{clientName | default('Sem cliente')}} - https://cinnamondrinks.com.br/menu/{{clientName | default('{{name}}') | slugify}}/"
+    slug: "{{clientName | default('{{name}}')}}"
+    preview_path: "/menu/{{clientName | default('{{name}}') | slugify}}/"
     sortable_fields:
       fields: [createdAt, name, clientName, slug]
       default:
@@ -355,11 +355,12 @@ collections:
       - name: clientName
         label: Nome do cliente
         widget: string
+        pattern: ['^(?!\s*$)(?![Cc]liente n[aã]o informado$).+', 'Informe o nome real do cliente antes de salvar.']
         hint: 'Ex: "Luiz Carlos" — vira /menu/luiz-carlos/ e aparece na lista do CMS.'
       - name: publicUrl
         label: URL do orçamento
         widget: compute
-        value: 'https://cinnamondrinks.com.br/menu/{{fields.clientName | slugify}}/'
+        value: "https://cinnamondrinks.com.br/menu/{{fields.clientName | default('{{fields.name}}') | slugify}}/"
       - name: combinations
         label: Abas do cardápio
         widget: list

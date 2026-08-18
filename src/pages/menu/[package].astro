@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar.astro';
 import Base from '../../layouts/Base.astro';
 
 export async function getStaticPaths() {
-  const LEGACY_CLIENT_NAME = 'Cliente não informado';
+  const legacyClientNames = new Set(['Cliente não informado']);
   const slugifyMenuSegment = (value: string) =>
     value
       .normalize('NFD')
@@ -17,53 +17,48 @@ export async function getStaticPaths() {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '');
 
-  const getOrcamentoClientSlug = (pkg: { id: string; data: { clientName?: string } }) => {
-    const clientName = pkg.data.clientName?.trim();
-
-    if (!clientName || clientName === LEGACY_CLIENT_NAME) {
-      return pkg.id;
-    }
-
-    return slugifyMenuSegment(clientName) || pkg.id;
-  };
-
   const [fixos, orcamentos] = await Promise.all([
     getCollection('menuPackages'),
     getCollection('orcamentos')
   ]);
 
-  const fixedPaths = fixos.map((pkg) => ({
-    params: { package: pkg.id },
-    props: { pkg }
-  }));
-
-  const orcamentoPaths = orcamentos.flatMap((pkg) => {
-    const clientSlug = getOrcamentoClientSlug(pkg);
-    const paths = [
-      {
-        params: { package: clientSlug },
-        props: { pkg }
-      }
-    ];
-
-    if (clientSlug !== pkg.id) {
-      paths.push({
-        params: { package: pkg.id },
-        props: { pkg }
-      });
+  const routes = new Map<string, (typeof fixos)[number] | (typeof orcamentos)[number]>();
+  const addRoute = (slug: string, pkg: (typeof fixos)[number] | (typeof orcamentos)[number]) => {
+    if (slug && !routes.has(slug)) {
+      routes.set(slug, pkg);
     }
+  };
 
-    return paths;
+  fixos.forEach((pkg) => {
+    addRoute(pkg.id, pkg);
+  });
+  orcamentos.forEach((pkg) => {
+    const clientName = pkg.data.clientName?.trim() ?? '';
+    const clientSlug = slugifyMenuSegment(clientName);
+    const hasClientName = clientName && !legacyClientNames.has(clientName);
+
+    addRoute(hasClientName ? clientSlug || pkg.id : pkg.id, pkg);
+    addRoute(pkg.id, pkg);
+
+    if (clientSlug) {
+      addRoute(clientSlug, pkg);
+    } else if (!hasClientName) {
+      addRoute(slugifyMenuSegment('Cliente não informado'), pkg);
+    }
   });
 
-  return [...fixedPaths, ...orcamentoPaths];
+  return [...routes].map(([slug, pkg]) => ({
+    params: { package: slug },
+    props: { pkg }
+  }));
 }
 
 const { pkg } = Astro.props;
 // Orçamentos saem do índice de busca (link não-listado); os 3 fixos ficam indexáveis.
 const noindex = pkg.collection === 'orcamentos';
 const clientName = noindex ? pkg.data.clientName?.trim() : '';
-const pageName = clientName ? `${pkg.data.name} — ${clientName}` : pkg.data.name;
+const displayClientName = clientName && clientName !== 'Cliente não informado' ? clientName : '';
+const pageName = displayClientName ? `${pkg.data.name} — ${displayClientName}` : pkg.data.name;
 
 // A variante "menu" resolve os drinks curados de cada aba; "structure" usa
 // rótulos livres (labels) e é renderizada pelo StructureLayout.
