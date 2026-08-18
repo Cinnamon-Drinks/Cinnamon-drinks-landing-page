@@ -1,0 +1,19 @@
+type: menu
+hidden: true
+order: 99
+createdAt: 2026-08-18T21:04:00.000Z
+name: Orçamento 3
+clientName: Luiz Carlos
+publicUrl: https://cinnamondrinks.com.br/menu/Luiz Carlos/
+combinations:
+  - label: Premium
+    description: teste
+    note: teste
+    price: 75 R$/pessoa
+    image:
+      src: /uploads/moderno-1.jpg
+      alt: Premium
+    drinks:
+      - macunaíma
+      - ipanema
+      - mojito
