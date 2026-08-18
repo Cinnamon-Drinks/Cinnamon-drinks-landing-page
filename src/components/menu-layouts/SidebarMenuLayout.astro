@@ -72,7 +72,7 @@ const { combinations } = Astro.props;
                     <button
                       type="button"
                       class="collection-item-2"
-                      data-drink-image={drink.data.image}
+                      data-drink-image={drink.data.image || photo?.src}
                       data-drink-name={drink.data.name}
                     >
                       <p class="menu-1-name">{drink.data.name}</p>
