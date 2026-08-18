@@ -2,6 +2,7 @@ type: menu
 hidden: true
 order: 99
 name: Orçamento 3
+clientName: Luiz Carlos
 combinations:
   - label: Standart
     description: dssdsg
