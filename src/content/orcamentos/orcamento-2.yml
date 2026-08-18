@@ -1,5 +1,7 @@
 type: menu
 name: Orçamento 2
+clientName: Cliente não informado
+createdAt: 2026-08-06T18:00:36-03:00
 combinations:
   - label: Rústico
     description: Bar Rústico com cardápio de drinks especiais.

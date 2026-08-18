@@ -154,7 +154,11 @@ const menuPackages = defineCollection({
 // menu, sempre hidden.
 const orcamentos = defineCollection({
   loader: glob({ pattern: '**/*.yml', base: './src/content/orcamentos' }),
-  schema: menuPackageMenu
+  schema: menuPackageMenu.extend({
+    clientName: z.string().optional(),
+    publicUrl: z.string().optional(),
+    createdAt: z.union([z.string(), z.date()]).optional()
+  })
 });
 
 const testimonials = defineCollection({
