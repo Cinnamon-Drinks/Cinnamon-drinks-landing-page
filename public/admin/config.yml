@@ -21,6 +21,13 @@ publish_mode: simple
 site_url: https://cinnamondrinks.com.br
 display_url: https://cinnamondrinks.com.br
 
+# Slugs sem acento evitam rotas como /menu/orçamento-3. O Astro usa o nome
+# do arquivo como id da página estática, então o CMS deve gravar orcamento-3.yml.
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
 # Toda mídia enviada pelo CMS vai para public/uploads/ e é servida em /uploads/.
 media_folder: public/uploads
 public_folder: /uploads

@@ -50,13 +50,14 @@ const { combinations } = Astro.props;
     {
       combinations.map((combo, i) => {
         // Painel lateral: imagem própria da aba (override do admin) ou, sem
-        // ela, a foto do 1º drink curado — garante que o painel nunca fica
-        // vazio e que o <img> existe pro menu-drink-image.ts trocar no clique.
-        const firstDrink = combo.drinks[0];
+        // ela, a primeira foto disponível entre os drinks curados. Nem todo
+        // drink tem foto; depender só do 1º deixava a aba sem <img> e impedia
+        // menu-drink-image.ts de trocar a imagem ao clicar nos drinks seguintes.
+        const firstDrinkWithImage = combo.drinks.find((drink) => drink.data.image);
         const photo =
           combo.image ??
-          (firstDrink?.data.image
-            ? { src: firstDrink.data.image, alt: firstDrink.data.name }
+          (firstDrinkWithImage?.data.image
+            ? { src: firstDrinkWithImage.data.image, alt: firstDrinkWithImage.data.name }
             : null);
         return (
           <div data-w-tab={`Tab ${i + 1}`} class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}>
@@ -222,4 +223,3 @@ const { combinations } = Astro.props;
     color: var(--accent);
   }
 </style>
-
