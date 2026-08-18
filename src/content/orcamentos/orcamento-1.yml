@@ -3,7 +3,7 @@ hidden: true
 order: 3
 createdAt: 2026-08-06T23:26:04-03:00
 name: Orçamento 1
-clientName: Cliente não informado
+clientName: cliente1
 combinations:
   - label: Standard
     description: Para celebrações menores e cardápios objetivos.
