@@ -1,0 +1,14 @@
+type: menu
+hidden: true
+order: 99
+name: Orçamento Luís TESTE
+combinations:
+  - label: STANDARD
+    description: CARDAPIO SIMPLES
+    note: RAPIDO
+    price: 45r$/Convidado
+    image: null
+    drinks:
+      - daiquiri
+      - fresh-gin
+      - maracujack
