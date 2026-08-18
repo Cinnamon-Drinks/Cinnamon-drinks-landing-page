@@ -333,8 +333,8 @@ collections:
     extension: yml
     format: yml
     identifier_field: name
-    summary: "{{name}} - {{clientName | default('{{name}}')}} - https://cinnamondrinks.com.br/menu/{{clientName | default('{{name}}')}}/"
-    slug: "{{clientName | default('{{name}}')}}"
+    summary: '{{name}} - {{clientName}} - https://cinnamondrinks.com.br/menu/{{slug}}/'
+    slug: '{{clientName}}'
     preview_path: '/menu/{{slug}}/'
     sortable_fields:
       fields: [createdAt, name, clientName, slug]
@@ -360,7 +360,7 @@ collections:
       - name: publicUrl
         label: URL do orçamento
         widget: compute
-        value: "https://cinnamondrinks.com.br/menu/{{fields.clientName | default('{{fields.name}}')}}/"
+        value: 'https://cinnamondrinks.com.br/menu/{{fields.clientName}}/'
       - name: combinations
         label: Abas do cardápio
         widget: list
