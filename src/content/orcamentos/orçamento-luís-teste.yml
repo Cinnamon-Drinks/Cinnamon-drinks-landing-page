@@ -1,7 +1,7 @@
 type: menu
 hidden: true
 order: 99
-name: Orçamento Luís TESTE
+name: Orçamento 3
 combinations:
   - label: STANDARD
     description: CARDAPIO SIMPLES
