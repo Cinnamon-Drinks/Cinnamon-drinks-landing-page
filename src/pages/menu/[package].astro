@@ -8,7 +8,7 @@ import Base from '../../layouts/Base.astro';
 
 export async function getStaticPaths() {
   const legacyClientNames = new Set(['Cliente não informado']);
-  const slugifyMenuSegment = (value: string) =>
+  const toMenuPathSegment = (value: string) =>
     value
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
@@ -34,16 +34,16 @@ export async function getStaticPaths() {
   });
   orcamentos.forEach((pkg) => {
     const clientName = pkg.data.clientName?.trim() ?? '';
-    const clientSlug = slugifyMenuSegment(clientName);
+    const clientPath = toMenuPathSegment(clientName);
     const hasClientName = clientName && !legacyClientNames.has(clientName);
 
-    addRoute(hasClientName ? clientSlug || pkg.id : pkg.id, pkg);
+    addRoute(hasClientName ? clientPath || pkg.id : pkg.id, pkg);
     addRoute(pkg.id, pkg);
 
-    if (clientSlug) {
-      addRoute(clientSlug, pkg);
+    if (clientPath) {
+      addRoute(clientPath, pkg);
     } else if (!hasClientName) {
-      addRoute(slugifyMenuSegment('Cliente não informado'), pkg);
+      addRoute(toMenuPathSegment('Cliente não informado'), pkg);
     }
   });
 

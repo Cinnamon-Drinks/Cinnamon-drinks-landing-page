@@ -59,8 +59,24 @@
     </style>
     <script>
       (() => {
-        const quoteUrlPattern = /https:\/\/cinnamondrinks\.com\.br\/menu\/[a-z0-9-]+\/?/g;
+        const quoteUrlPattern = /https:\/\/cinnamondrinks\.com\.br\/menu\/([^/\n<]+)\/?/g;
         const ignoredTags = new Set(['A', 'BUTTON', 'INPUT', 'SCRIPT', 'STYLE', 'TEXTAREA']);
+
+        const toMenuPathSegment = (value) =>
+          value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        const normalizeQuoteUrl = (url) => {
+          const match = url.match(/^https:\/\/cinnamondrinks\.com\.br\/menu\/(.+?)\/?$/);
+          const pathSegment = toMenuPathSegment(match?.[1] ?? '');
+
+          return `https://cinnamondrinks.com.br/menu/${pathSegment || 'orcamento'}/`;
+        };
 
         const copyText = async (value) => {
           if (navigator.clipboard?.writeText) {
@@ -79,7 +95,7 @@
         };
 
         const createUrlControl = (url) => {
-          const normalizedUrl = url.endsWith('/') ? url : `${url}/`;
+          const normalizedUrl = normalizeQuoteUrl(url);
           const wrapper = document.createElement('span');
           wrapper.className = 'cinnamon-cms-url';
           wrapper.dataset.cinnamonUrl = normalizedUrl;
@@ -110,6 +126,7 @@
 
         const linkifyTextNode = (node) => {
           const text = node.nodeValue;
+          quoteUrlPattern.lastIndex = 0;
 
           if (!text || !quoteUrlPattern.test(text)) {
             quoteUrlPattern.lastIndex = 0;
@@ -120,7 +137,7 @@
           const fragment = document.createDocumentFragment();
           let cursor = 0;
 
-          text.replace(quoteUrlPattern, (url, index) => {
+          text.replace(quoteUrlPattern, (url, _pathSegment, index) => {
             fragment.append(document.createTextNode(text.slice(cursor, index)));
             fragment.append(createUrlControl(url));
             cursor = index + url.length;
@@ -162,6 +179,7 @@
           quoteUrlPattern.lastIndex = 0;
         };
 
+        let observedBody;
         const observer = new MutationObserver((mutations) => {
           window.requestAnimationFrame(() => {
             mutations.forEach((mutation) => {
@@ -174,10 +192,33 @@
           });
         });
 
-        window.addEventListener('DOMContentLoaded', () => {
+        const startLinkifier = () => {
+          if (!document.body) return;
+
           linkifyQuoteUrls();
-          observer.observe(document.body, { childList: true, subtree: true });
-        });
+
+          if (observedBody !== document.body) {
+            observer.disconnect();
+            observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+            observedBody = document.body;
+          }
+        };
+
+        startLinkifier();
+
+        if (document.readyState === 'loading') {
+          window.addEventListener('DOMContentLoaded', startLinkifier);
+        }
+
+        let startupTicks = 0;
+        const startupTimer = window.setInterval(() => {
+          startLinkifier();
+          startupTicks += 1;
+
+          if (startupTicks >= 60) {
+            window.clearInterval(startupTimer);
+          }
+        }, 500);
       })();
     </script>
   </body>
