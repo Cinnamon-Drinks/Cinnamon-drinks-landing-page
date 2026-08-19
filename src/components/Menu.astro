@@ -45,28 +45,40 @@ const grouped = Object.fromEntries(
             class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}
           >
             <div class="menu-wrap">
-              <div class="categories-wrapper">
-                <div class="categories-list drinks-grid">
+              <div class="categories-wrapper w-dyn-list">
+                <div role="list" class="categories-list drinks-grid w-dyn-items">
                   {Array.from({ length: 5 }).map((_, idx) => {
                     const d = grouped[cat][idx];
                     return (
-                      <div class="category-item drink-card">
+                      <div role="listitem" class="category-item drink-card w-dyn-item">
                         <h3 class="heading-4 menu-name">{d ? d.data.name : ' '}</h3>
-                        <div class="category-cover">
-                          {d ? (
-                            <>
+                        {d?.data.image ? (
+                          <button
+                            type="button"
+                            class="category-cover image-modal-trigger w-inline-block"
+                            data-image-modal-trigger
+                            data-image-modal-src={d.data.image}
+                            data-image-modal-alt={`Drink ${d.data.name}`}
+                            data-image-modal-title={d.data.name}
+                            aria-label={`Ampliar imagem de ${d.data.name}`}
+                          >
+                            <img
+                              src={d.data.image}
+                              alt={`Drink ${d.data.name}`}
+                              loading="lazy"
+                              class="cover-image"
+                            />
+                            <div class="cover-gradient bottom" />
+                          </button>
+                        ) : (
+                          <div class="category-cover">
+                            {d ? (
                               <div class="cover-gradient bottom" />
-                              {d.data.image && (
-                                <div
-                                  class="category-image"
-                                  style={`background-image: url(${d.data.image});`}
-                                />
-                              )}
-                            </>
-                          ) : (
-                            <div class="slot-empty">Em breve</div>
-                          )}
-                        </div>
+                            ) : (
+                              <div class="slot-empty">Em breve</div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}

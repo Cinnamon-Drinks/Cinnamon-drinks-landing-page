@@ -1,0 +1,166 @@
+<div class="image-modal" data-image-modal aria-hidden="true">
+  <div class="image-modal__backdrop" data-image-modal-close aria-hidden="true"></div>
+  <figure
+    class="image-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="image-modal-caption"
+  >
+    <button type="button" class="image-modal__close" data-image-modal-close aria-label="Fechar imagem">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <img src="" alt="" class="image-modal__image" data-image-modal-image />
+    <figcaption class="image-modal__caption" id="image-modal-caption" data-image-modal-caption></figcaption>
+  </figure>
+</div>
+
+<script>
+  import '../scripts/image-modal.ts';
+</script>
+
+<style>
+  :global(.image-modal-trigger) {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    background: transparent;
+  }
+
+  :global(.image-modal-trigger:hover .cover-image),
+  :global(.image-modal-trigger:hover .category-image),
+  :global(.image-modal-trigger:focus-visible .cover-image),
+  :global(.image-modal-trigger:focus-visible .category-image) {
+    transform: scale(1.03);
+  }
+
+  :global(.image-modal-trigger .cover-image),
+  :global(.image-modal-trigger .category-image) {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  :global(html.is-image-modal-open),
+  :global(html.is-image-modal-open body) {
+    overflow: hidden;
+  }
+
+  .image-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      visibility var(--dur-base) var(--ease-out);
+  }
+
+  .image-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .image-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.86);
+    cursor: zoom-out;
+  }
+
+  .image-modal__dialog {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(92vw, 1100px);
+    max-height: 92vh;
+    margin: 0;
+    gap: 0.75rem;
+  }
+
+  .image-modal__image {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 82vh;
+    object-fit: contain;
+    background: linear-gradient(135deg, var(--gray-800) 0%, var(--gray-700) 100%);
+    border: 0.15em solid var(--brand-white);
+    border-radius: 1.2rem;
+    box-shadow: 0 24px 72px rgba(0, 0, 0, 0.5);
+  }
+
+  .image-modal__caption {
+    max-width: 72ch;
+    margin: 0;
+    color: var(--brand-white);
+    font-size: clamp(0.875rem, 1.2vw, 1rem);
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    text-transform: none;
+  }
+
+  .image-modal__close {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    color: var(--brand-black);
+    font: inherit;
+    font-size: 2rem;
+    line-height: 1;
+    background: var(--brand-white);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translate(35%, -35%);
+  }
+
+  @media screen and (max-width: 767px) {
+    .image-modal {
+      padding: 1rem;
+    }
+
+    .image-modal__dialog {
+      width: 94vw;
+    }
+
+    .image-modal__image {
+      max-height: 78vh;
+      border-radius: 0.9rem;
+    }
+
+    .image-modal__close {
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 1.8rem;
+      transform: translate(20%, -40%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .image-modal,
+    :global(.image-modal-trigger .cover-image),
+    :global(.image-modal-trigger .category-image) {
+      transition: none;
+    }
+  }
+</style>

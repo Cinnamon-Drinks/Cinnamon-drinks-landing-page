@@ -36,6 +36,13 @@
 - **Domínio:** `cinnamondrinks.com.br` (Registro.br, confirmado 2026-05-04).
 - **Vermelhos de validação** (`#ff2525`, `#f11`) ficam intencionalmente fora da regra de UI (UX > paleta).
 
+## Fluxo obrigatório antes de commit/push
+
+1. Após corrigir bug ou implementar qualquer mudança, faça code review da alteração antes de preparar commit.
+2. O code review deve priorizar bugs, regressões, riscos de layout/UX, acessibilidade, contratos de dados, efeitos colaterais e cobertura de validação/testes.
+3. Só é autorizado fazer commit e push quando o code review passar limpo, sem findings bloqueantes.
+4. Se o code review encontrar problema, corrija primeiro, valide de novo e repita o code review antes de commit/push.
+
 ## Comandos comuns
 
 | Comando | Uso |

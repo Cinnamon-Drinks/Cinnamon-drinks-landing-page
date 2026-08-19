@@ -15,6 +15,10 @@ interface Props {
 
 const site = await getEntry('site', 'site');
 const { title, description, ogImage = '/og-image.jpg', noindex = false } = Astro.props;
+const siteUrl = Astro.site ?? new URL('https://cinnamondrinks.com.br');
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const resolvedOgImage = new URL(ogImage, siteUrl).toString();
+const logoUrl = new URL('/images/site-icon-512.png', siteUrl).toString();
 
 const pageTitle = title
   ? `${title} — ${site!.data.brandName}`
@@ -23,6 +27,26 @@ const pageTitle = title
 const pageDesc =
   description ??
   'Coquetelaria de alto padrão para casamentos, formaturas e eventos em Lavras/MG. Solicite seu orçamento.';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site!.data.brandName,
+  description: pageDesc,
+  url: siteUrl.toString(),
+  logo: logoUrl,
+  image: resolvedOgImage,
+  telephone: `+${site!.data.whatsappNumber}`,
+  email: site!.data.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site!.data.address,
+    addressLocality: 'Lavras',
+    addressRegion: 'MG',
+    addressCountry: 'BR'
+  },
+  sameAs: [`https://instagram.com/${site!.data.instagram}`]
+};
 ---
 
 <!doctype html>
@@ -37,13 +61,23 @@ const pageDesc =
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDesc} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={site!.data.brandName} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/images/webclip.png" />
+    <meta name="twitter:image" content={resolvedOgImage} />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -64,7 +98,8 @@ const pageDesc =
       })(window, document);
     </script>
     <script is:inline src="/vendor/jquery-3.5.1.min.js"></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
     <slot />

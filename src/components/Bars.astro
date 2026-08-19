@@ -42,25 +42,36 @@ const bars = (await getCollection('bars')).sort((a, b) => a.data.order - b.data.
             class={`w-tab-pane${i === 0 ? ' w--tab-active' : ''}`}
           >
             <div class="menu-wrap">
-              <div class="categories-wrapper">
+              <div class="categories-wrapper w-dyn-list">
                 <p class="bar-tab-description">{bar.data.description.trim()}</p>
-                <div class="categories-list drinks-grid">
+                <div role="list" class="categories-list drinks-grid w-dyn-items">
                   {Array.from({ length: 5 }).map((_, idx) => {
                     const photo = bar.data.gallery[idx];
                     return (
-                      <div class="category-item drink-card">
-                        <div class="category-cover">
-                          {photo && (
+                      <div role="listitem" class="category-item drink-card w-dyn-item">
+                        {photo ? (
+                          <button
+                            type="button"
+                            class="category-cover image-modal-trigger w-inline-block"
+                            data-image-modal-trigger
+                            data-image-modal-src={photo.src}
+                            data-image-modal-alt={photo.alt}
+                            data-image-modal-title={photo.alt}
+                            aria-label={`Ampliar imagem de ${bar.data.name}`}
+                          >
                             <img
                               src={photo.src}
                               alt={photo.alt}
                               loading="lazy"
                               class="cover-image"
                             />
-                          )}
-                          {photo && <div class="cover-gradient bottom" />}
-                          {!photo && <div class="slot-empty">Em breve</div>}
-                        </div>
+                            <div class="cover-gradient bottom" />
+                          </button>
+                        ) : (
+                          <div class="category-cover">
+                            <div class="slot-empty">Em breve</div>
+                          </div>
+                        )}
                       </div>
                     );
                   })}

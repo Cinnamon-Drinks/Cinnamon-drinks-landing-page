@@ -96,19 +96,25 @@
   margin-left: 0;
 }
 
-/* Menu wrap: remove padding lateral de 8.33vw que estreitava o grid */
+/* Menu wrap: replica as medidas do template Webflow para manter o
+ * tamanho final das imagens em #menu e #estrutura. */
 #menu .menu-wrap,
 #estrutura .menu-wrap {
-  padding: 1rem 2rem 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: auto;
-  display: block;
+  padding-left: 8.33vw;
+  padding-right: 8.33vw;
+  display: flex;
 }
 
-/* Categories wrapper: tira width:83.4vw fixo do template */
+/* Categories wrapper: mesma largura do Webflow original. */
 #menu .categories-wrapper,
 #estrutura .categories-wrapper {
-  width: 100%;
-  padding-top: 0.5rem;
+  width: 83.4vw;
+  max-width: 83.4vw;
+  padding-top: 2em;
 }
 
 /* Menu tabs centralizadas (visual mais limpo no layout de cima).
@@ -288,55 +294,117 @@ img.cover-image[alt=''] {
   box-shadow: 0 12px 30px rgba(242, 102, 43, 0.45);
 }
 
-/* Cards em grid das sections de abas — #menu (drinks) e #estrutura
- * (bares). Nome em cima · imagem · texto embaixo.
- * Compartilhado pelas duas (antes vivia no <style> de Menu.astro).
- *
- * Formato da imagem: retângulo vertical (3:4) com cantos arredondados,
- * substituindo o oval deitado original. As fotos-fonte são retrato
- * (~2:3) — o oval deitado (mais largo que alto) espremia/cortava a
- * taça de forma estranha; o 3:4 vertical respeita a orientação da
- * foto e mostra a taça inteira. Decisão validada via demos externas
- * em demos/ (fora do repo) — ver "1-retangulo-vertical.html". */
+/* Cards das sections de abas — #menu (drinks) e #estrutura (bares).
+ * Mantem o formato arredondado do Webflow original em .category-cover,
+ * com imagem via <img> para suportar uploads fora da proporcao ideal. */
 .drinks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 2rem;
-  justify-items: center;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
 }
 .drink-card {
-  width: 100%;
-  max-width: 195px;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
   text-align: center;
 }
 .drink-card .category-cover {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 15.6vw;
+  max-width: 75vh;
+  height: 14.2em;
+  margin-top: 1.8em;
+  padding-top: 0;
+  appearance: none;
+  background: transparent;
+  border: 4px solid transparent;
+  border-radius: 6em;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+}
+.drink-card .category-image,
+.drink-card .cover-image {
   width: 100%;
-  height: auto;
-  aspect-ratio: 3 / 4;
-  margin-top: 0.5rem;
-  border-radius: 22px;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+  height: 100%;
+  object-position: center;
 }
 .drink-card .category-image {
-  background-position: 50% 30%;
+  background-position: 50%;
+  background-size: cover;
 }
 .drink-card .cover-image {
-  object-position: center 30%;
+  object-fit: cover;
 }
 .drink-card .heading-4.menu-name {
   position: static;
   top: auto;
   left: auto;
   transform: none;
+  max-width: 15.6vw;
   font-size: 1.1rem;
   font-weight: 700;
-  margin: 0 0 0.25rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  margin: 0 auto 0.25rem;
 }
-@media (max-width: 768px) {
-  .drinks-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+@media (max-width: 479px) {
+  .drink-card .heading-4.menu-name {
+    font-size: 0.55rem;
+  }
+}
+
+/* Cenário 4 aprovado: mantém o formato atual dos cards e aumenta o
+ * comprimento vertical da section em desktop/tablet, abrindo respiro de
+ * scroll sem compactar título, tabs ou imagens. */
+@media (min-width: 769px) {
+  #menu.section.full-height,
+  #estrutura.section.full-height {
+    height: auto;
+    min-height: 130vh;
+  }
+
+  #menu .container-full-width.border,
+  #estrutura .container-full-width.border {
+    height: auto;
+    min-height: inherit;
+    padding-bottom: 120px;
+  }
+
+  #menu .tabs-content,
+  #estrutura .tabs-content {
+    overflow: visible;
+  }
+
+  #menu .categories-wrapper,
+  #estrutura .categories-wrapper {
+    padding-top: 0;
+  }
+
+  #menu .drink-card .category-cover,
+  #estrutura .drink-card .category-cover {
+    width: min(15.6vw, 26.4vh);
+    height: min(14.2em, 50vh);
+    margin-top: 0.45em;
+  }
+
+  #estrutura .bar-tab-description {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-height: 899px) {
+  #menu .drink-card .category-cover,
+  #estrutura .drink-card .category-cover {
+    width: min(15.6vw, 23.4vh);
+    height: min(14.2em, 44vh);
+  }
+
+  #menu .drink-card .heading-4.menu-name,
+  #estrutura .drink-card .heading-4.menu-name {
+    max-width: min(15.6vw, 23.4vh);
   }
 }
 
@@ -593,34 +661,23 @@ img.cover-image[alt=''] {
     padding-right: 0;
   }
 
-  /* Limita a galeria de drinks/bares a 4 cards no mobile — o template
-   * original suporta até 5, mas em 390px o grid é 2 colunas (auto-fit
-   * minmax 180px), então 5 cards viram "2+2+1" com o último sozinho
-   * na 3ª linha. 4 cards viram 2x2 limpo. Em desktop os 5 continuam
-   * visíveis (grid expande pra mais colunas). */
+  /* Limita a galeria de drinks/bares a 4 cards no mobile. No formato
+   * original do Webflow, 4 cards mantêm a faixa compacta perto do botão
+   * MENU sticky sem criar uma quinta coluna estreita demais. */
   #menu .drinks-grid > .drink-card:nth-child(n + 5),
   #estrutura .drinks-grid > .category-item:nth-child(n + 5) {
     display: none;
   }
 
-  /* #menu mobile: o conteúdo (tabs + cards) ocupa só ~600px mas a
-   * section força 100vh (844px) por causa de .full-height — sobravam
-   * ~200px vazios entre o fim do Drinks e o início da Estrutura,
-   * criando um "gap enorme" percebido visualmente.
-   *
-   * Solução: tira min-height tanto do container quanto da própria
-   * section em mobile pra ela shrinkar à altura natural do conteúdo
-   * (~700px em vez de 844). A próxima section (#estrutura) começa
-   * imediatamente depois. Mantemos a section sticky pro effect de
-   * transição continuar funcionando (sticky não exige min-height
-   * fixo — basta a section ser sticky e ter altura definida pelo
-   * conteúdo). */
+  /* Cenário 4 também evita que a próxima section invada o primeiro
+   * viewport mobile: #menu volta a ter pelo menos uma tela de altura. */
   #menu.section {
-    min-height: 0;
+    height: auto;
+    min-height: 100vh;
   }
   #menu .container-full-width.border {
-    min-height: 0;
-    padding-bottom: 2rem;
+    min-height: 100vh;
+    padding-bottom: 17vh;
   }
 }
 
