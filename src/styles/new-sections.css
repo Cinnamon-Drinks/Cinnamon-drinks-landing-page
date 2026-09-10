@@ -351,8 +351,16 @@ img.cover-image[alt=''] {
   margin: 0 auto 0.25rem;
 }
 @media (max-width: 479px) {
+  /* Reavaliado após o carrossel com scroll-snap (card mobile agora em
+   * min(33vw, 150px), bem maior que os 19vw da correção anterior):
+   * testado com font-size: 1.1rem (tamanho base) e nomes reais como "GT &
+   * Especiarias" e "Moscow Mule" ainda quebram em 2 linhas mesmo no card
+   * maior — a quebra desalinha verticalmente a imagem entre cards vizinhos
+   * (.drink-card é flex-column). 0.7rem continua sendo o menor tamanho que
+   * mantém 1 linha nos nomes mais longos ("GT & Especiarias", "Sex on the
+   * Beach"), então a compensação permanece necessária. */
   .drink-card .heading-4.menu-name {
-    font-size: 0.55rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -612,27 +620,35 @@ img.cover-image[alt=''] {
     display: none;
   }
 
-  /* Em mobile a section #menu tinha ~200px vazios no rodapé (conteúdo
-   * top-aligned + altura forçada de 100vh pela classe .full-height).
-   * Esticamos o container pra ocupar a section inteira (min-height
-   * + flex:1, porque height:100% não pega em flex child), centralizamos
-   * o conteúdo verticalmente e adicionamos paddings nas pontas pra
-   * respeitar a navbar (~63px) e o botão MENU sticky (17vh). */
+  /* Histórico: #menu/#estrutura já passaram por duas tentativas de
+   * eliminar o vazio mobile mantendo min-height:100vh (flex-end, depois
+   * justify-content:center + cards maiores). Medido com Playwright nas
+   * duas: o vazio TOTAL não mudava, só se redistribuía (topo vs rodapé)
+   * — porque o conteúdo real (título + tabs + 1 fileira de cards) é
+   * estruturalmente mais curto que uma tela cheia, e min-height:100vh
+   * força a section a ocupar a tela inteira mesmo assim. Ao vivo (print
+   * do Luis + screenshot da transição #menu→#estrutura) isso lia como
+   * um vazio contínuo enorme entre as duas sections.
+   *
+   * Decisão: abrir mão do min-height:100vh aqui — a section passa a ter
+   * a altura do próprio conteúdo (mesmo princípio do #follow, que nunca
+   * forçou 100vh). padding-top mantém o respiro sob a navbar (~63px);
+   * padding-bottom vira um respiro modesto e fixo (não mais os 17vh que
+   * existiam pra "encher" a tela) — só o suficiente pra não colidir com
+   * o botão MENU sticky (.menu-bottom-sticky, position:fixed,
+   * global.css ~2591) quando ele estiver sobreposto no momento do
+   * scroll. */
   #menu .container-full-width.border,
   #estrutura .container-full-width.border {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
     padding-top: calc(63px + 0.5rem);
-    padding-bottom: 17vh;
+    padding-bottom: 2.5rem;
   }
-  /* Em mobile centralizamos o container verticalmente; padding-top
-   * volta a 0 (não precisa compensar navbar — o container já cuida).
-   * font-size herda da regra base .heading-2 (= 65px), igual aos
-   * títulos das outras sections (Sobre, Equipe, Reserva, Contato)
-   * pra manter consistência visual. */
+  /* padding-top do título volta a 0 (o container já reserva o respiro
+   * da navbar, ver regra acima). font-size herda da regra base
+   * .heading-2 (= 65px), igual aos títulos das outras sections (Sobre,
+   * Equipe, Reserva, Contato) pra manter consistência visual. */
   .menu-section-title {
     padding-top: 0;
     margin-bottom: 1.25rem;
@@ -659,25 +675,125 @@ img.cover-image[alt=''] {
     gap: 1rem;
     padding-left: 0;
     padding-right: 0;
+    /* Sobrescreve o justify-content:space-between herdado da regra não-
+     * mobile (linha ~146, pensada pra 5 abas numa linha só) — com 4 abas
+     * quebrando em 2x2, space-between empurra cada par pras pontas
+     * (PREMIUM...INTERNO bem separados), diferente do #menu (que já
+     * centraliza). Center deixa os dois pares consistentes entre as
+     * sections. */
+    justify-content: center;
   }
 
-  /* Limita a galeria de drinks/bares a 4 cards no mobile. No formato
-   * original do Webflow, 4 cards mantêm a faixa compacta perto do botão
-   * MENU sticky sem criar uma quinta coluna estreita demais. */
-  #menu .drinks-grid > .drink-card:nth-child(n + 5),
-  #estrutura .drinks-grid > .category-item:nth-child(n + 5) {
+  /* .menu-tab herdava font-size em `em`, e o `body` do template define
+   * font-size: 2.06vw (tipografia fluida pensada pro desktop) SEM
+   * override em nenhum breakpoint mobile — em telas estreitas isso vira
+   * uma base absurdamente pequena (8px em 390px de viewport), deixando
+   * as tabs (CAIP'S/CLÁSSICOS/... e PREMIUM/INTERNO/...) com ~9.6px de
+   * fonte, ilegíveis e desproporcionais ao espaço disponível na linha
+   * (medido: a fileira de 4 tabs ocupava menos da metade da largura).
+   * Fixamos em `rem` (raiz do documento não tem override de font-size,
+   * fica em 16px) pra desacoplar do bug do body e ter um tamanho
+   * absoluto legível, consistente entre #menu e #estrutura. */
+  #menu .menu-tab,
+  #estrutura .menu-tab {
+    font-size: 1rem;
+    padding: 0.6rem 1.35rem;
+  }
+
+  /* Carrossel horizontal com scroll-snap: substitui a grid estática (4
+   * cards espremidos numa linha + 5º escondido via display:none) por
+   * uma fileira rolável que expõe os 5 slots (real + "Em breve") via
+   * swipe. .drinks-grid já é display:flex pela regra base (linha ~300)
+   * — aqui só removemos o justify-content: space-between herdado (não
+   * faz sentido com overflow) e ativamos scroll horizontal com snap.
+   * O padding lateral reaproveita o de #menu/#estrutura .menu-wrap
+   * (8.33vw, já definido acima) — o primeiro/último card já respiram
+   * da borda da tela através do padding do container pai, sem precisar
+   * duplicar aqui. Scrollbar nativa escondida porque o swipe já é o
+   * affordance principal do carrossel. */
+  #menu .drinks-grid,
+  #estrutura .drinks-grid {
+    justify-content: flex-start;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #menu .drinks-grid::-webkit-scrollbar,
+  #estrutura .drinks-grid::-webkit-scrollbar {
     display: none;
   }
 
-  /* Cenário 4 também evita que a próxima section invada o primeiro
-   * viewport mobile: #menu volta a ter pelo menos uma tela de altura. */
-  #menu.section {
-    height: auto;
-    min-height: 100vh;
+  /* .drink-card já herda flex: 0 0 auto da regra base (linha ~305) —
+   * falta só o scroll-snap-align pra cada card "encaixar" ao soltar o
+   * swipe, em vez de parar solto no meio do scroll. */
+  #menu .drink-card,
+  #estrutura .drink-card {
+    scroll-snap-align: start;
   }
-  #menu .container-full-width.border {
-    min-height: 100vh;
-    padding-bottom: 17vh;
+
+  /* .category-cover herdava width: 15.6vw / height: 14.2em direto do
+   * Webflow original (pensado pra 5 colunas em telas largas). A correção
+   * anterior (33vw / min(50vw,225px)) prendia o tamanho quase só à
+   * LARGURA da tela — em telas mais altas (iPhone Pro Max 430x932 vs
+   * SE 375x667, +40% de altura) o card mal crescia (+14%), sobrando um
+   * vazio enorme acima/abaixo do bloco de conteúdo (bug reportado com
+   * print real + confirmado via Playwright nos dois tamanhos). Trocado
+   * por calc(vw + vh) pra crescer com as duas dimensões — no SE fica
+   * ~131x196px (perto do anterior), no Pro Max ~158x238px (+21% vs os
+   * +14% de antes), mantendo a proporção "pill" 1:1.5. Teto em px
+   * (190/285) evita ficar enorme em tablets 480-768px. */
+  #menu .drink-card .category-cover,
+  #estrutura .drink-card .category-cover {
+    width: min(calc(25vw + 5vh), 190px);
+    height: min(calc(37.5vw + 7.5vh), 285px);
+  }
+
+  /* Acompanha o novo width do .category-cover acima — mesmo raciocínio
+   * do override desktop (new-sections.css, @media min-width: 769px). */
+  #menu .drink-card .heading-4.menu-name,
+  #estrutura .drink-card .heading-4.menu-name {
+    max-width: min(calc(25vw + 5vh), 190px);
+  }
+
+  /* .full-height (global.css, @media max-width:991px) dá margin-top E
+   * margin-bottom: 6em (~72px) em TODA section full-height — Sobre,
+   * Equipe, Drinks, Estrutura, Reserva, Contato. Nas demais isso lê como
+   * um respiro normal entre seções (conteúdo já preenche a tela). Como
+   * #menu/#estrutura agora têm altura pelo conteúdo (bem mais baixas
+   * que as outras), esse respiro de 72px fica proporcionalmente grande
+   * e foi reportado como vazio nas 3 transições ao redor das duas:
+   * #depoimentos→#menu, #menu→#estrutura, #estrutura→#follow. Margens
+   * de irmãos colapsam pro MAIOR valor entre os dois lados que se
+   * tocam — por isso zeramos o lado de #menu/#estrutura nas 3 bordas
+   * (não precisa zerar #depoimentos, que já não é .full-height; #follow
+   * também precisa ser zerado do lado que toca #estrutura, senão o
+   * colapso usa o 72px que sobra nele). Não mexemos no lado de #follow
+   * que toca a PRÓXIMA section (#reserva) nem em nenhuma outra
+   * transição do site. */
+  #menu.section {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  #estrutura.section {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  #follow.section {
+    margin-top: 0;
+  }
+
+  /* .section.one-section (global.css linha ~235) dá min-height:100vh
+   * SEM media query — sobrevive a qualquer breakpoint e é a causa raiz
+   * de a section continuar presa em 100vh mesmo depois de tirarmos o
+   * min-height:100vh daqui (acima). #menu e #estrutura têm essa classe
+   * (ver Menu.astro/Bars.astro: "section sticky full-height category
+   * one-section"). Zeramos só pra essas duas no mobile — mantém o
+   * comportamento original em outras sections/no desktop. */
+  #menu.section,
+  #estrutura.section {
+    min-height: 0;
   }
 }
 
