@@ -21,6 +21,9 @@ importers:
       '@playwright/test':
         specifier: ^1.62.1
         version: 1.62.1
+      js-yaml:
+        specifier: ^4.1.1
+        version: 4.1.1
       lint-staged:
         specifier: ^16.4.0
         version: 16.4.0
