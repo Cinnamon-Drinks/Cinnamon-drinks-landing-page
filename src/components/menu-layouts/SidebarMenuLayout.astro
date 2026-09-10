@@ -119,9 +119,16 @@ const { combinations } = Astro.props;
     justify-content: flex-start;
     width: 25vw;
     padding-top: 2rem;
+    padding-bottom: 2rem;
     display: flex;
     position: fixed;
     top: 10rem;
+    /* Mesmo bug do StructureLayout.astro: sidebar fixed sem limite de altura
+     * corta o último item em viewports baixos (ex: 1366x768) quando os
+     * nomes das abas são longos o bastante pra empilhar. max-height +
+     * overflow-y:auto garante que sempre dá pra rolar até o fim. */
+    max-height: calc(100vh - 10rem - 2rem);
+    overflow-y: auto;
   }
   @media screen and (max-width: 991px) {
     .sidebar-menu-tabs {
@@ -150,6 +157,11 @@ const { combinations } = Astro.props;
     .menu-tab {
       font-size: 1.3em;
       padding-left: 6.5vw;
+      /* Mesmo bug do StructureLayout.astro: sem flex-shrink:0, os itens da
+       * sidebar (flex column com max-height) encolhem em vez do container
+       * rolar, cortando conteúdo (preço, nomes de 2 linhas) via
+       * overflow:hidden. */
+      flex-shrink: 0;
     }
   }
   /* Mobile: a aba vira um item dentro da barra pill horizontal — o

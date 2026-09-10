@@ -218,7 +218,12 @@ collections:
             widget: list
             min: 1
             max: 5
-            hint: 'Cada rótulo vira uma aba na página, com nome, descrição, imagem e preço próprios.'
+            # Sem campo de preço aqui de propósito — só Serviços Extras pode
+            # mostrar valor por rótulo (pedido do Luis). O schema Zod
+            # (structureLabel, content.config.ts) mantém "price" opcional pra
+            # ambos porque é a mesma variante "structure" — a restrição é só
+            # no CMS, escondendo o campo desta collection.
+            hint: 'Cada rótulo vira uma aba na página, com nome, descrição e imagem próprios.'
             fields:
               - { name: name, label: Nome do rótulo, widget: string, hint: 'Ex: "Bike Spritz"' }
               - { name: description, label: Descrição, widget: text, required: false }
@@ -229,7 +234,6 @@ collections:
                 fields:
                   - { name: src, label: Foto, widget: image }
                   - { name: alt, label: Texto alternativo, widget: string }
-              - { name: price, label: 'Preço (opcional)', widget: string, required: false }
           - name: order
             label: Ordem
             widget: number

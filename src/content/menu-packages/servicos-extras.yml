@@ -2,13 +2,33 @@ type: structure
 name: Serviços Extras
 labels:
   - name: BIKE SPRITZ
-    description: ''
+    description: Bike bar itinerante que circula entre os convidados servindo spritz na hora — ótima pra "quebrar o gelo" no início do evento.
+    image:
+      src: /uploads/placeholder-bike-spritz.jpg
+      alt: 'Placeholder — aguardando foto de Bike Spritz'
+    price: 'R$ 800' # valor de exemplo só pra visualização — substituir pelo preço real
   - name: DEFUMAÇÃO AO VIVO
-    description: ''
+    description: Defumação de drinks feita na mesa do convidado, com fumaça aromática liberada na hora do brinde — efeito visual e sensorial extra.
+    image:
+      src: /uploads/placeholder-defumacao-ao-vivo.jpg
+      alt: 'Placeholder — aguardando foto de Defumação ao Vivo'
+    price: 'R$ 600' # valor de exemplo só pra visualização — substituir pelo preço real
   - name: FANTASY & SHOTS
-    description: ''
+    description: Estação de shots temáticos, servidos com apresentação lúdica — reforço de energia pra pista de dança.
+    image:
+      src: /uploads/placeholder-fantasy-shots.jpg
+      alt: 'Placeholder — aguardando foto de Fantasy & Shots'
+    price: 'R$ 500' # valor de exemplo só pra visualização — substituir pelo preço real
   - name: ICE CUBE CLERICOT
-    description: ''
+    description: Clericot servido sobre um bloco de gelo esculpido, mantendo a bebida gelada por mais tempo com efeito visual de destaque na mesa.
+    image:
+      src: /uploads/placeholder-ice-cube-clericot.jpg
+      alt: 'Placeholder — aguardando foto de Ice Cube Clericot'
+    price: 'R$ 700' # valor de exemplo só pra visualização — substituir pelo preço real
   - name: TORRE DE TAÇAS
-    description: ''
+    description: Torre de taças clássica para o brinde principal — champagne ou espumante servido em cascata, ideal pro momento de celebração.
+    image:
+      src: /uploads/placeholder-torre-de-tacas.jpg
+      alt: 'Placeholder — aguardando foto de Torre de Taças'
+    price: 'R$ 450' # valor de exemplo só pra visualização — substituir pelo preço real
 order: 2

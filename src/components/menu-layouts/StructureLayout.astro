@@ -78,9 +78,21 @@ const { labels } = Astro.props;
     justify-content: flex-start;
     width: 25vw;
     padding-top: 2rem;
+    padding-bottom: 2rem;
     display: flex;
     position: fixed;
     top: 10rem;
+    /* Bug real: com 4-5 labels (mínimo/máximo do campo no CMS) e nomes que
+     * quebram em 2 linhas ("TORRE DE TAÇAS", "DEFUMAÇÃO AO VIVO"), a pilha de
+     * abas passa da altura da viewport em telas de laptop comuns (medido:
+     * 1366x768 cortava a 2ª linha do último label, 63px abaixo da borda) —
+     * como a sidebar é position:fixed, esse trecho fica inacessível, sem
+     * scroll algum. max-height trava a sidebar dentro do espaço real
+     * disponível (viewport menos o "top" e uma margem de respiro) e
+     * overflow-y:auto garante que sempre dá pra rolar até o último item,
+     * não importa quantos labels ou quão baixa a tela. */
+    max-height: calc(100vh - 10rem - 2rem);
+    overflow-y: auto;
   }
   @media screen and (max-width: 991px) {
     .sidebar-menu-tabs {
@@ -104,6 +116,13 @@ const { labels } = Astro.props;
     .menu-tab {
       font-size: 1.3em;
       padding-left: 6.5vw;
+      /* .sidebar-menu-tabs é flex column com max-height (ver acima); sem
+       * flex-shrink:0 os itens ENCOLHEM (comportamento padrão do flexbox)
+       * pra caber no espaço antes do container rolar — como .menu-tab tem
+       * overflow:hidden, o encolhimento cortava o preço (ou a 2ª linha do
+       * nome) em vez de simplesmente ativar o scroll. Bug só ficou visível
+       * depois de adicionar preço nas abas, aumentando o conteúdo. */
+      flex-shrink: 0;
     }
   }
   @media screen and (max-width: 991px) {
