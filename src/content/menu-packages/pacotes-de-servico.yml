@@ -4,7 +4,7 @@ combinations:
   - label: Standard
     description: Para celebrações menores e cardápios objetivos.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 2 drinks do menu abaixo**:'
-    price: R$ 45 / pessoa - R$ 2.250 total
+    price: ''
     drinks:
       - moscow-mule
       - mojito
@@ -13,7 +13,7 @@ combinations:
   - label: Premium
     description: Maior variedade de drinks e possibilidades de personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 4 drinks do menu abaixo, incluindo os do pacote anterior**:'
-    price: R$ 65 / pessoa - R$ 3.250 total
+    price: ''
     drinks:
       - lagoa-azul
       - dream-coffee
@@ -28,7 +28,7 @@ combinations:
   - label: Cinnamon
     description: Experiência completa para eventos que buscam impacto e sofisticação.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
-    price: R$ 85 / pessoa - R$ 4.250 total
+    price: ''
     drinks:
       - bees-knees
       - negroni
@@ -39,7 +39,7 @@ combinations:
   - label: Signature
     description: Seleção ampla, destilados especiais e máxima personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 6 drinks do menu abaixo, incluindo os dos pacotes anteriores**:'
-    price: R$ 120 / pessoa - R$ 6.000 total
+    price: ''
     drinks:
       - bramble
       - cosmopolitan
