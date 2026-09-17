@@ -6,7 +6,6 @@ combinations:
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 2 drinks do menu abaixo**:'
     price: ''
     drinks:
-      - moscow-mule
       - mojito
       - pina-colada
       - sex-on-the-beach
