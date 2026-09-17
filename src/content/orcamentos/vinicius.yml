@@ -15,6 +15,9 @@ combinations:
       - mojito
       - pina-colada
       - sex-on-the-beach
+    image:
+      src: /uploads/Vinicius.png
+      alt: VINICIUS FERNANDES
   - label: Premium
     description: Maior variedade de drinks e possibilidades de personalização.
     note: 'Para além de caipirinha e caipvodka, **você poderá escolher MAIS 4 drinks do menu abaixo, incluindo os do pacote anterior**:'
